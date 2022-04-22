@@ -31,8 +31,6 @@ async function createUser(email, username, password){
     return newUser;
 }
 
-async function 
-
 async function checkDupes(entry, field){
     await validate.checkUsername(entry);
 
@@ -53,6 +51,4 @@ async function checkDupes(entry, field){
 
 module.exports = {
     createUser
->>>>>>> Stashed changes
-   createUser
 };
