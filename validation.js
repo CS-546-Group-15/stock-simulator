@@ -47,6 +47,12 @@ async function checkNum(num) {
     if(typeof num !== 'number') throw `Error: Input: ${num || 'provided variable'} , is not of type number.`;
 }
 
+async function checkShares(num) {
+    if(!num) throw `Error: Input: ${num || 'provided variable'} was not given.`;
+    if(typeof num !== 'number') throw `Error: Input: ${num || 'provided variable'} , is not of type number.`;
+    if(num <= 0) throw `You cannot buy ${num} coins!`;
+}
+
 function checkDateHelp(month, day) {
     if(!month) throw `Error: month parameter: ${month} not given.`
     if(!day) throw `Error: day parameter: ${day} not given.`
@@ -106,5 +112,6 @@ module.exports = {
     checkDateHelp,
     checkUsername,
     checkPassword,
-    checkEmail
+    checkEmail,
+    checkShares
 };
