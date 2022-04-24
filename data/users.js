@@ -31,6 +31,8 @@ async function createUser(email, username, password){
     return newUser;
 }
 
+
+
 async function checkDupes(entry, field){
     await validate.checkString(entry, field);
 
