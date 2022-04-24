@@ -17,6 +17,7 @@ async function main() {
         let u2 = await users.createUser("fake123@gmail.com", "anonUser1", "fakePassword1");
 
         let p1 = await posts.createPost(u1._id, "Is GME a good stock?", "I thinik so because its bullish... let's discuss");
+        let p1Updated = await posts.updatePost(p1._id, u1._id, "Is GME a good stock?", "EDIT: I changed my mind Of course it is...");
 
         //let failUser1 = await users.createUser("anarvaez12@verizon.net", "AndrewNar", "sameUsernameOhNO!!!");
         //let failUser2 = await users.createUser("anarvaez@stevens.edu", "diffUsernameSameEmail", "imNotCreative");
