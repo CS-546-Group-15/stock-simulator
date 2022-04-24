@@ -26,7 +26,7 @@ router.post('/signup', async (req, res) => {
   try {
     eCheck.checkString("username", username);
     eCheck.checkString("password", password);
-    eCheck.checkEmail("email", email);
+    eCheck.checkEmail(email);
   }catch (e) {
     res.status(400).render('display/signup', {error: error});
     return;
@@ -79,7 +79,7 @@ router.post('/login', async (req, res) => {
   try {
     eCheck.checkString("username", username);
     eCheck.checkString("password", password);
-    eCheck.checkEmail("email", email);
+    eCheck.checkEmail(email);
   }catch(e) {
     res.status(400).render('display/login', {error: e});
     return;
