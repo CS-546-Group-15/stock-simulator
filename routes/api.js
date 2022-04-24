@@ -72,7 +72,7 @@ router.post('/login', async (req, res) => {
   // get req.body username and password
 	let { username, password } = req.body;
   if(!username || !password) {
-    let error = `Username, Password, or Email not supplied.`;
+    let error = `Username, Password not supplied.`;
     res.status(400).render('display/login', {error: error});
     return;
   }
