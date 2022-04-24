@@ -70,8 +70,8 @@ router.post('/signup', async (req, res) => {
 
 router.post('/login', async (req, res) => {
   // get req.body username and password
-	let { username, password, email } = req.body;
-  if(!username || !password || !email) {
+	let { username, password } = req.body;
+  if(!username || !password) {
     let error = `Username, Password, or Email not supplied.`;
     res.status(400).render('display/login', {error: error});
     return;
@@ -79,7 +79,7 @@ router.post('/login', async (req, res) => {
   try {
     eCheck.checkString("username", username);
     eCheck.checkString("password", password);
-    eCheck.checkEmail(email);
+    // eCheck.checkEmail(email);
   }catch(e) {
     res.status(400).render('display/login', {error: e});
     return;
