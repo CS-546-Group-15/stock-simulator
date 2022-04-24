@@ -18,7 +18,7 @@ async function main() {
 
         let p1 = await posts.createPost(u1._id, "Is GME a good stock?", "I thinik so because its bullish... let's discuss");
         let p1Updated = await posts.updatePost(p1._id, u1._id, "Is GME a good stock?", "EDIT: I changed my mind Of course it is...");
-
+        let p1Comment1 = await posts.createComment(p1._id, u1._id, "I do like it, but its kind of volitle");
         //let failUser1 = await users.createUser("anarvaez12@verizon.net", "AndrewNar", "sameUsernameOhNO!!!");
         //let failUser2 = await users.createUser("anarvaez@stevens.edu", "diffUsernameSameEmail", "imNotCreative");
 

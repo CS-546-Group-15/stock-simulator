@@ -66,7 +66,52 @@ async function updatePost(postID, userID, title, info) {
   return updateInfo;
 }
 
+async function createComment(postID, userID, comment) {
+  if (!ObjectId.isValid(postID)) throw "invalid object ID";
+  if (!ObjectId.isValid(userID)) throw "invalid object ID";
+  comment = await validate.checkString(comment);
+  let date_time = new Date().toUTCString();
+
+  const postCollection = await posts();
+  const userCollection = await users();
+  const user = await userCollection.findOne({ _id: ObjectId(userID) });
+  const post = await postCollection.findOne({ _id: ObjectId(postID) });
+
+  if (!user) throw "User doesn't exist with that Id";
+  if (!post) throw "Post doesn't exist with that Id";
+
+  let theID = new ObjectId();
+  const userComment = {
+    _id: ObjectId(theID),
+    username: user.username,
+    comment: comment,
+    utc_date: date_time,
+  };
+
+  post.comments.push(userComment);
+
+  const updateInfo = await postCollection.updateOne(
+    { _id: ObjectId(postID) },
+    {
+      $addToSet: {
+        comments: {
+          _id: ObjectId(theID),
+          username: user.username,
+          comment: comment,
+          utc_date: date_time,
+        },
+      },
+    }
+  );
+
+  if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
+    throw "Could not add comment to post";
+
+  return userComment
+}
+
 module.exports = {
   createPost,
-  updatePost
+  updatePost,
+  createComment
 };
