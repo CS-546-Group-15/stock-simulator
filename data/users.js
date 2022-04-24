@@ -37,6 +37,37 @@ async function addStockToUser(userID, stock, shares){
     shares = await validate.checkShares(shares);
     let date_time = new Date().toUTCString();
 
+    const userCollection = await users();
+    const user = await userCollection.findOne({ _id: ObjectId(userID) });
+
+    if (!user) throw "User doesn't exist with that Id";
+
+    let theID = new ObjectId();
+    const userComment = {
+      _id: ObjectId(theID),
+      username: user.username,
+      comment: comment,
+      utc_date: date_time,
+    };
+
+    const updateInfo = await userCollection.updateOne(
+        { _id: ObjectId(postID) },
+        {
+          $addToSet: {
+            user_stocks: {
+              _id: ObjectId(theID),
+              ticker: stock,
+              num_shares: shares,
+              price_purchased: 0,
+              date_time: date_time
+            },
+          },
+        }
+      );
+    if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
+    throw "Could not add comment to post";
+
+    return userComment;
 }
 
 async function checkDupes(entry, field){
@@ -66,7 +97,7 @@ async function checkUser(username, password){
     let actualPassword = "";
 
     for(var user in userList){
-        if(userList[user].username.toString() == username){
+        if(userList[user].username.toString().toLowerCase() == username.toLowerCase()){
             __foundFlag = true;
             actualPassword = userList[user].password.toString();
         }
@@ -81,12 +112,8 @@ async function checkUser(username, password){
         throw "Either the username or password is invalid";
     }
 
-    if (compareToMatch){
-        return {authenticated: true};
-
-    }
-    else
-        throw "Either the username or password is invalid";
+    if (compareToMatch) return {authenticated: true};
+    else throw "Either the username or password is invalid";
 
 }
 
