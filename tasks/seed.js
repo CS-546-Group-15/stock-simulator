@@ -11,9 +11,13 @@ async function main() {
     try{
         const db = await connection.connectToDb();
         await db.dropDatabase();
-        console.log("Starting to Seed databass!");
+        console.log("Starting to Seed Database!");
 
         let u1 = await users.createUser("anarvaez@stevens.edu", "Andrewnar", "iLikeCode");
+        let u1Stock1 = await users.addStockToUser(u1._id, "MSFT", 20);
+        let u1Stock2 = await users.addStockToUser(u1._id, "AMZN", 45);
+        let u1Stock2Rem = await users.sellStockForUser(u1Stock2._id);
+        let u1Stock3 = await users.addStockToUser(u1._id, "GME", 500);
         let u2 = await users.createUser("fake123@gmail.com", "anonUser1", "fakePassword1");
 
         let p1 = await posts.createPost(u1._id, "Is GME a good stock?", "I thinik so because its bullish... let's discuss");

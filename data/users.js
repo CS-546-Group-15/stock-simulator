@@ -3,7 +3,21 @@ const users = mongoCollections.users;
 const bcrypt = require('bcrypt');
 const saltRounds = 16;
 const validate = require("../validation.js");
+let { ObjectId } = require("mongodb");
 
+async function get(stockID){
+    if (!ObjectId.isValid(stockID)) throw 'invalid stockID';
+    const userCollection = await users();
+    
+    const stock = await userCollection.findOne({'user_stocks._id': ObjectId(stockID)},
+        {projection: {'user_stocks.$': true}}
+    );
+
+    if(stock == null)
+        throw "Stock couldn't be found";
+
+    return stock.user_stocks[0];
+}
 
 async function createUser(email, username, password){
     //Ensures no errors in email/username/password entry. 
@@ -42,24 +56,34 @@ async function addStockToUser(userID, stock, shares){
 
     if (!user) throw "User doesn't exist with that Id";
 
+    //TODO: API CALL
+    let price_purchased = 0;
+    let total_cost = 1500//price_purchased * shares;
+    //then update liquid assets for user:
+    if(total_cost > user.liquid_assets) throw "Can't add stocks worth more then you have";
+    await changeLiquidAssets(userID, total_cost);
+
     let theID = new ObjectId();
     const userComment = {
-      _id: ObjectId(theID),
-      username: user.username,
-      comment: comment,
-      utc_date: date_time,
+        _id: ObjectId(theID),
+        ticker: stock,
+        num_shares: shares,
+        price_purchased: price_purchased,
+        total_cost: total_cost,
+        date_time: date_time
     };
 
     const updateInfo = await userCollection.updateOne(
-        { _id: ObjectId(postID) },
+        { _id: ObjectId(userID) },
         {
           $addToSet: {
             user_stocks: {
-              _id: ObjectId(theID),
-              ticker: stock,
-              num_shares: shares,
-              price_purchased: 0,
-              date_time: date_time
+                _id: ObjectId(theID),
+                ticker: stock,
+                num_shares: shares,
+                price_purchased: price_purchased,
+                total_cost: total_cost,
+                date_time: date_time
             },
           },
         }
@@ -68,6 +92,51 @@ async function addStockToUser(userID, stock, shares){
     throw "Could not add comment to post";
 
     return userComment;
+}
+
+async function sellStockForUser(stockID){
+    if (!ObjectId.isValid(stockID)) throw "invalid object ID";
+    const userCollection = await users();
+
+    const parent = await userCollection.findOne(
+        {"user_stocks._id": ObjectId(stockID)}
+    );
+    let soldStock = await get(stockID);
+
+    await userCollection.updateOne( {_id: parent._id}, 
+        { $pull : { user_stocks : {"_id": ObjectId(stockID)} } }, false, false );
+
+    //add it back to liquid assets
+    await changeLiquidAssets(parent._id, soldStock.total_cost * (-1));
+    return soldStock;
+    
+    
+    
+    //TODO: API CALL
+    // let price_purchased = 0;
+    // let total_cost = price_purchased * shares;
+    // //then update liquid assets for user:
+    // if(total_cost > user.liquid_assets) throw "Can't add stocks worth more then you have";
+    // await changeLiquidAssets(userID, total_cost);
+
+
+}
+
+async function changeLiquidAssets(userID, amount){
+    await validate.checkNum(amount);
+    if (!ObjectId.isValid(userID)) throw 'invalid object ID';
+    
+    const userCollection = await users();
+    const user = await userCollection.findOne({ _id: ObjectId(userID) });
+    if (!user) throw "User doesn't exist with that Id";
+
+    let updatedAmount = user.liquid_assets - amount;
+
+    await userCollection.updateOne(
+        {_id: ObjectId(userID)},
+        [{ $set: {liquid_assets: updatedAmount}}
+    ]);
+
 }
 
 async function checkDupes(entry, field){
@@ -120,5 +189,6 @@ async function checkUser(username, password){
 module.exports = {
     createUser,
     checkUser,
-    addStockToUser
+    addStockToUser,
+    sellStockForUser
 };

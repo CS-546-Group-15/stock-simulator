@@ -51,6 +51,7 @@ async function checkShares(num) {
     if(!num) throw `Error: Input: ${num || 'provided variable'} was not given.`;
     if(typeof num !== 'number') throw `Error: Input: ${num || 'provided variable'} , is not of type number.`;
     if(num <= 0) throw `You cannot buy ${num} coins!`;
+    return num;
 }
 
 function checkDateHelp(month, day) {
