@@ -72,7 +72,7 @@ router.post('/login', async (req, res) => {
   // get req.body username and password
 	let { username, password, email } = req.body;
   if(!username || !password || !email) {
-    let error = `Username or Password not supplied.`;
+    let error = `Username, Password, or Email not supplied.`;
     res.status(400).render('display/login', {error: error});
     return;
   }
@@ -111,7 +111,7 @@ router.post('/login', async (req, res) => {
   if(checkedUser.authenticated == true) {
       req.session.user = {
         name: "AuthCookie", 
-        secret: "The secretest of all secret cookies... Not even the Cookie Monster Knows it!",
+        secret: "This is a secret.. shhh don't tell anyone",
         saveUninitialized: true,
         resave: false, 
         username: username
