@@ -21,6 +21,13 @@ async function checkArr(arr, par) {
     }
 }
 
+function checkNumbersArray(array) { //function that checks the validity of the contents of the arrays
+    array.forEach (element => {
+        if (typeof element !== 'number') throw `Error: array content: '${element || 'provided variable'}', is not a number`;
+        if (isNaN(element)) throw `Error: array content: ${element || 'provided variable'} , is NaN`;
+    });
+}
+
 async function checkYear(num){
     if(typeof num !== 'number' || isNaN(num)) throw `${num || 'yearFormed'} is not a valid number`;
     if(num < 1900 || num > 2022) throw `${num || 'yearFormed'} must be between 1900-2022`;
@@ -52,6 +59,18 @@ function checkDateHelp(month, day) {
         if(day < 1 || day > 31) throw `Error: month: ${month} range: 1-31. Day: ${day} was given.`
 }
 
+function checkDate(date) {
+    if(!date) throw "No date given!";
+    if(date.length>10) throw `Date: ${date} is an invalid date.`;
+    if(!date.charAt(2) === '/' || !date.charAt(5) === '/') throw `Date: ${date} is an invalid date.`;
+    let dateArr = date.split("/");
+    let month = dateArr[0];
+    let day = dateArr[1];
+    let year = dateArr[2];
+    checkDateHelp(Number(month), Number(day));
+    checkYearFormed(Number(year));
+}
+
 async function checkUsername(str){
     await checkString(str, "Username");
     if(/\s/g.test(str))
@@ -78,10 +97,12 @@ async function checkEmail(email) {
 module.exports = {
     checkString,
     checkStringInArr,
+    checkNumbersArray,
     checkArr,
     checkYear,
     checkWebsite,
     checkNum,
+    checkDate,
     checkDateHelp,
     checkUsername,
     checkPassword,
