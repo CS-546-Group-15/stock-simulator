@@ -32,7 +32,7 @@ async function createUser(email, username, password){
 }
 
 async function checkDupes(entry, field){
-    await validate.checkUsername(entry);
+    await validate.checkString(entry, field);
 
     const userCollection = await users();
     const userList = await userCollection.find({}).toArray();
