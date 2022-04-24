@@ -3,7 +3,7 @@ const router = express.Router();
 const data = require('../data');
 const userData = data.users;
 const postData = data.posts;
-const eCheck = require("./errorChecking");
+const eCheck = require("../validation");
 
 router.get('/', async (req, res) => {
   if(req.session.user) res.redirect('/private');
@@ -24,8 +24,8 @@ router.post('/signup', async (req, res) => {
     return;
   }
   try {
-    eCheck.checkString("username", username);
-    eCheck.checkString("password", password);
+    eCheck.checkUsername(username);
+    eCheck.checkPassword(password);
     eCheck.checkEmail(email);
   }catch (e) {
     res.status(400).render('display/signup', {error: error});
@@ -77,8 +77,8 @@ router.post('/login', async (req, res) => {
     return;
   }
   try {
-    eCheck.checkString("username", username);
-    eCheck.checkString("password", password);
+    eCheck.checkUsername(username);
+    eCheck.checkPassword(password);
     // eCheck.checkEmail(email);
   }catch(e) {
     res.status(400).render('display/login', {error: e});
