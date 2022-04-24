@@ -107,7 +107,7 @@ router.post('/login', async (req, res) => {
   }
   username = username.toLowerCase();
   try {
-  const checkedUser = await userData.checkUser(email, username, password);
+  const checkedUser = await userData.checkUser(username, password);
   if(checkedUser.authenticated == true) {
       req.session.user = {
         name: "AuthCookie", 
