@@ -109,17 +109,6 @@ async function sellStockForUser(stockID){
     //add it back to liquid assets
     await changeLiquidAssets(parent._id, soldStock.total_cost * (-1));
     return soldStock;
-    
-    
-    
-    //TODO: API CALL
-    // let price_purchased = 0;
-    // let total_cost = price_purchased * shares;
-    // //then update liquid assets for user:
-    // if(total_cost > user.liquid_assets) throw "Can't add stocks worth more then you have";
-    // await changeLiquidAssets(userID, total_cost);
-
-
 }
 
 async function changeLiquidAssets(userID, amount){

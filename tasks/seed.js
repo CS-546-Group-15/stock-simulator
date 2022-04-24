@@ -18,11 +18,21 @@ async function main() {
         let u1Stock2 = await users.addStockToUser(u1._id, "AMZN", 45);
         let u1Stock2Rem = await users.sellStockForUser(u1Stock2._id);
         let u1Stock3 = await users.addStockToUser(u1._id, "GME", 500);
+
         let u2 = await users.createUser("fake123@gmail.com", "anonUser1", "fakePassword1");
+        let u2Stock1 = await users.addStockToUser(u2._id, "SCHB", 7);
+        let u2Stock2 = await users.addStockToUser(u2._id, "TSLA", 15);
 
         let p1 = await posts.createPost(u1._id, "Is GME a good stock?", "I thinik so because its bullish... let's discuss");
         let p1Updated = await posts.updatePost(p1._id, u1._id, "Is GME a good stock?", "EDIT: I changed my mind Of course it is...");
         let p1Comment1 = await posts.createComment(p1._id, u1._id, "I do like it, but its kind of volitle");
+        let p1Comment2 = await posts.createComment(p1._id, u2._id, "Diamond HANDS! TO DA MOON");
+        let p1Comment3 = await posts.createComment(p1._id, u1._id, "This guy gets it^^");
+        let p1Comment4 = await posts.createComment(p1._id, u2._id, "OOPSIES THIS WAS MISTAKE");
+        await posts.removeComment(p1Comment4._id);
+
+
+
         //let failUser1 = await users.createUser("anarvaez12@verizon.net", "AndrewNar", "sameUsernameOhNO!!!");
         //let failUser2 = await users.createUser("anarvaez@stevens.edu", "diffUsernameSameEmail", "imNotCreative");
 

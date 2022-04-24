@@ -110,10 +110,20 @@ async function createComment(postID, userID, comment) {
   return userComment;
 }
 
+async function removeComment(commentID){
+  if (!ObjectId.isValid(commentID)) throw 'invalid object ID';
+  const postCollection = await posts();
 
+  const parent = await postCollection.findOne(
+      {"comments._id": ObjectId(commentID)}
+  );
+  await postCollection.updateOne( {_id: parent._id}, 
+    { $pull : { comments : {"_id": ObjectId(commentID)} } }, false, false );
+}
 
 module.exports = {
   createPost,
   updatePost,
-  createComment
+  createComment,
+  removeComment
 };
