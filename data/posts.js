@@ -107,8 +107,10 @@ async function createComment(postID, userID, comment) {
   if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
     throw "Could not add comment to post";
 
-  return userComment
+  return userComment;
 }
+
+
 
 module.exports = {
   createPost,

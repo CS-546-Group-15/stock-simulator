@@ -31,7 +31,13 @@ async function createUser(email, username, password){
     return newUser;
 }
 
+async function addStockToUser(userID, stock, shares){
+    if (!ObjectId.isValid(userID)) throw "invalid object ID";
+    stock = await validate.checkString(stock, "stock");
+    shares = await validate.checkShares(shares);
+    let date_time = new Date().toUTCString();
 
+}
 
 async function checkDupes(entry, field){
     await validate.checkString(entry, field);
@@ -50,7 +56,42 @@ async function checkDupes(entry, field){
     }
 }
 
+async function checkUser(username, password){
+    await validate.checkUsername(username);
+    await validate.checkPassword(password);
+
+    const userCollection = await users();
+    const userList = await userCollection.find({}).toArray();
+    let __foundFlag = false;
+    let actualPassword = "";
+
+    for(var user in userList){
+        if(userList[user].username.toString() == username){
+            __foundFlag = true;
+            actualPassword = userList[user].password.toString();
+        }
+    }
+
+    if(!__foundFlag)
+        throw "Either the username or password is invalid";
+    
+    try{
+        compareToMatch = await bcrypt.compare(password, actualPassword);
+    } catch (e) {
+        throw "Either the username or password is invalid";
+    }
+
+    if (compareToMatch){
+        return {authenticated: true};
+
+    }
+    else
+        throw "Either the username or password is invalid";
+
+}
 
 module.exports = {
-    createUser
+    createUser,
+    checkUser,
+    addStockToUser
 };
