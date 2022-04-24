@@ -17,15 +17,16 @@ router.get('/signup', async (req, res) => {
 
 router.post('/signup', async (req, res) => {
   // get req.body username and password
-	let { username, password } = req.body;
-  if(!username || !password) {
-    let error = `Username or Password not supplied.`;
+	let { username, password, email } = req.body;
+  if(!username || !password || !email) {
+    let error = `Username, Password, or Email not supplied.`;
     res.status(400).render('display/signup', {error: error});
     return;
   }
   try {
     eCheck.checkString("username", username);
     eCheck.checkString("password", password);
+    eCheck.checkEmail("email", email);
   }catch (e) {
     res.status(400).render('display/signup', {error: error});
     return;
@@ -53,7 +54,7 @@ router.post('/signup', async (req, res) => {
   }
   username = username.toLowerCase();
   try {
-    let createdUser = await userData.createUser(username, password);
+    let createdUser = await userData.createUser(email, username, password);
     // console.log(createdUser);
     if(createdUser.userInserted == true) {
       res.redirect('/');
@@ -69,8 +70,8 @@ router.post('/signup', async (req, res) => {
 
 router.post('/login', async (req, res) => {
   // get req.body username and password
-	let { username, password } = req.body;
-  if(!username || !password) {
+	let { username, password, email } = req.body;
+  if(!username || !password || !email) {
     let error = `Username or Password not supplied.`;
     res.status(400).render('display/login', {error: error});
     return;
@@ -78,6 +79,7 @@ router.post('/login', async (req, res) => {
   try {
     eCheck.checkString("username", username);
     eCheck.checkString("password", password);
+    eCheck.checkEmail("email", email);
   }catch(e) {
     res.status(400).render('display/login', {error: e});
     return;
@@ -105,7 +107,7 @@ router.post('/login', async (req, res) => {
   }
   username = username.toLowerCase();
   try {
-  const checkedUser = await userData.checkUser(username, password);
+  const checkedUser = await userData.checkUser(email, username, password);
   if(checkedUser.authenticated == true) {
       req.session.user = {
         name: "AuthCookie", 

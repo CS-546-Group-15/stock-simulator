@@ -84,6 +84,13 @@ function checkDate(date) {
     checkYearFormed(Number(year));
 }
 
+//email validation gotten from https://stackoverflow.com/questions/940577/javascript-regular-expression-email-validation
+function checkEmail(email) {
+    var filter = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!filter.test(email))
+        throw 'Email must be valid addresss!'
+}
+
 module.exports = { 
     checkString,
     checkArray,
@@ -94,5 +101,6 @@ module.exports = {
     checkId,
     checkWebsite,
     checkYearFormed,
-    checkDate
+    checkDate,
+    checkEmail
 }
