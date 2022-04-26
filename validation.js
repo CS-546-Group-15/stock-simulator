@@ -40,9 +40,14 @@ function checkPassword(password) {
 
 function checkEmail(email) {
     if (!email) throw "Must provide an email address";
-    //
-    //implement
-    //
+    
+
+    //using regex to make sure emails are valid
+    var validEmail = /^((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    
+    if(!(emailDomain.match(validEmail))){
+        throw `Error: Not a valid email`
+    }
 }
 
 

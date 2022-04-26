@@ -16,12 +16,9 @@ const constructorMethod = (app) => {
       else res.render('display/login', {});
   });
 
-  //invalid page
-  // !!!
-  // going to want to make this a 'page not found' page instead of a json response
-  // !!!
+ //redirected to not found page
   app.use("*", (req, res) => {
-    res.status(404).json({ error: "Not found" });
+    res.status(404).render('display/notfound', {error: "Not found" });
   });
 };
 
