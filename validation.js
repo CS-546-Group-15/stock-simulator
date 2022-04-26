@@ -99,6 +99,21 @@ function checkSymbol(symbol) {
     }    
 }
 
+function checkId(id) {
+    if(!id) throw 'must provide a valid id';
+    if(typeof id !== 'string') throw 'id must be of type string';
+    if(id.length < 1) throw 'id is an empty string';
+    if(id.trim().length < 1) throw 'id consists of only spaces';
+    if(!ObjectId.isValid(id)) throw 'id must be a valid ObjectId';
+}
+
+function checkShares(shares) {
+    if(!shares) throw 'must provide a valid number';
+    if(typeof shares !== 'number') throw 'shares must be of type number';
+    if(shares < 1) throw 'shares must be a positive whole number';
+    // TODO: need to add more checks for thoroughness
+}
+
 module.exports = {
     checkUsername,
     checkPassword,
@@ -107,5 +122,7 @@ module.exports = {
     checkUpdatePost,
     checkCreateComment,
     checkRemoveComment,
-    checkSymbol
+    checkSymbol,
+    checkId,
+    checkShares
 };
