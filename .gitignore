@@ -4,3 +4,7 @@ node_modules
 # ignore package-lock
 Scratch
 package-lock.json
+
+# ignore environment (to avoid making token public)
+Scratch
+environment.js
