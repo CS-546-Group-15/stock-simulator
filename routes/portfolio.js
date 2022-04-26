@@ -3,7 +3,11 @@ const router = express.Router();
 
 //show discussion page
 router.get('/', async (req, res) => {
-    res.render('display/portfolio');
+    if(req.session.user) {
+        res.render('display/portfolio');
+    } else {
+        res.redirect('/login');
+    }
     return;
 });
 
