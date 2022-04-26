@@ -1,5 +1,6 @@
 const validation = require("../validation.js");
 const environment = require('../environment');
+const { ObjectId } = require("mongodb");
 const axios = require('axios').default;
 
 
@@ -45,47 +46,56 @@ async function buyStock(userId, symbol, shares) {
     // TODO: validate inputs
 
 
-    let date_time = new Date().toUTCString();
+    let date_time = new Date().toUTCString(); // MIGHT NOT NEED THIS
 
+    // get purchasing user
     const userCollection = await users();
-    const user = await userCollection.findOne({ username: username });
-
+    const user = await userCollection.findOne({ _id: ObjectId(userId) });
     if (!user) throw `User doesn't exist with username ${username}`;
 
     //TODO: API CALL
     let price_purchased = 0;
-    let total_cost = 1500//price_purchased * shares;
+    let totalCost = 1500//price_purchased * shares;
 
-    const stockPurchased = {
-        _id: ObjectId(),
-        ticker: stock,
-        num_shares: shares,
-        price_purchased: price_purchased,
-        total_cost: total_cost,
-        date_time: date_time
-    };
+    // check if user owns the stock being purchased
+    owned = user.stocks.filter(stock => stock.symbol === symbol);
+    if(owned.length < 1) { // case: user does not own the stock being purchased
+        const stockPurchased = {
+            _id: ObjectId(),
+            symbol: symbol,
+            num_shares: shares,
+            weighted_average_price: price_purchased,
+            total_cost: totalCost,
+            date_time: date_time // MIGHT NOT NEED THIS
+        };
 
-    // TODO: combine with following update: update cash
-    await userCollection.updateOne(
-        {_id: ObjectId(userID)},
-        [{ $set: {cash: user.cash - total_cost }}
-    ]);
+        await userCollection.updateOne( // update user
+            { _id: ObjectId(userId) },
+            {
+                $set: { cash: user.cash - totalCost }, // update cash amount
+                $addToSet: { stocks: stockPurchased } // add new stock to stock
+            }
+        );
+        // check for errors updating
+        if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
+        throw "Could not purchase stock";
+    } else { // user owns the stock being purchased
+        stock = owned[0]; // get owned stock info
+        avgPrice = ((stock.weighted_average_price * stock.num_shares) + (totalCost)) / (stock.num_shares + shares); // calculate weighted average price from previous average and new price
 
-    const updateInfo = await userCollection.updateOne(
-        { _id: ObjectId(userID) },
-        {
-          $addToSet: {
-            user_stocks: stockPurchased,
-          },
-        }
-      );
-    if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
-    throw "Could not purchase stock";
+        await userCollection.updateOne(
+            { _id: ObjectId(userId) },
+            {
+                $set: { cash: user.cash - totalCost }
 
-    return stock;
+            }
+        );
+    }
+
+    return { purchased: true };
 }
 // called when a user wants to sell a stock
-async function sellStock(userId, stock, shares) {
+async function sellStock(userId, symbol, shares) {
     // TODO: validate inputs
     const userCollection = await users();
 
