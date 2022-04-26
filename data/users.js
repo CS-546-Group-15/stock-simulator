@@ -61,7 +61,7 @@ async function buyStock(userID, stock, shares){
     let price_purchased = 0;
     let total_cost = 1500//price_purchased * shares;
 
-    const stock = {
+    const stockPurchased = {
         _id: ObjectId(),
         ticker: stock,
         num_shares: shares,
@@ -80,14 +80,7 @@ async function buyStock(userID, stock, shares){
         { _id: ObjectId(userID) },
         {
           $addToSet: {
-            user_stocks: {
-                _id: ObjectId(theID),
-                ticker: stock,
-                num_shares: shares,
-                price_purchased: price_purchased,
-                total_cost: total_cost,
-                date_time: date_time
-            },
+            user_stocks: stockPurchased,
           },
         }
       );
@@ -115,7 +108,7 @@ async function checkUser(username, password){
     let actualPassword = "";
 
 
-    // DO NOT DO THIS
+    // NEEDS TO BE FIXED
     for(var user in userList){
         if(userList[user].username.toString().toLowerCase() == username.toLowerCase()){
             __foundFlag = true;
@@ -140,6 +133,6 @@ async function checkUser(username, password){
 module.exports = {
     createUser,
     checkUser,
-    addStockToUser,
-    sellStockForUser
+    buyStock,
+    sellStock
 };
