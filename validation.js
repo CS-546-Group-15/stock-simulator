@@ -1,10 +1,6 @@
 //for checking ObjectId
 const { ObjectId } = require("mongodb"); // MIGHT NOT NEED THIS
 
-/*
-    ERROR CHECKS IN ROUTES
-*/
-
 function checkUsername(username) {
     if (!username) throw "Must provide a username";
     if (typeof username !== 'string') throw "Username must be a string";
@@ -51,11 +47,6 @@ function checkEmail(email) {
     }
 }
 
-
-/*
-    ERROR CHECKS IN DATA
-*/
-
 //
 //  POSTS
 //
@@ -90,9 +81,21 @@ function checkRemoveComment(commentID) {
     //probably just need to check if valid object ID.
 }
 
-//
-//  USERS
-//
+function checkSymbol(symbol) {
+    if (!symbol) throw "Must provide a symbol";
+    if (typeof symbol !== 'string') throw "Symbol must be of type string";
+    if (symbol.trim().length < 1) throw "Symbol must be nonempty";
+    if (symbol.trim().length > 5) throw "Symbol invalid, must be 5 or fewer characters long";
+    symbol.toLowerCase();
+    symbol.trim();
+
+    //make sure symbol has no spaces and only letters
+    for (let i = 0; i < symbol.length; i++) {
+        let code = symbol.charCodeAt(i);
+        if (symbol.charAt(i) === ' ') throw "Symbol cannot contain spaces";
+        if (!(code > 96 && code < 123)) throw "Symbol must only contain letters";
+    }    
+}
 
 module.exports = {
     checkUsername,
@@ -102,4 +105,5 @@ module.exports = {
     checkUpdatePost,
     checkCreateComment,
     checkRemoveComment,
+    checkSymbol
 };

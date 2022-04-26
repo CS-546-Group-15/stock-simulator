@@ -1,11 +1,47 @@
 const validation = require("../validation.js");
+const environment = require('../environment');
+const axios = require('axios').default;
 
-//all stock calls will go here
+
+async function getStockBySymbol(symbol) {
+  //error check
+  validation.checkSymbol(symbol);
+  symbol = symbol.toLowerCase();
+  symbol = symbol.trim();
+  
+  //get token from environment
+  const token = environment.token;
+
+  const url = `https://cloud.iexapis.com/stable/tops?token=${token}&symbols=${symbol}`;
+  const { data } = await axios.get(url);
+  return data;
+
+  /*
+  EXAMPLE OF WHAT THE DATA RETURNED WILL BE GIVEN symbol = 'aapl'
+      [
+          {
+              "symbol": "AAPL",
+              "sector": "electronictechnology",
+              "securityType": "cs",
+              "bidPrice": 158.71,
+              "bidSize": 164,
+              "askPrice": 158.73,
+              "askSize": 400,
+              "lastUpdated": 1650994885662,
+              "lastSalePrice": 158.73,
+              "lastSaleSize": 100,
+              "lastSaleTime": 1650994877371,
+              "volume": 999655
+          }
+      ]
+  */
+}
+
 
 
 // TODO: NEEDS TO BE REWRITTEN
 // called when a user wants to buy a stock
-async function buyStock(username, password, ticker, shares) {
+async function buyStock(username, password, symbol, shares) {
     // TODO: validate inputs
 
 
@@ -57,6 +93,7 @@ async function sellStock(userID, stock, shares) {
 }
 
 module.exports = {
+    getStockBySymbol,  
     buyStock,
-    sellStock
+    sellStock,
 }
