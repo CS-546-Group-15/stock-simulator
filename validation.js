@@ -88,8 +88,8 @@ function checkSymbol(symbol) {
     if (typeof symbol !== 'string') throw "Symbol must be of type string";
     if (symbol.trim().length < 1) throw "Symbol must be nonempty";
     if (symbol.trim().length > 5) throw "Symbol invalid, must be 5 or fewer characters long";
-    symbol.toLowerCase();
-    symbol.trim();
+    symbol = symbol.toLowerCase();
+    symbol = symbol.trim();
 
     //make sure symbol has no spaces and only letters
     for (let i = 0; i < symbol.length; i++) {

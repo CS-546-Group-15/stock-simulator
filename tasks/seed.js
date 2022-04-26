@@ -27,13 +27,13 @@ async function main() {
 
         
         console.log("Done Seeding!");
-
-        await connection.closeConnection();
        
     } catch(e){
         console.log("ERROR IN SEED:", e);
-        return;
     }
+
+    await connection.closeConnection();
+    return;
 }
 
 main();

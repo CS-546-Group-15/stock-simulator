@@ -56,7 +56,10 @@ async function buyStock(userId, symbol, shares) {
     if (!user) throw `User doesn't exist with id ${userId}`;
 
     //TODO: API CALL
-    let price_purchased = 32;
+    stockApiData = await getStockBySymbol(symbol);
+    stockData = stockApiData[0];
+
+    let price_purchased = stockData.lastSalePrice;
     let totalCost = price_purchased * shares;
 
     // check if user owns the stock being purchased
