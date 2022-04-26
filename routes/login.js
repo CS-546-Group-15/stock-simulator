@@ -4,7 +4,7 @@ const data = require('../data');
 const userData = data.users;
 const validation = require('../validation');
 
-router.post('/login', async (req, res) => {
+router.post('/', async (req, res) => {
     // get req.body username and password
     let { username, password } = req.body;
     

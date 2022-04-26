@@ -4,7 +4,7 @@ const data = require('../data');
 const userData = data.users;
 const validation = require('../validation');
 
-router.get('/signup', async (req, res) => {
+router.get('/', async (req, res) => {
     if(req.session.user) {
         res.redirect('/private');
     } else {
@@ -13,7 +13,7 @@ router.get('/signup', async (req, res) => {
 });
 
 
-router.post('/signup', async (req, res) => {
+router.post('/', async (req, res) => {
     // get req.body username and password
     let { username, password, email } = req.body;
     
