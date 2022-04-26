@@ -4,6 +4,3 @@ node_modules
 # ignore package-lock
 Scratch
 package-lock.json
-
-# ignore seed file for now
-tasks/seed.js
