@@ -2,6 +2,8 @@ const validation = require("../validation.js");
 
 //all stock calls will go here
 
+
+// TODO: NEEDS TO BE REWRITTEN
 // called when a user wants to buy a stock
 async function buyStock(username, password, ticker, shares) {
     // TODO: validate inputs
@@ -10,9 +12,9 @@ async function buyStock(username, password, ticker, shares) {
     let date_time = new Date().toUTCString();
 
     const userCollection = await users();
-    const user = await userCollection.findOne({ _id: ObjectId(userID) });
+    const user = await userCollection.findOne({ username: username });
 
-    if (!user) throw "User doesn't exist with that Id";
+    if (!user) throw `User doesn't exist with username ${username}`;
 
     //TODO: API CALL
     let price_purchased = 0;
