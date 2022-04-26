@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const data = require('../data');
+const { getUser } = require('../data/users');
 const userData = data.users;
 const validation = require('../validation');
 
@@ -32,12 +33,14 @@ router.post('/', async (req, res) => {
         //check user
         const checkedUser = await userData.checkUser(username, password);
         if(checkedUser.authenticated == true) {
+            const userId = await userData.getUser(username);
             req.session.user = {
                 name: "AuthCookie", 
-                secret: "This is a secret.. shhh don't tell anyone",
+                secret: "This cookie will bless you with 100 years of luck, DogeCoin to the mooooon...",
                 saveUninitialized: true,
                 resave: false, 
-                username: username
+                username: username,
+                userId: userId._id.toString()
             };
             res.redirect('/private');
             return;

@@ -57,7 +57,7 @@ async function getUser(username) {
     const userCollection = await users();
 
     // get user
-    const user = await userCollection.findone({ username: username });
+    const user = await userCollection.findOne({ username: username });
     if(user === null) throw `no user found with username ${username}`;
     return user;
 }

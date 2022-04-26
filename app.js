@@ -9,14 +9,14 @@ const exphbs = require('express-handlebars');
 app.use('/public', static);
 app.use(express.json());
 
-app.use(
-  session({
-    name: 'AuthCookie', 
-    secret: "This is a secret.. shhh don't tell anyone",
-    saveUninitialized: true,
-    resave: false,
-  })
-);
+// app.use(
+//   session({
+//     name: 'AuthCookie', 
+//     secret: "This is a secret.. shhh don't tell anyone",
+//     saveUninitialized: true,
+//     resave: false,
+//   })
+// );
 
 app.use(express.urlencoded({ extended: true }));
 

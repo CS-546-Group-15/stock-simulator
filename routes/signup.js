@@ -16,7 +16,8 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
     // get req.body username and password
     let { username, password } = req.body;
-    
+    console.log(username);
+    console.log(password);
     //error check
     try {
         validation.checkUsername(username);
@@ -35,7 +36,7 @@ router.post('/', async (req, res) => {
         let createdUser = await userData.createUser(username, password);
         
         if(createdUser.userInserted == true) {
-            res.redirect('/');
+            res.redirect('/login');
             return;
         }
     } catch(e) {
@@ -43,7 +44,7 @@ router.post('/', async (req, res) => {
         return;
     }
 
-    res.status(500).render('display/signup', { error: 'Internal Server Error' });
+    // res.status(500).render('display/signup', { error: 'Internal Server Error' });
     return;
 });
 
