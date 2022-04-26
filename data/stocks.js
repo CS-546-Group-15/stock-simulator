@@ -45,10 +45,16 @@ async function getStockBySymbol(symbol) {
 
 // called when a user wants to buy a stock
 async function buyStock(userId, symbol, shares) {
-    // TODO: validate inputs
+    // validate inputs
+    validation.checkId(userId);
+    validation.checkSymbol(symbol);
+    validation.checkShares(shares);
 
+    // format inputs
+    userId = userId.trim();
+    symbol = symbol.trim();
 
-    let date_time = new Date().toUTCString(); // MIGHT NOT NEED THIS
+    let date_time = new Date().toUTCString(); // date and time of purchase
 
     // get purchasing user
     const userCollection = await users();
@@ -57,21 +63,26 @@ async function buyStock(userId, symbol, shares) {
 
     // get stock from API call
     stockApiData = await getStockBySymbol(symbol);
+
+    // check if symbol could be found
+    if(stockApiData.length < 1) throw `Could not find stock with symbol ${symbol}`;
+    // api call returns an array, to get desired stock, get first element of that array
     stockData = stockApiData[0];
 
+    // set price purchased to last sale price
     let price_purchased = stockData.lastSalePrice;
-    let totalCost = price_purchased * shares;
+    let totalCost = price_purchased * shares; // calculate for total cost
 
     // check if user owns the stock being purchased
     owned = user.stocks.filter(stock => stock.symbol === symbol);
     if(owned.length < 1) { // case: user does not own the stock being purchased
-        const stockPurchased = {
+        const stockPurchased = { // create stock subdoc
             _id: ObjectId(),
             symbol: symbol,
             num_shares: shares,
             weighted_average_price: price_purchased,
             total_cost: totalCost,
-            date_time: date_time // MIGHT NOT NEED THIS
+            date_time: date_time // first purchase of stock
         };
 
         const updateInfo = await userCollection.updateOne( // update user
@@ -104,6 +115,7 @@ async function buyStock(userId, symbol, shares) {
                 }
             }
         );
+        // check for errors updating
         if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw "Could not purchase stock";
     }
     // might change this return type later, for now it's just a confirmation
