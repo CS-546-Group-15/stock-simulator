@@ -89,7 +89,7 @@ async function getAllUsers() {
     // get list of users
     const userList = await userCollection.find({}).toArray();
     if (!userList) throw 'Could not get all users';
-    return userList; // return user list
+    return userList.sort((x,y) => (x.cash > y.cash) ? -1 : ((y.cash > x.cash) ? 1 : 0)); // return user list sorted in decending order
 }
 
 module.exports = {
