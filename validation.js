@@ -7,7 +7,7 @@ const { ObjectId } = require("mongodb");
 
 function checkUsername(username) {
     if (!username) throw "Must provide a username";
-    if (typeof username != 'string') throw "Username must be a string";
+    if (typeof username !== 'string') throw "Username must be a string";
     if (username.trim().length < 4) throw "Username must be at least 4 characters long";
     for (character of username) {
         if (character == ' ') {
@@ -29,15 +29,16 @@ function checkUsername(username) {
 
 function checkPassword(password) {
     if (!password) throw "Must provide a password";
-    if (typeof password != 'string') throw "Password must of type string";
+    if (typeof password !== 'string') throw "Password must of type string";
     if (password.trim().length < 6) throw "Password must be at least 6 characters long"
     for (character of password) {
-        if (character == ' ') {
+        if (character === ' ') {
             throw "password must not contain spaces.";
         }
     }
 }
 
+// MIGHT NOT NEED THIS
 function checkEmail(email) {
     if (!email) throw "Must provide an email address";
     
