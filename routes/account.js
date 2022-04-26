@@ -6,7 +6,7 @@ router.get('/', async (req, res) => {
     if(!req.session.user) {
         res.redirect('/login');
     } else {
-        res.render('display/account', {});
+        res.render('display/account', {username: req.session.user.username});
     }
 });
 

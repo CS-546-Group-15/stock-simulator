@@ -7,7 +7,7 @@ const validation = require('../validation');
 
 router.get('/', async (req, res) => {
     if(req.session.user) {
-        res.redirect('/private');
+        res.redirect('/');
     } else {
         res.render('display/login', {});
     }
@@ -42,7 +42,7 @@ router.post('/', async (req, res) => {
                 username: username,
                 userId: userId._id.toString()
             };
-            res.redirect('/private');
+            res.redirect('/');
             return;
         }
     } catch(e) {

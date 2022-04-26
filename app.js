@@ -9,15 +9,6 @@ const exphbs = require('express-handlebars');
 app.use('/public', static);
 app.use(express.json());
 
-// app.use(
-//   session({
-//     name: 'AuthCookie', 
-//     secret: "This is a secret.. shhh don't tell anyone",
-//     saveUninitialized: true,
-//     resave: false,
-//   })
-// );
-
 app.use(express.urlencoded({ extended: true }));
 
 app.engine('handlebars', exphbs.engine({ defaultLayout: 'main' }));
@@ -40,14 +31,6 @@ app.use(async (req, res, next) => {
   } 
   console.log(`[${new Date().toUTCString()}]: ${req.method} ${req.originalUrl} ${authMess}`);
   next();
-});
-
-app.use('/private', (req, res, next) => {
-  if (!req.session.user) {
-    return res.status(403).render('display/notlogged');
-  } else {
-    next();
-  }
 });
 
 

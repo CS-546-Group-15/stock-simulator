@@ -6,7 +6,7 @@ const validation = require('../validation');
 
 router.get('/', async (req, res) => {
     if(req.session.user) {
-        res.redirect('/private');
+        res.redirect('/');
     } else {
         res.render('display/signup', {});
     }

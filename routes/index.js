@@ -22,7 +22,9 @@ const constructorMethod = (app) => {
   //  home route
   app.get('/', async (req, res) => {
       if(req.session.user) {
-        res.redirect('/private');
+        //can have it render with welcome name or whatever here
+        const users = await userData.getAllUsers();
+        res.render('display/landing', {users: users});
       } else {
         const users = await userData.getAllUsers();
         res.render('display/landing', {users: users});
