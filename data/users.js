@@ -43,7 +43,7 @@ async function createUser(username, password) {
     // add user to database
     const insertInfo = await userCollection.insertOne(newUser);
     if (insertInfo.insertInfo === 0) throw 'Could not add user';
-    return { userInserted: true }; // return an insert confirmation
+    return { userCreated: true }; // return an insert confirmation
 }
 
 async function getUser(username) {

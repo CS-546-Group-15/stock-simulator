@@ -2,6 +2,8 @@ const validation = require("../validation.js");
 const environment = require('../environment');
 const { ObjectId } = require("mongodb");
 const axios = require('axios').default;
+const mongoCollections = require('../config/mongoCollections');
+const users = mongoCollections.users;
 
 
 async function getStockBySymbol(symbol) {
@@ -51,11 +53,11 @@ async function buyStock(userId, symbol, shares) {
     // get purchasing user
     const userCollection = await users();
     const user = await userCollection.findOne({ _id: ObjectId(userId) });
-    if (!user) throw `User doesn't exist with username ${username}`;
+    if (!user) throw `User doesn't exist with id ${userId}`;
 
     //TODO: API CALL
-    let price_purchased = 0;
-    let totalCost = 1500//price_purchased * shares;
+    let price_purchased = 32;
+    let totalCost = price_purchased * shares;
 
     // check if user owns the stock being purchased
     owned = user.stocks.filter(stock => stock.symbol === symbol);
@@ -69,10 +71,10 @@ async function buyStock(userId, symbol, shares) {
             date_time: date_time // MIGHT NOT NEED THIS
         };
 
-        await userCollection.updateOne( // update user
+        const updateInfo = await userCollection.updateOne( // update user
             { _id: ObjectId(userId) },
             {
-                $set: { cash: user.cash - totalCost }, // update cash amount
+                $inc: { cash: -totalCost }, // update cash amount
                 $addToSet: { stocks: stockPurchased } // add new stock to stock
             }
         );
@@ -83,13 +85,24 @@ async function buyStock(userId, symbol, shares) {
         stock = owned[0]; // get owned stock info
         avgPrice = ((stock.weighted_average_price * stock.num_shares) + (totalCost)) / (stock.num_shares + shares); // calculate weighted average price from previous average and new price
 
-        await userCollection.updateOne(
-            { _id: ObjectId(userId) },
+        const updateInfo = await userCollection.updateOne( // update the owned stock subdocument
+            { 
+                _id: ObjectId(userId),
+                'stocks.symbol': symbol
+            },
             {
-                $set: { cash: user.cash - totalCost }
-
+                $inc: { 
+                    cash: -totalCost, // decrement amount of cash
+                    'stocks.$.num_shares': shares, // increment number of shares
+                    'stocks.$.total_cost': totalCost // increment total cost
+                },
+                $set: {
+                    'stocks.$.weighted_average_price': avgPrice // set average price to recalculated weighted average price
+                }
             }
         );
+        if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
+        throw "Could not purchase stock";
     }
 
     return { purchased: true };
