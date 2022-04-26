@@ -41,7 +41,7 @@ async function getStockBySymbol(symbol) {
 
 // TODO: NEEDS TO BE REWRITTEN
 // called when a user wants to buy a stock
-async function buyStock(username, password, symbol, shares) {
+async function buyStock(userId, symbol, shares) {
     // TODO: validate inputs
 
 
@@ -85,7 +85,7 @@ async function buyStock(username, password, symbol, shares) {
     return stock;
 }
 // called when a user wants to sell a stock
-async function sellStock(userID, stock, shares) {
+async function sellStock(userId, stock, shares) {
     // TODO: validate inputs
     const userCollection = await users();
 

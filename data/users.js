@@ -37,7 +37,6 @@ async function createUser(username, password) {
         "password": hashPassword,
         "cash": 10000,
         "efficiency": 0,
-        "posts":  [],
         "stocks": []
     }
 
@@ -91,31 +90,6 @@ async function getAllUsers() {
     const userList = await userCollection.find({}).toArray();
     if (!userList) throw 'Could not get all users';
     return userList; // return user list
-}
-
-async function addPostToUser(userId, postId, postTitle) {
-    let currentUser = await this.getUserById(userId);
-    const userCollection = await users();
-    const updateInfo = await userCollection.updateOne(
-      { _id: userId },
-      { $addToSet: {posts: {id: postId, title: postTitle} }}
-    );
-
-    if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw 'Update failed';
-    return await this.getUserById(userId);
-}
-
-async function removePostFromUser(userId, postId) {
-    let currentUser = await this.getUserById(userId);
-    console.log(currentUser);
-
-    const userCollection = await users();
-    const updateInfo = await userCollection.updateOne(
-      { _id: userId },
-      { $pull: { posts: {id: postId} } }
-    );
-    if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw 'Update failed';
-    return await this.getUserById(userId);
 }
 
 module.exports = {
