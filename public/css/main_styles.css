@@ -1,125 +1,146 @@
 /*Please put main colors here for UI */
-:root{
+:root {
   --header_footer_color: #333;
   --header_footer_contrast: white;
   --header_background_color: #2B6ABC;
 }
 
+/*
+    NAVBAR FORMATTING
+    credit to https://www.w3schools.com/
+*/
+/* Navbar container */
+.navbar {
+  overflow: hidden;
+  background-color: var(--header_footer_color);
+  font-family: Arial;
+}
 
+/* Links inside the navbar */
+.navbar a {
+  float: right;
+  font-size: 16px;
+  color: var(--header_footer_contrast);
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
 
+/* The dropdown container */
+.dropdown {
+  float: right;
+  overflow: hidden;
+}
 
-.error {
-    color: red;
+/* Dropdown button */
+.dropdown .dropbtn {
+  font-size: 16px;
+  border: none;
+  outline: none;
+  color: white;
+  padding: 14px 16px;
+  background-color: inherit;
+  font-family: inherit;
+  /* Important for vertical align on mobile phones */
+  margin: 0;
+  /* Important for vertical align on mobile phones */
+}
+
+/* Add a red background color to navbar links on hover */
+.navbar a:hover,
+.dropdown:hover .dropbtn {
+  background-color: var(--header_background_color);
+}
+
+/* Dropdown content (hidden by default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  float: none;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+/* Add a grey background color to dropdown links on hover */
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
 }
 
 
-/* Navbar container */
-.navbar {
-    overflow: hidden;
-    background-color: var(--header_footer_color);
-    font-family: Arial;
-  }
-  
-  /* Links inside the navbar */
-  .navbar a {
-    float: right;
-    font-size: 16px;
-    color: var(--header_footer_contrast);
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-  }
-  
-  /* The dropdown container */
-  .dropdown {
-    float: right;
-    overflow: hidden;
-  }
-  
-  /* Dropdown button */
-  .dropdown .dropbtn {
-    font-size: 16px;
-    border: none;
-    outline: none;
-    color: white;
-    padding: 14px 16px;
-    background-color: inherit;
-    font-family: inherit; /* Important for vertical align on mobile phones */
-    margin: 0; /* Important for vertical align on mobile phones */
-  }
-  
-  /* Add a red background color to navbar links on hover */
-  .navbar a:hover, .dropdown:hover .dropbtn {
-    background-color: var(--header_background_color);
-  }
-  
-  /* Dropdown content (hidden by default) */
-  .dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-  }
-  
-  /* Links inside the dropdown */
-  .dropdown-content a {
-    float: none;
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    text-align: left;
-  }
-  
-  /* Add a grey background color to dropdown links on hover */
-  .dropdown-content a:hover {
-    background-color: #ddd;
-  }
-  
-  /* Show the dropdown menu on hover */
-  .dropdown:hover .dropdown-content {
-    display: block;
-  }
+/*
+    LEADERBOARD FORMATTING
+    Credit to https://www.w3schools.com/
+*/
+#leaderboard {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
 
-  #leaderboard {
-    font-family: Arial, Helvetica, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-  }
-  
-  #leaderboard td, #leaderboard th {
-    border: 1px solid #ddd;
-    padding: 8px;
-  }
-  
-  #leaderboard tr:nth-child(even){background-color: #f2f2f2;}
-  
-  #leaderboard tr:hover {background-color: #ddd;}
-  
-  #leaderboard th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
-    background-color: #04AA6D;
-    color: white;
-  }
+#leaderboard td,
+#leaderboard th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#leaderboard tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#leaderboard tr:hover {
+  background-color: #ddd;
+}
+
+#leaderboard th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04AA6D;
+  color: white;
+}
+
 footer {
-    position:absolute;
-    bottom: 10px;
-    width:99%;
-    height:50px;   /* Height of the footer */
-    background: var(--header_footer_color);
-    text-align: center;
-    font-size: 16px;
-    text-decoration: none;
-    
- }
+  position: absolute;
+  bottom: 10px;
+  width: 99%;
+  height: 50px;
+  /* Height of the footer */
+  background: var(--header_footer_color);
+  text-align: center;
+  font-size: 16px;
+  text-decoration: none;
+
+}
+
+
+/*
+    MISC FORMATTING
+    Credit to us
+*/
 .foot {
   color: white;
 }
 
 .attribution {
   color: white;
+}
+
+.error {
+  color: red;
 }
