@@ -6,7 +6,7 @@ const validate = require("../validation.js");
 let { ObjectId } = require("mongodb");
 
 async function get(stockID){
-    if (!ObjectId.isValid(stockID)) throw 'invalid stockID';
+    // TODO: validate inputs
     const userCollection = await users();
     
     const stock = await userCollection.findOne({'user_stocks._id': ObjectId(stockID)},
@@ -22,8 +22,11 @@ async function get(stockID){
 async function createUser(email, username, password){
     //Ensures no errors in email/username/password entry. 
     //Also make sure unique username isn't taken and has unique email!
-    await validate.checkEmail(email); await validate.checkUsername(username); await validate.checkPassword(password); 
-    await checkDupes(username, "username"); await checkDupes(email, "email");
+    // TODO: validate inputs
+    // check for duplicate email and username
+    // TODO: REWORK
+    await checkDupes(username, "username"); 
+    await checkDupes(email, "email");
     const hashPassword = await bcrypt.hash(password, saltRounds);
 
 
@@ -46,9 +49,7 @@ async function createUser(email, username, password){
 }
 
 async function addStockToUser(userID, stock, shares){
-    if (!ObjectId.isValid(userID)) throw "invalid object ID";
-    stock = await validate.checkString(stock, "stock");
-    shares = await validate.checkShares(shares);
+    // TODO: validate inputs
     let date_time = new Date().toUTCString();
 
     const userCollection = await users();
@@ -95,7 +96,7 @@ async function addStockToUser(userID, stock, shares){
 }
 
 async function sellStockForUser(stockID){
-    if (!ObjectId.isValid(stockID)) throw "invalid object ID";
+    // TODO: validate inputs
     const userCollection = await users();
 
     const parent = await userCollection.findOne(
@@ -112,8 +113,7 @@ async function sellStockForUser(stockID){
 }
 
 async function changeLiquidAssets(userID, amount){
-    await validate.checkNum(amount);
-    if (!ObjectId.isValid(userID)) throw 'invalid object ID';
+    // TODO: validate inputs
     
     const userCollection = await users();
     const user = await userCollection.findOne({ _id: ObjectId(userID) });
@@ -128,8 +128,10 @@ async function changeLiquidAssets(userID, amount){
 
 }
 
+
+// TODO: REWORK FUNCTION
 async function checkDupes(entry, field){
-    await validate.checkString(entry, field);
+    // TODO: validate inputs
 
     const userCollection = await users();
     const userList = await userCollection.find({}).toArray();
@@ -145,15 +147,18 @@ async function checkDupes(entry, field){
     }
 }
 
+
+// TODO: REWORK FUNCTION
 async function checkUser(username, password){
-    await validate.checkUsername(username);
-    await validate.checkPassword(password);
+    // TODO: validate inputs
 
     const userCollection = await users();
     const userList = await userCollection.find({}).toArray();
     let __foundFlag = false;
     let actualPassword = "";
 
+
+    // DO NOT DO THIS
     for(var user in userList){
         if(userList[user].username.toString().toLowerCase() == username.toLowerCase()){
             __foundFlag = true;
