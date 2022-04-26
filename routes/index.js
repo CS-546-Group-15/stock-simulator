@@ -24,16 +24,16 @@ const constructorMethod = (app) => {
       if(req.session.user) {
         //can have it render with welcome name or whatever here
         const users = await userData.getAllUsers();
-        res.render('display/landing', {users: users});
+        res.render('display/landing', {users: users, authenticated: true});
       } else {
         const users = await userData.getAllUsers();
-        res.render('display/landing', {users: users});
+        res.render('display/landing', {users: users, authenticated: false});
       }
   });
 
  //redirected to not found page
   app.use("*", (req, res) => {
-    res.status(404).render('error/notfound', {error: "Not found" });
+    res.status(404).render('error/notfound', {error: "Not found"});
   });
 };
 

@@ -8,7 +8,7 @@ router.get('/', async (req, res) => {
     if(req.session.user) {
         res.redirect('/');
     } else {
-        res.render('display/signup', {});
+        res.render('display/signup', {authenticated: false});
     }
 });
 
@@ -24,7 +24,7 @@ router.post('/', async (req, res) => {
         validation.checkPassword(password);
         // validation.checkEmail(email);
     } catch (e) {
-        res.status(400).render('display/signup', {error: e});
+        res.status(400).render('display/signup', {error: e, authenticated: false});
         return;
     }
     
@@ -40,7 +40,7 @@ router.post('/', async (req, res) => {
             return;
         }
     } catch(e) {
-        res.status(400).render('display/signup', {error: e});
+        res.status(400).render('display/signup', {error: e, authenticated: false});
         return;
     }
 

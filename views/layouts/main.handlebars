@@ -26,19 +26,17 @@
         </div>
         -->
 
-        <a href="/logout">Log out</a>
-
-        <a href="/account">Account</a>
-
-        <a href="/signup">Sign up</a>
-
-        <a href="/login">Log in</a>
-
-        <a href="/discussion">Discussion</a>
-
-        <a href="/portfolio">My Portfolio</a>
-
-        <a href="/">Home</a>
+        {{#if authenticated}}
+          <a href="/logout">Log out</a>
+          <a href="/account">Account</a>
+          <a href="/discussion">Discussion</a>
+          <a href="/portfolio">My Portfolio</a>
+        {{else}}
+          <a href="/signup">Sign up</a>
+          <a href="/login">Log in</a>
+          <a href="/discussion">Discussion</a>
+        {{/if}}
+          <a href="/">Home</a>
       </div>
     </header>
 

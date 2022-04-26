@@ -4,7 +4,7 @@ const router = express.Router();
 //log user out
 router.get('/', async (req, res) => {
     req.session.destroy();
-    res.render('display/logout');
+    res.render('display/logout', {authenticated: false});
     return;
 });
 
