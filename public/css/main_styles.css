@@ -1,3 +1,11 @@
+/*Please put main colors here for UI */
+:root{
+  --header_footer_color: #333;
+  --header_footer_contrast: white;
+}
+
+
+
 .error {
     color: red;
 }
@@ -6,7 +14,7 @@
 /* Navbar container */
 .navbar {
     overflow: hidden;
-    background-color: #333;
+    background-color: var(--header_footer_color);
     font-family: Arial;
   }
   
@@ -14,7 +22,7 @@
   .navbar a {
     float: right;
     font-size: 16px;
-    color: white;
+    color: var(--header_footer_contrast);
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
@@ -95,3 +103,18 @@
     background-color: #04AA6D;
     color: white;
   }
+footer {
+    position:absolute;
+    bottom: 10px;
+    width:99%;
+    height:50px;   /* Height of the footer */
+    background: var(--header_footer_color);
+    text-align: center;
+    font-size: 16px;
+    text-decoration: none;
+    
+ }
+.foot {
+  color: white;
+
+}
