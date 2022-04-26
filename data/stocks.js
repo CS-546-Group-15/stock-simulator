@@ -159,14 +159,16 @@ async function sellStock(userId, symbol, shares) { // TODO: STILL NEED TO DEAL W
         stock = owned[0]; // get owned stock info
 
         // check if selling given amount of shares sells all shares
-        if(stock.num_shares - shares === 0) {
+        if(stock.num_shares - shares === 0) { // user wants to sell all shares
             const updateInfo = await userCollection.updateOne( // all shares sold, remove subdoc from stocks
                 {
                     _id: ObjectId(userId),
                     'stocks.symbol': symbol
                 },
-                { $pull: { stocks: { symbol: symbol } } }
+                { $pull: { stocks: { symbol: symbol } } } // remove subdoc
             );
+            if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw "Could not sell stock";
+            return { sold: true }; // confirm sale
         }
 
         avgPrice = ((stock.weighted_average_price * stock.num_shares) - (totalCost)) / (stock.num_shares - shares); // calculate weighted average price from previous average and new price
