@@ -1,3 +1,10 @@
+//for checking ObjectId
+const { ObjectId } = require("mongodb");
+
+/*
+    ERROR CHECKS IN ROUTES
+*/
+
 function checkUsername(username) {
     if (!username) throw "Must provide a username";
     if (typeof username != 'string') throw "Username must be a string";
@@ -32,16 +39,61 @@ function checkPassword(password) {
 }
 
 function checkEmail(email) {
+    if (!email) throw "Must provide an email address";
+    //
     //implement
+    //
 }
 
-// createPost(userID, title, info)
-// updatePost(postID, userID, title, info)
-// createComment(postID, userID, comment)
-// removeComment(commentID)
+
+/*
+    ERROR CHECKS IN DATA
+*/
+
+//
+//  POSTS
+//
+function checkCreatePost(userID, title, info) {
+    if (!userID) throw "Must provide a user ID";
+    if (!title) throw "Must provide a title";
+    if (!info) throw "Must provide info";
+
+    //need to further define these to check them
+}
+
+function checkUpdatePost(postID, userID, title, info) {
+    if (!postID) throw "Must provide a post ID";
+    if (!userID) throw "Must provide a user ID";
+    if (!title) throw "Must provide a title";
+    if (!info) throw "Must provide info";
+
+    //need to further define these to check them
+}
+
+function checkCreateComment(postID, userID, comment) {
+    if (!postID) throw "Must provide a post ID";
+    if (!userID) throw "Must provide a user ID";
+    if (!comment) throw "Must provide a comment";
+
+    //need to further define these to check them
+}
+
+function checkRemoveComment(commentID) {
+    if (!commentID) throw "Must provide a comment ID";
+
+    //probably just need to check if valid object ID.
+}
+
+//
+//  USERS
+//
 
 module.exports = {
     checkUsername,
     checkPassword,
-    checkEmail
+    checkEmail,
+    checkCreatePost,
+    checkUpdatePost,
+    checkCreateComment,
+    checkRemoveComment,
 };

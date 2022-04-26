@@ -2,11 +2,13 @@ const mongoCollections = require("../config/mongoCollections");
 const posts = mongoCollections.posts;
 const users = mongoCollections.users;
 const validation = require("../validation.js");
-let { ObjectId } = require("mongodb");
+const { ObjectId } = require("mongodb");
 
 //a post is the main discussion, comments will be added to it.
 async function createPost(userID, title, info) {
-    // TODO: validate inputs
+    //error check inputs
+    validation.checkCreatePost(userID, title, info);
+
     let date_time = new Date().toUTCString();
 
     //import databases and ensure user exists
@@ -32,7 +34,9 @@ async function createPost(userID, title, info) {
 }
 
 async function updatePost(postID, userID, title, info) {
-    // TODO: validate inputs
+    //error check inputs
+    validation.checkUpdatePost(postID, userID, title, info);
+
     let date_time = new Date().toUTCString();
 
     //import databases and ensure post and user exists
@@ -63,7 +67,9 @@ async function updatePost(postID, userID, title, info) {
 }
 
 async function createComment(postID, userID, comment) {
-    // TODO: validate inputs
+    //error check inputs
+    validation.checkCreateComment(postID, userID, comment);
+
     let date_time = new Date().toUTCString();
 
     const postCollection = await posts();
@@ -105,7 +111,9 @@ async function createComment(postID, userID, comment) {
 }
 
 async function removeComment(commentID) {
-    // TODO: validate inputs
+    //error check inputs
+    validation.checkRemoveComment(commentID);
+
     const postCollection = await posts();
 
     const parent = await postCollection.findOne(
