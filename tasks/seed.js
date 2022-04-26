@@ -15,7 +15,10 @@ async function main() {
         console.log("Starting to Seed Database!");
 
         // let u1 = await users.createUser("Andrewnar", "iLikeCode");
-        await stockOperations.buyStock('62685081f7e059987f041ab0', 'TQQQ', 100);
+        // await stockOperations.buyStock('62685081f7e059987f041ab0', 'TQQQ', 100);
+
+        await stockOperations.sellStock('62685081f7e059987f041ab0', 'TQQQ', 100);
+        // await stockOperations.sellStock('62685081f7e059987f041ab0', 'TQQQ', 100);
 
 
         // let u2 = await users.createUser("anonUser1", "fakePassword1");

@@ -157,6 +157,18 @@ async function sellStock(userId, symbol, shares) { // TODO: STILL NEED TO DEAL W
         throw 'user does not own this stock';
     } else { // user owns the stock being purchased
         stock = owned[0]; // get owned stock info
+
+        // check if selling given amount of shares sells all shares
+        if(stock.num_shares - shares === 0) {
+            const updateInfo = await userCollection.updateOne( // all shares sold, remove subdoc from stocks
+                {
+                    _id: ObjectId(userId),
+                    'stocks.symbol': symbol
+                },
+                { $pull: { stocks: { symbol: symbol } } }
+            );
+        }
+
         avgPrice = ((stock.weighted_average_price * stock.num_shares) - (totalCost)) / (stock.num_shares - shares); // calculate weighted average price from previous average and new price
 
         const updateInfo = await userCollection.updateOne( // update the owned stock subdocument
