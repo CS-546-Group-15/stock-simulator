@@ -7,6 +7,7 @@
 
 
 
+
 .error {
     color: red;
 }
@@ -117,5 +118,8 @@ footer {
  }
 .foot {
   color: white;
+}
 
+.attribution {
+  color: white;
 }
