@@ -41,8 +41,6 @@ async function getStockBySymbol(symbol) {
 }
 
 
-
-// TODO: NEEDS TO BE REWRITTEN
 // called when a user wants to buy a stock
 async function buyStock(userId, symbol, shares) {
     // TODO: validate inputs
@@ -55,7 +53,7 @@ async function buyStock(userId, symbol, shares) {
     const user = await userCollection.findOne({ _id: ObjectId(userId) });
     if (!user) throw `User doesn't exist with id ${userId}`;
 
-    //TODO: API CALL
+    // get stock from API call
     stockApiData = await getStockBySymbol(symbol);
     stockData = stockApiData[0];
 
@@ -104,10 +102,9 @@ async function buyStock(userId, symbol, shares) {
                 }
             }
         );
-        if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
-        throw "Could not purchase stock";
+        if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw "Could not purchase stock";
     }
-
+    // might change this return type later, for now it's just a confirmation
     return { purchased: true };
 }
 // called when a user wants to sell a stock
