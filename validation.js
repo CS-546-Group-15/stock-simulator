@@ -1,16 +1,12 @@
 //for checking ObjectId
-const { ObjectId } = require("mongodb");
-
-/*
-    ERROR CHECKS IN ROUTES
-*/
+const { ObjectId } = require("mongodb"); // MIGHT NOT NEED THIS
 
 function checkUsername(username) {
     if (!username) throw "Must provide a username";
-    if (typeof username != 'string') throw "Username must be a string";
+    if (typeof username !== 'string') throw "Username must be a string";
     if (username.trim().length < 4) throw "Username must be at least 4 characters long";
     for (character of username) {
-        if (character == ' ') {
+        if (character === ' ') {
             throw "username must not contain spaces.";
         }
     }
@@ -29,15 +25,16 @@ function checkUsername(username) {
 
 function checkPassword(password) {
     if (!password) throw "Must provide a password";
-    if (typeof password != 'string') throw "Password must of type string";
+    if (typeof password !== 'string') throw "Password must of type string";
     if (password.trim().length < 6) throw "Password must be at least 6 characters long"
     for (character of password) {
-        if (character == ' ') {
+        if (character === ' ') {
             throw "password must not contain spaces.";
         }
     }
 }
 
+// MIGHT NOT NEED THIS
 function checkEmail(email) {
     if (!email) throw "Must provide an email address";
     
@@ -49,11 +46,6 @@ function checkEmail(email) {
         throw `Error: Not a valid email`
     }
 }
-
-
-/*
-    ERROR CHECKS IN DATA
-*/
 
 //
 //  POSTS
@@ -91,9 +83,21 @@ function checkRemoveComment(commentID) {
     //probably just need to check if valid object ID.
 }
 
-//
-//  USERS
-//
+function checkSymbol(symbol) {
+    if (!symbol) throw "Must provide a symbol";
+    if (typeof symbol !== 'string') throw "Symbol must be of type string";
+    if (symbol.trim().length < 1) throw "Symbol must be nonempty";
+    if (symbol.trim().length > 5) throw "Symbol invalid, must be 5 or fewer characters long";
+    symbol.toLowerCase();
+    symbol.trim();
+
+    //make sure symbol has no spaces and only letters
+    for (let i = 0; i < symbol.length; i++) {
+        let code = symbol.charCodeAt(i);
+        if (symbol.charAt(i) === ' ') throw "Symbol cannot contain spaces";
+        if (!(code > 96 && code < 123)) throw "Symbol must only contain letters";
+    }    
+}
 
 module.exports = {
     checkUsername,
@@ -103,4 +107,5 @@ module.exports = {
     checkUpdatePost,
     checkCreateComment,
     checkRemoveComment,
+    checkSymbol
 };

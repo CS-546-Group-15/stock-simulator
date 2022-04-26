@@ -3,7 +3,7 @@ const users = mongoCollections.users;
 const bcrypt = require('bcrypt');
 const saltRounds = 16;
 const validation = require("../validation.js");
-const { ObjectId } = require("mongodb");
+// const { ObjectId } = require("mongodb"); PROBABLY DON'T NEED THIS
 
 async function getUserById(id) {
     const userCollection = await users();
@@ -16,10 +16,10 @@ async function createUser(username, password) {
     //Ensures no errors in email/username/password entry. 
     validation.checkUsername(username);
     validation.checkPassword(password);
-
-    //Also make sure unique username isn't taken and has unique email!
-    // check for duplicate email and username
-    // TODO: REWORK
+    
+    // format inputs
+    username = username.trim().toLowerCase();
+    password = password.trim();
 
     // get users collection
     const userCollection = await users();
@@ -28,6 +28,7 @@ async function createUser(username, password) {
     const test = await userCollection.findOne({ username: username });
     if(test!==null) throw 'Error: there is already a user with the given username';
 
+    // password hash
     const hashPassword = await bcrypt.hash(password, saltRounds);
 
     //starts a new user off with $10,000
@@ -40,46 +41,56 @@ async function createUser(username, password) {
         "stocks": []
     }
 
+    // add user to database
     const insertInfo = await userCollection.insertOne(newUser);
     if (insertInfo.insertInfo === 0) throw 'Could not add user';
-    return { userInserted: true };
+    return { userInserted: true }; // return an insert confirmation
 }
 
-
-
-
-
-
-// TODO: REWORK FUNCTION
-async function checkUser(username, password) {
-    // TODO: validate inputs
-
-    const userCollection = await users();
-    const userList = await userCollection.find({}).toArray();
-    let __foundFlag = false;
-    let actualPassword = "";
-
-
-    // NEEDS TO BE FIXED
-    for(var user in userList){
-        if(userList[user].username.toString().toLowerCase() == username.toLowerCase()){
-            __foundFlag = true;
-            actualPassword = userList[user].password.toString();
-        }
-    }
-
-    if(!__foundFlag)
-        throw "Either the username or password is invalid";
+async function getUser(username) {
+    // validate inputs
+    validation.checkUsername(username);
     
-    try{
-        compareToMatch = await bcrypt.compare(password, actualPassword);
-    } catch (e) {
-        throw "Either the username or password is invalid";
-    }
+    // format inputs
+    username = username.trim().toLowerCase();
 
-    if (compareToMatch) return {authenticated: true};
-    else throw "Either the username or password is invalid";
+    // get user collection
+    const userCollection = await users();
 
+    // get user
+    const user = await userCollection.findone({ username: username });
+    if(user === null) throw `no user found with username ${username}`;
+    return user;
+}
+
+async function checkUser(username, password) {
+    // validate inputs
+    validation.checkUsername(username);
+    validation.checkPassword(password);
+
+    // format inputs
+    username = username.trim().toLowerCase();
+    password = password.trim();
+
+    // get users collection
+    const userCollection = await users();
+
+    // try to get user
+    const user = await userCollection.findOne({ username: username });
+    if(user === null) throw 'Either the username or password is invalid'; 
+    const compare = await bcrypt.compare(password, user.password); // check if hashed password matches
+    if(!compare) throw 'Either the username or password is invalid';
+    return { authenticated: true }; // authenticate
+}
+
+async function getAllUsers() {
+    // get users collection
+    const userCollection = await users();
+
+    // get list of users
+    const userList = await userCollection.find({}).toArray();
+    if (!userList) throw 'Could not get all users';
+    return userList; // return user list
 }
 
 async function addPostToUser(userId, postId, postTitle) {
@@ -112,5 +123,8 @@ module.exports = {
     createUser,
     checkUser,
     addPostToUser,
-    removePostFromUser
+    removePostFromUser,
+    getUser,
+    checkUser,
+    getAllUsers
 };
