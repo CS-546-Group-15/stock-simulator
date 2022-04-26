@@ -15,13 +15,13 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
     // get req.body username and password
-    let { username, password, email } = req.body;
+    let { username, password } = req.body;
     
     //error check
     try {
         validation.checkUsername(username);
         validation.checkPassword(password);
-        validation.checkEmail(email);
+        // validation.checkEmail(email);
     } catch (e) {
         res.status(400).render('display/signup', {error: e});
         return;
@@ -31,7 +31,8 @@ router.post('/', async (req, res) => {
     username = username.toLowerCase();
     try {
         //create user
-        let createdUser = await userData.createUser(email, username, password);
+        // let createdUser = await userData.createUser(email, username, password);
+        let createdUser = await userData.createUser(username, password);
         
         if(createdUser.userInserted == true) {
             res.redirect('/');
