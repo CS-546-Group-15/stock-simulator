@@ -1,9 +1,8 @@
-const usersData = require('./users.js');
-const postsData = require('./posts.js');
-const stockData = require('./stocks.js');
+const userUser = require('./users.js');
+const postPosts = require('./posts.js');
+
 
 module.exports = {
-    users   : usersData,
-    posts   : postsData,
-    stocks  : stockData
+    users : userUser,
+    posts : postPosts
 }
