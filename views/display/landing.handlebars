@@ -10,19 +10,11 @@
     <th>Name</th>
     <th>Money</th>
   </tr>
-  <tr>
-    <td>1</td>
-    <td>Ryan Clark</td>
-    <td>$1,000,000</td>
-  </tr>
-  <tr>
-    <td>2</td>
-    <td>Ryan Chin</td>
-    <td>$12</td>
-  </tr>
-  <tr>
-    <td>3</td>
-    <td>Andrew Narvaez</td>
-    <td>-$10,000</td>
-  </tr>
+  {{#each users}}
+    <tr>
+        <td>pos</td>
+        <td>{{this.username}}</td>
+        <td>{{this.cash}}</td>
+    </tr>
+  {{/each}}
 </table>

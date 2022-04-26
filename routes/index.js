@@ -6,6 +6,9 @@ const accountRoutes = require('./account');
 const discussionRoutes = require('./discussion');
 const portfolioRoutes = require('./portfolio');
 
+const data = require('../data');
+const userData = data.users;
+
 const constructorMethod = (app) => {
   //  use all routes
   app.use('/signup',      signupRoutes    );
@@ -18,8 +21,12 @@ const constructorMethod = (app) => {
 
   //  home route
   app.get('/', async (req, res) => {
-      if(req.session.user) res.redirect('/private');
-      else res.render('display/landing', {});
+      if(req.session.user) {
+        res.redirect('/private');
+      } else {
+        const users = await userData.getAllUsers();
+        res.render('display/landing', {users: users});
+      }
   });
 
  //redirected to not found page
