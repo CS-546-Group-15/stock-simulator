@@ -1,5 +1,5 @@
 //for checking ObjectId
-const { ObjectId } = require("mongodb");
+const { ObjectId } = require("mongodb"); // MIGHT NOT NEED THIS
 
 /*
     ERROR CHECKS IN ROUTES
@@ -10,7 +10,7 @@ function checkUsername(username) {
     if (typeof username !== 'string') throw "Username must be a string";
     if (username.trim().length < 4) throw "Username must be at least 4 characters long";
     for (character of username) {
-        if (character == ' ') {
+        if (character === ' ') {
             throw "username must not contain spaces.";
         }
     }
