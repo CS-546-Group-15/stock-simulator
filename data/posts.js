@@ -1,7 +1,7 @@
 const mongoCollections = require("../config/mongoCollections");
 const posts = mongoCollections.posts;
 const users = mongoCollections.users;
-const validate = require("../validation.js");
+const validation = require("../validation.js");
 let { ObjectId } = require("mongodb");
 
 //a post is the main discussion, comments will be added to it.

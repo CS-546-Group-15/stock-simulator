@@ -2,10 +2,10 @@ const mongoCollections = require('../config/mongoCollections');
 const users = mongoCollections.users;
 const bcrypt = require('bcrypt');
 const saltRounds = 16;
-const validate = require("../validation.js");
-let { ObjectId } = require("mongodb");
+const validation = require("../validation.js");
+const { ObjectId } = require("mongodb");
 
-async function get(stockID){
+async function getStock(stockID){
     // TODO: validate inputs
     const userCollection = await users();
     
@@ -13,7 +13,7 @@ async function get(stockID){
         {projection: {'user_stocks.$': true}}
     );
 
-    if(stock == null)
+    if(stock === null)
         throw "Stock couldn't be found";
 
     return stock.user_stocks[0];
@@ -25,31 +25,31 @@ async function createUser(email, username, password){
     // TODO: validate inputs
     // check for duplicate email and username
     // TODO: REWORK
-    await checkDupes(username, "username"); 
-    await checkDupes(email, "email");
-    const hashPassword = await bcrypt.hash(password, saltRounds);
-
 
     const userCollection = await users();
+
+    const hashPassword = await bcrypt.hash(password, saltRounds);
 
     //starts a new user off with $10,000
     let newUser = {
         "username": username,
         "email": email,
         "password": hashPassword,
-        "liquid_assets": 10000,
+        "cash": 10000,
         "efficiency": 0,
         "user_stocks": []
     }
 
     const insertInfo = await userCollection.insertOne(newUser);
     if (insertInfo.insertInfo === 0)
-      throw 'Could not add User.';
+      throw 'Could not add User';
     return newUser;
 }
 
-async function addStockToUser(userID, stock, shares){
+async function buyStock(userID, stock, shares){
     // TODO: validate inputs
+
+
     let date_time = new Date().toUTCString();
 
     const userCollection = await users();
@@ -60,19 +60,21 @@ async function addStockToUser(userID, stock, shares){
     //TODO: API CALL
     let price_purchased = 0;
     let total_cost = 1500//price_purchased * shares;
-    //then update liquid assets for user:
-    if(total_cost > user.liquid_assets) throw "Can't add stocks worth more then you have";
-    await changeLiquidAssets(userID, total_cost);
 
-    let theID = new ObjectId();
-    const userComment = {
-        _id: ObjectId(theID),
+    const stock = {
+        _id: ObjectId(),
         ticker: stock,
         num_shares: shares,
         price_purchased: price_purchased,
         total_cost: total_cost,
         date_time: date_time
     };
+
+    // TODO: combine with following update: update cash
+    await userCollection.updateOne(
+        {_id: ObjectId(userID)},
+        [{ $set: {cash: user.cash - total_cost }}
+    ]);
 
     const updateInfo = await userCollection.updateOne(
         { _id: ObjectId(userID) },
@@ -90,61 +92,16 @@ async function addStockToUser(userID, stock, shares){
         }
       );
     if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
-    throw "Could not add comment to post";
+    throw "Could not purchase stock";
 
-    return userComment;
+    return stock;
 }
 
-async function sellStockForUser(stockID){
+async function sellStock(userID, stock, shares) {
     // TODO: validate inputs
     const userCollection = await users();
 
-    const parent = await userCollection.findOne(
-        {"user_stocks._id": ObjectId(stockID)}
-    );
-    let soldStock = await get(stockID);
-
-    await userCollection.updateOne( {_id: parent._id}, 
-        { $pull : { user_stocks : {"_id": ObjectId(stockID)} } }, false, false );
-
-    //add it back to liquid assets
-    await changeLiquidAssets(parent._id, soldStock.total_cost * (-1));
-    return soldStock;
-}
-
-async function changeLiquidAssets(userID, amount){
-    // TODO: validate inputs
-    
-    const userCollection = await users();
-    const user = await userCollection.findOne({ _id: ObjectId(userID) });
-    if (!user) throw "User doesn't exist with that Id";
-
-    let updatedAmount = user.liquid_assets - amount;
-
-    await userCollection.updateOne(
-        {_id: ObjectId(userID)},
-        [{ $set: {liquid_assets: updatedAmount}}
-    ]);
-
-}
-
-
-// TODO: REWORK FUNCTION
-async function checkDupes(entry, field){
-    // TODO: validate inputs
-
-    const userCollection = await users();
-    const userList = await userCollection.find({}).toArray();
-
-    for(var user in userList){
-        if(field == "username"){
-            if(userList[user].username.toString().toLowerCase() == entry.toLowerCase())
-                throw `User already exists with that ${field}!`;
-        } else if(field == "email"){
-            if(userList[user].email.toString().toLowerCase() == entry.toLowerCase())
-                throw `User already exists with that ${field}!`;
-        }
-    }
+    // TODO: needs to be rewritten
 }
 
 
