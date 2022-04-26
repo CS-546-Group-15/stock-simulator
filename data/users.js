@@ -21,8 +21,10 @@ async function getStock(stockID){
 
 async function createUser(email, username, password){
     //Ensures no errors in email/username/password entry. 
+    validation.checkUsername(username);
+    validation.checkPassword(password);
+    validation.checkEmail(email);
     //Also make sure unique username isn't taken and has unique email!
-    // TODO: validate inputs
     // check for duplicate email and username
     // TODO: REWORK
 
