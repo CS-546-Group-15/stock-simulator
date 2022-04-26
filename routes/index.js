@@ -1,3 +1,4 @@
+const landingRoutes = require('./landing');
 const signupRoutes = require('./signup');
 const loginRoutes = require('./login');
 const privateRoutes = require('./private');
@@ -5,6 +6,7 @@ const logoutRoutes = require('./logout');
 
 const constructorMethod = (app) => {
   //  use all routes
+  app.use('/landing', landingRoutes);
   app.use('/signup', signupRoutes);
   app.use('/login', loginRoutes);
   app.use('/private', privateRoutes);
@@ -13,7 +15,7 @@ const constructorMethod = (app) => {
   //  home route
   app.get('/', async (req, res) => {
       if(req.session.user) res.redirect('/private');
-      else res.render('display/login', {});
+      else res.render('display/landing', {});
   });
 
  //redirected to not found page
