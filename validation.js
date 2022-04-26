@@ -58,19 +58,21 @@ function checkEmail(email) {
 //
 //  POSTS
 //
-function checkCreatePost(userID, title, info) {
+function checkCreatePost(userID, title, info, tags) {
     if (!userID) throw "Must provide a user ID";
     if (!title) throw "Must provide a title";
     if (!info) throw "Must provide info";
+    if (!tags) throw "Must provide tags";
 
     //need to further define these to check them
 }
 
-function checkUpdatePost(postID, userID, title, info) {
+function checkUpdatePost(postID, userID, title, info, tags) {
     if (!postID) throw "Must provide a post ID";
     if (!userID) throw "Must provide a user ID";
     if (!title) throw "Must provide a title";
     if (!info) throw "Must provide info";
+    if (!tags) throw "Must provide tags";
 
     //need to further define these to check them
 }

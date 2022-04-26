@@ -5,7 +5,12 @@ const saltRounds = 16;
 const validation = require("../validation.js");
 const { ObjectId } = require("mongodb");
 
-
+async function getUserById(id) {
+    const userCollection = await users();
+    const user = await userCollection.findOne({_id: id});
+    if (!user) throw 'User not found';
+    return user;
+} 
 
 async function createUser(username, password) {
     //Ensures no errors in email/username/password entry. 
@@ -31,6 +36,7 @@ async function createUser(username, password) {
         "password": hashPassword,
         "cash": 10000,
         "efficiency": 0,
+        "posts":  [],
         "stocks": []
     }
 
@@ -76,7 +82,35 @@ async function checkUser(username, password) {
 
 }
 
+async function addPostToUser(userId, postId, postTitle) {
+    let currentUser = await this.getUserById(userId);
+    const userCollection = await users();
+    const updateInfo = await userCollection.updateOne(
+      { _id: userId },
+      { $addToSet: {posts: {id: postId, title: postTitle} }}
+    );
+
+    if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw 'Update failed';
+    return await this.getUserById(userId);
+}
+
+async function removePostFromUser(userId, postId) {
+    let currentUser = await this.getUserById(userId);
+    console.log(currentUser);
+
+    const userCollection = await users();
+    const updateInfo = await userCollection.updateOne(
+      { _id: userId },
+      { $pull: { posts: {id: postId} } }
+    );
+    if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw 'Update failed';
+    return await this.getUserById(userId);
+}
+
 module.exports = {
+    getUserById,
     createUser,
-    checkUser
+    checkUser,
+    addPostToUser,
+    removePostFromUser
 };
