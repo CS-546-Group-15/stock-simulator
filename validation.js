@@ -31,6 +31,9 @@ function checkPassword(password) {
     }
 }
 
+function checkEmail(email) {
+    //implement
+}
 
 // createPost(userID, title, info)
 // updatePost(postID, userID, title, info)
@@ -39,5 +42,6 @@ function checkPassword(password) {
 
 module.exports = {
     checkUsername,
-    checkPassword
+    checkPassword,
+    checkEmail
 };
