@@ -15,6 +15,8 @@ async function getStockBySymbol(symbol) {
   //get token from environment
   const token = environment.token;
 
+  //data provided by IEX Cloud
+  //https://iexcloud.io/
   const url = `https://cloud.iexapis.com/stable/tops?token=${token}&symbols=${symbol}`;
   const { data } = await axios.get(url);
   return data;
