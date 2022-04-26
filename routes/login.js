@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
     if(req.session.user) {
         res.redirect('/');
     } else {
-        res.render('display/login', {});
+        res.render('display/login', {authenticated: false});
     }
 });
 
@@ -22,7 +22,7 @@ router.post('/', async (req, res) => {
         validation.checkUsername(username);
         validation.checkPassword(password);
     } catch(e) {
-        res.status(400).render('display/login', {error: e});
+        res.status(400).render('display/login', {error: e, authenticated: false});
         return;
     }
 
@@ -46,7 +46,7 @@ router.post('/', async (req, res) => {
             return;
         }
     } catch(e) {
-        res.status(400).render('display/login', {error: e});
+        res.status(400).render('display/login', {error: e, authenticated: false});
         return;
     }
 });

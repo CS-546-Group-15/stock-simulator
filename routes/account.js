@@ -3,11 +3,12 @@ const router = express.Router();
 
 //show profile page
 router.get('/', async (req, res) => {
-    if(!req.session.user) {
-        res.redirect('/login');
+    if(req.session.user) {
+        res.render('display/account', {username: req.session.user.username, authenticated: true});
     } else {
-        res.render('display/account', {username: req.session.user.username});
+        res.redirect('/login');
     }
+    return;
 });
 
 module.exports = router;

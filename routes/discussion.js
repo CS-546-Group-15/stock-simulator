@@ -3,7 +3,11 @@ const router = express.Router();
 
 //show discussion page
 router.get('/', async (req, res) => {
-    res.render('display/discussion');
+    if(req.session.user) {
+        res.render('display/discussion', {authenticated: true});
+    } else {
+        res.render('display/discussion', {authenticated: false});
+    }
     return;
 });
 
