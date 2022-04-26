@@ -25,6 +25,7 @@ async function main() {
         //let failUser1 = await users.createUser("anarvaez12@verizon.net", "AndrewNar", "sameUsernameOhNO!!!");
         //let failUser2 = await users.createUser("anarvaez@stevens.edu", "diffUsernameSameEmail", "imNotCreative");
 
+        //in the name of test
         
         console.log("Done Seeding!");
        
