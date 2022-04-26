@@ -5,16 +5,19 @@ const userData = data.users;
 const postData = data.posts;
 const eCheck = require("../validation");
 
+//  Landing page, will display a login form
 router.get('/', async (req, res) => {
   if(req.session.user) res.redirect('/private');
   else res.render('display/login', {});
 });
 
+//  Redirect user to signup page
 router.get('/signup', async (req, res) => {
   if(req.session.user) res.redirect('/private');
   else res.render('display/signup', {});
 });
 
+//  Allow a user to signup
 router.post('/signup', async (req, res) => {
   // get req.body username and password
 	let { username, password, email } = req.body;
@@ -68,6 +71,7 @@ router.post('/signup', async (req, res) => {
     return;
 });
 
+//  Allow a user to login
 router.post('/login', async (req, res) => {
   // get req.body username and password
 	let { username, password } = req.body;
@@ -125,12 +129,14 @@ router.post('/login', async (req, res) => {
   }
 });
 
+//  Will be the user's home page. ALlow them to interact with their portfolio and change account information
 router.get('/private', async (req, res) => {
   let username = req.session.user.username;
   res.render('display/account', {username: username});
   return;
 });
 
+//  Logs the user out of their session
 router.get('/logout', async (req, res) => {
   req.session.destroy();
   // res.send('Logged out');
