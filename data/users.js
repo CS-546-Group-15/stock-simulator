@@ -96,8 +96,6 @@ module.exports = {
     getUserById,
     createUser,
     checkUser,
-    addPostToUser,
-    removePostFromUser,
     getUser,
     checkUser,
     getAllUsers
