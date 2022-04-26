@@ -6,4 +6,4 @@ Scratch
 package-lock.json
 
 # ignore environment (to avoid making token public)
-/environment.js
+environment.js
