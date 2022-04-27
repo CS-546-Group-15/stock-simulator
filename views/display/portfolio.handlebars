@@ -1,24 +1,28 @@
-{{!-- This will hold our stock portfolio for each respective user. --}}
+{{! This will hold our stock portfolio for each respective user. }}
 <article>
-<h1 class="mb-3">My Portfolio</h1>
-{{!--
+  <h1 class="mb-3">My Portfolio</h1>
+  {{!--
   <p>This will be the user's portfolio page</p>
-  <h2>Welcome {{user.username}}!</h2> --}}  
-<p>Total Account Assets: ${{userVal}}</p>
-<p>Liquid Assets: ${{user.cash}}</p>
-
-<table id="leaderboard">
-  <tr>
-    <th>Ticker</th>
-    <th>Shares</th>
-    <th>Investment</th>
-  </tr>
-  {{#each user.stocks}}
-    <tr>
+  <h2>Welcome {{user.username}}!</h2> --}}
+  <p>Total Account Assets: ${{userVal}}</p>
+  <p>Liquid Assets: ${{user.cash}}</p>
+  <h2>Position Overview</h2>
+  <table class="table table-hover table-striped table-bordered">
+    <thead class="thead-dark table-secondary">
+      <tr>
+        <th>Ticker</th>
+        <th>Shares</th>
+        <th>Investment</th>
+      </tr>
+    </thead>
+    {{#each user.stocks}}
+      <tr>
         <td>{{this.symbol}}</td>
         <td>{{this.num_shares}}</td>
         <td>${{this.total_cost}}</td>
-    </tr>
-  {{/each}}
-</table>
+      </tr>
+    {{/each}}
+  </table>
+  <h2>Buy/Sell Stocks</h2>
+
 </article>
