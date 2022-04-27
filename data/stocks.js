@@ -3,8 +3,8 @@ const environment = require('../environment');
 const { ObjectId } = require("mongodb");
 const axios = require('axios').default;
 const mongoCollections = require('../config/mongoCollections');
-const users = mongoCollections.users;
-const userData = require('users.js');
+// const users = mongoCollections.users; DON'T NEED THIS FOR NOW
+const userData = require('./users.js');
 
 
 async function getStockBySymbol(symbol) {
@@ -58,9 +58,7 @@ async function buyStock(userId, symbol, shares) { // TODO: STILL NEED TO DEAL WI
     let date_time = new Date().toUTCString(); // date and time of purchase
 
     // get purchasing user
-    const userCollection = await users();
-    const user = await userCollection.findOne({ _id: ObjectId(userId) });
-    if (!user) throw `User doesn't exist with id ${userId}`;
+    const user = await userData.getUserById(userId);
 
     // get stock from API call
     stockApiData = await getStockBySymbol(symbol);
@@ -75,8 +73,7 @@ async function buyStock(userId, symbol, shares) { // TODO: STILL NEED TO DEAL WI
     let totalCost = price_purchased * shares; // calculate for total cost
 
     //checks if user has capital to buy the stock!
-    if(totalCost > user.cash)
-        throw `Cannot buy ${shares} shares of '${symbol}' worth $${totalCost.toFixed(2)}. You only have $${user.cash.toFixed(2)}`
+    if(totalCost > user.cash) throw `Cannot buy ${shares} shares of '${symbol}' worth $${totalCost.toFixed(2)}. You only have $${user.cash.toFixed(2)}`;
 
     // check if user owns the stock being purchased
     owned = user.stocks.filter(stock => stock.symbol === symbol);
@@ -140,9 +137,7 @@ async function sellStock(userId, symbol, shares) { // TODO: STILL NEED TO DEAL W
     let date_time = new Date().toUTCString(); // date and time of purchase
 
     // get selling user
-    const userCollection = await users();
-    const user = await userCollection.findOne({ _id: ObjectId(userId) });
-    if (!user) throw `User doesn't exist with id ${userId}`;
+    const user = await userData.getUserById(userId);
 
     // get stock from API call
     stockApiData = await getStockBySymbol(symbol);
@@ -177,7 +172,7 @@ async function sellStock(userId, symbol, shares) { // TODO: STILL NEED TO DEAL W
         } else if ((stock.num_shares - shares) < 0){
             let plural = (stock.num_shares==1) ? '' : 's';
             let pluralShares = (shares == 1) ? '' : 's';
-            throw `Cannot sell ${shares} share${pluralShares} of ${symbol}. You only have ${stock.num_shares} share${plural}!`
+            throw `Cannot sell ${shares} share${pluralShares} of ${symbol}. You only have ${stock.num_shares} share${plural}!`;
         }
 
         avgPrice = ((stock.weighted_average_price * stock.num_shares) - (totalCost)) / (stock.num_shares - shares); // calculate weighted average price from previous average and new price
@@ -213,9 +208,7 @@ async function getAccVal(userId) {
     userId = userId.trim();
 
     // get user from collection
-    const userCollection = await users();
-    const user = await userCollection.findOne({ _id: ObjectId(userId) });
-    if (!user) throw `User doesn't exist with id ${userId}`;
+    const user =  await userData.getUserById(userId);
 
     let accVal = user.cash; // set initial account balance to cash balance
     for(stock of user.stocks) {
@@ -235,7 +228,7 @@ async function getAllAccVals() {
     let accVals = []; // accumulator list
 
     for(user of users) { // loop through all users
-        let accVal = getAccVal(user._id.toString()); // calculate user account value
+        let accVal = await getAccVal(user._id.toString()); // calculate user account value
         accVals.push({ username: user.username, acc_value: accVal }); // append to list
     }
 

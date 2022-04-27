@@ -3,12 +3,20 @@ const users = mongoCollections.users;
 const bcrypt = require('bcrypt');
 const saltRounds = 16;
 const validation = require("../validation.js");
-// const { ObjectId } = require("mongodb"); PROBABLY DON'T NEED THIS
+const { ObjectId } = require("mongodb");
 
 async function getUserById(id) {
+    // validate inputs
+    validation.checkId(id);
+
+    // format inputs
+    id = id.trim();
+
+    // get user from collection
     const userCollection = await users();
-    const user = await userCollection.findOne({_id: id});
-    if (!user) throw 'User not found';
+    const user = await userCollection.findOne({ _id: ObjectId(id) });
+    if (!user) throw `No user found with id ${id}`;
+
     return user;
 } 
 
@@ -58,7 +66,7 @@ async function getUser(username) {
 
     // get user
     const user = await userCollection.findOne({ username: username });
-    if(user === null) throw `no user found with username ${username}`;
+    if(user === null) throw `No user found with username ${username}`;
     return user;
 }
 
