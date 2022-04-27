@@ -1,24 +1,26 @@
-<h1 class="mb-3">Login</h1>
-<p class="error">{{error}}</p>
-<p>congrats! You've made it to the login page... let's talk soon on how we're gonna set up website.</p>
 <article>
-    <form id="login-form" action="/login" method="POST" class="new-login-info">
-        <div class="form-group">
-            <label for="username">Username:</label>
-                <input  id="username" 
-                        type="text" 
-                        name="username" 
-                        placeholder="WolfWallStreet" 
-                        class="form-control"/>
-            <label for="password">Password:</label>
-                <input  id="password" 
-                        type="password" 
-                        name="password" 
-                        placeholder="St0cks1ml3g3nd!" 
-                        class="form-control"/>
-            <button class="btn btn-primary" type="submit">Submit</button>
-        </div>
-    </form>
+    <div class="container-lg">
+        <h1 class="mb-3">Login</h1>
+        <p class="error">{{error}}</p>
+        <form id="login-form" action="/login" method="POST" class="new-login-info">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                    <input  id="username" 
+                            type="text" 
+                            name="username" 
+                            placeholder="WolfWallStreet" 
+                            class="form-control"/>
+                <label for="password">Password:</label>
+                    <input  id="password" 
+                            type="password" 
+                            name="password" 
+                            placeholder="St0cks1ml3g3nd!" 
+                            class="form-control"/>
+                <button class="btn btn-primary" type="submit">Submit</button>
+            </div>
+        </form>
+        <a class="signuplink" href="/signup">Need to register? Click here to sign-up</a>
+    </div>
 </article>
-<a class="signuplink" href="/signup">Need to register? Click here to sign-up</a>
+
 
