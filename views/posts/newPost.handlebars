@@ -1,22 +1,22 @@
 <p>{{error}}</p>
 <article class="new-post">
   <h1>Add to the discussion.</h1>
-  <form action="/posts" method="POST" class="new-post-form">
+  <form action="/discussion" method="POST" class="new-post-form">
     <div class="form-group">
-      <label for="input-title">
+      <label for="title">
         Title
-        <input type="text" id="input-title" placeholder="Twitter gets Musk'd" value="{{post.title}}" class="full-width-input"/>
+        <input type="text" id="title" name= 'title' placeholder="Twitter gets Musk'd" value="{{post.title}}" class="full-width-input"/>
       </label>
     </div>
     <div class="form-group">
-      <label for="input-tags">
+      <label for="tags">
       Tags
-      <input type="text" id="input-tags" data-role="tagsinput"></input>
+      <input type="text" id="tags" name='tags' data-role="tagsinput"></input>
     </label></div>
     <div class="form-group">
-      <label for="post-body">
+      <label for="info">
       Post Body
-      <textarea id="post-body" name="body" rows="4" placeholder="Content" class="full-width-input">{{post.body}}</textarea>
+      <textarea id="info" name="info" rows="4" placeholder="Content" class="full-width-input">{{post.body}}</textarea>
     </label>
     </div>
     {{!-- <div class="form-group"></div> --}}

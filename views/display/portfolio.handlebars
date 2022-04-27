@@ -1,6 +1,6 @@
 {{! This will hold our stock portfolio for each respective user. }}
 <article>
-  <h1 class="mb-3">My Portfolio</h1>
+  <h1 class="mb-5">My Portfolio</h1>
   {{!--
   <p>This will be the user's portfolio page</p>
   <h2>Welcome {{user.username}}!</h2> --}}
@@ -34,6 +34,92 @@
       </tr>
     {{/each}}
   </table>
-  <h2>Buy/Sell Stocks</h2>
+  <h5>Buy/Sell Stocks</h5>
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Buy Stocks</h5>
+          <form>
+            <div class="form-group row">
+              <label
+                for="inputBuySymbol"
+                class="col-sm-5 col-form-label"
+              >Stock Symbol</label>
+              <div class="col-sm-10">
+                <input
+                  type="string"
+                  class="form-control"
+                  id="inputBuySymbol"
+                  placeholder="AAPL"
+                />
+              </div>
+            </div>
+            <div class="form-group row">
+              <label
+                for="inputBuyShares"
+                class="col-sm-5 col-form-label"
+              >Shares</label>
+              <div class="col-sm-10">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="inputBuyShares"
+                  placeholder="55"
+                />
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-sm-10">
+                <button type="submit" class="btn btn-primary">Buy</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Sell Stocks</h5>
+          <form>
+            <div class="form-group row">
+              <label
+                for="inputBuySymbol"
+                class="col-sm-5 col-form-label"
+              >Stock Symbol</label>
+              <div class="col-sm-10">
+                <input
+                  type="string"
+                  class="form-control"
+                  id="inputBuySymbol"
+                  placeholder="AAPL"
+                />
+              </div>
+            </div>
+            <div class="form-group row">
+              <label
+                for="inputBuyShares"
+                class="col-sm-5 col-form-label"
+              >Shares</label>
+              <div class="col-sm-10">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="inputBuyShares"
+                  placeholder="55"
+                />
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-sm-10">
+                <button type="submit" class="btn btn-primary">Sell</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </article>

@@ -1,9 +1,12 @@
-{{!-- This page will hold the discussions that users have posted, it will also allow you to post your own
-discussions if you choose. --}}
-<nav>
-    <ul>
-        <li><a href="account.handlebars">Account</a></li>
-        <li><a href="posts.handlebars">Discussion</a></li>
-    </ul>
-</nav>
+{{!-- This page will hold the relevant posts that match the searched tags --}}
 <p>{{error}}</p>
+<section>
+  <h1>Posts</h1>
+  {{#each posts}}  
+    <article class="post">
+      <h2><a href="/posts/{{_id}}">{{title}}</a></h2>
+      <p>{{body}}</p>
+    </article>
+  {{/each}}
+</section>
+

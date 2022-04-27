@@ -42,7 +42,7 @@ router.post('/', async (req, res) => {
                 username: username,
                 userId: userId._id.toString()
             };
-            res.redirect('/');
+            res.redirect('/portfolio');
             return;
         }
     } catch(e) {

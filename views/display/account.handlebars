@@ -1,5 +1,32 @@
-{{!-- Page to see your stock portfolio and other personal account information --}}
-<h1 class="mb-3">Welcome {{username}}!</h1>
-<p>Have button here to update profile.</p>
-<p>View your portfolio: --insert link here to portfolio--</p>
-<a class="logoutLink" href="/logout">Logout</a>
+<div class="container mt-5 card shadow">
+    <div class="mx-3 my-3">
+        <h1 class="mb-3">Account</h1>
+        <p>Currently logged in as: {{username}}</p>
+
+        <a class="logoutLink" data-bs-toggle="modal" data-bs-target="#logoutModal">Log out</a>
+
+        <div class="modal" id="logoutModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Log out</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        Are you sure you want to log out?
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <a class="btn btn-primary"  href="/logout">Log out</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
