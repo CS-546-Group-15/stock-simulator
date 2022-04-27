@@ -1,20 +1,23 @@
-{{!-- <article>
-    <h2>Login Route</h2>
-    <p>congrats! You've made it to the login page... let's talk soon on how we're gonna set up website.</p>
-</article> --}}
-{{!-- This will be our login page, allowing users to access and log into their accounts --}}
 <h1>Login</h1>
 <p class="error">{{error}}</p>
 <p>congrats! You've made it to the login page... let's talk soon on how we're gonna set up website.</p>
 <article>
     <form id="login-form" action="/login" method="POST" class="new-login-info">
-        <label for="username">Username:
-            <input id="username" type="text" name="username" placeholder="WolfWallStreet" class="username-input"/>
-        </label>
-        <label for="password">Password:
-            <input id="password" type="password" name="password" placeholder="St0cks1ml3g3nd!" class="password-input"/>
-        </label>
-        <button class="button" type="submit">Submit</button>
+        <div class="form-group">
+            <label for="username">Username:</label>
+                <input  id="username" 
+                        type="text" 
+                        name="username" 
+                        placeholder="WolfWallStreet" 
+                        class="form-control"/>
+            <label for="password">Password:</label>
+                <input  id="password" 
+                        type="password" 
+                        name="password" 
+                        placeholder="St0cks1ml3g3nd!" 
+                        class="form-control"/>
+            <button class="btn btn-primary" type="submit">Submit</button>
+        </div>
     </form>
 </article>
 <a class="signuplink" href="/signup">Need to register? Click here to sign-up</a>

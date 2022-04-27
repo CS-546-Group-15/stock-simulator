@@ -5,6 +5,10 @@
   --main_contrast_color: #2B6ABC;
 }
 
+.form-group {
+  margin: 2%;
+}
+
 /*
     NAVBAR FORMATTING
     credit to https://www.w3schools.com/

@@ -2,16 +2,21 @@
 <p class="error">{{error}}</p>
 <article>
     <form id="signup-form" action="/signup" method="POST" class="new-signup-info">
-        <label for="username">Username:
-            <input id="username" type="text" name="username" placeholder="WolfWallStreet" class="username-input"/>
-        </label>
-        <label for="password">Password:
-            <input id="password" type="password" name="password" placeholder="St0cks1ml3g3nd!" class="password-input"/>
-        </label>
-        {{!-- <label for="email">Email:
-            <input id="email" type="text" name="email" placeholder="dogecoin@superstock.com" class="email-input"/>
-        </label> --}}
-        <button class="button" type="submit">Submit</button>
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input  id="username" 
+                    type="text" 
+                    name="username" 
+                    placeholder="WolfWallStreet" 
+                    class="form-control"/>
+            <label for="password">Password:</label>
+            <input  id="password" 
+                    type="password" 
+                    name="password" 
+                    placeholder="St0cks1ml3g3nd!" 
+                    class="form-control"/>
+            <button class="btn btn-primary" type="submit">Submit</button>
+        </div>
     </form>
 </article>
 <a class="loginlink" href="/">Already have an account? Click here to log-in</a>
