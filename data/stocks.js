@@ -43,6 +43,22 @@ async function getStockBySymbol(symbol) {
   */
 }
 
+async function getQuote(symbol) {
+    // validate inputs
+    validation.checkSymbol(symbol);
+
+    // format inputs
+    symbol = symbol.trim().toLowerCase();
+
+    const token = environment.token;
+
+    //data provided by IEX Cloud
+    //https://iexcloud.io/
+    const url = `https://cloud.iexapis.com/stable/stock/${symbol}/quote?token=${token}`;
+    const { data } = await axios.get(url);
+    return data;
+}
+
 
 // called when a user wants to buy a stock
 async function buyStock(userId, symbol, shares) { // TODO: STILL NEED TO DEAL WITH BOUNDS i.e. user doesn't have enough money
@@ -50,7 +66,9 @@ async function buyStock(userId, symbol, shares) { // TODO: STILL NEED TO DEAL WI
     validation.checkId(userId);
     validation.checkSymbol(symbol);
     validation.checkShares(shares);
-    let userCollection = await users();
+    
+    // get user collection for updating
+    const userCollection = await users();
 
     // format inputs
     userId = userId.trim();
@@ -130,7 +148,9 @@ async function sellStock(userId, symbol, shares) { // TODO: STILL NEED TO DEAL W
     validation.checkId(userId);
     validation.checkSymbol(symbol);
     validation.checkShares(shares);
-    let userCollection = await users();
+    
+    // get user collection for updating
+    const userCollection = await users();
 
     // format inputs
     userId = userId.trim();
@@ -167,7 +187,10 @@ async function sellStock(userId, symbol, shares) { // TODO: STILL NEED TO DEAL W
                     _id: ObjectId(userId),
                     'stocks.symbol': symbol
                 },
-                { $pull: { stocks: { symbol: symbol } } } // remove subdoc
+                {
+                    $inc: { cash:totalCost },
+                    $pull: { stocks: { symbol: symbol } } 
+                } // remove subdoc
             );
             if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw "Could not sell stock";
             return { sold: true }; // confirm sale
@@ -200,33 +223,6 @@ async function sellStock(userId, symbol, shares) { // TODO: STILL NEED TO DEAL W
     }
     // might change this return type later, for now it's just a confirmation
     return { sold: true };
-}
-
-//To be used in account.portfolio to get curr price of stock
-async function getCurrStockPrice(userId){
-    // validate inputs
-    validation.checkId(userId);
-    
-    // format inputs
-    userId = userId.trim();
-
-    // get user from collection
-    const user =  await userData.getUserById(userId);
-    let stockHelper = [];
-    for(stock of user.stocks){
-        let stockApiData = await getStockBySymbol(stock.symbol);
-        if(stockApiData.length < 1) throw `Could not find stock with symbol ${symbol}`;
-        let stockData = stockApiData[0];
-        stockHelper.push({
-            ticker: stock.symbol,
-            shares: stock.num_shares,
-            bought_at: stock.weighted_average_price.toFixed(2),
-            curr_price: stockData.lastSalePrice.toFixed(2),
-            percent_change: (((stockData.lastSalePrice/stock.weighted_average_price) * 100).toFixed(2) - 100).toFixed(2)
-        })
-    }
-    return stockHelper;
-
 }
 
 async function getAccVal(userId) {
@@ -264,11 +260,58 @@ async function getAllAccVals() {
     return accVals.sort((x,y) => (x.acc_value > y.acc_value) ? -1 : ((y.acc_value > x.acc_value) ? 1 : 0)); // return list sorted in decending order of account values
 }
 
+async function getUserStocks(userId) {
+    // validate inputs
+    validation.checkId(userId);
+
+    // format inputs
+    userId = userId.trim();
+
+    // get user from collection
+    const user = await userData.getUserById(userId);
+
+    // return stocks field of user
+    return user.stocks;
+}
+
+async function buildPortfolioTable(userId) {
+    // validate inputs
+    validation.checkId(userId);
+
+    // format inputs
+    userId = userId.trim();
+
+    // get list of stock user owns
+    let userStocks = await getUserStocks(userId);
+
+    // accumulator for portfolio view
+    let portfolio = [];
+
+    for(stock of userStocks) { // build portfolio data
+        let quote = await getQuote(stock.symbol);
+        portfolio.push({
+            symbol: stock.symbol, // stock ticker
+            last_price: quote.latestPrice, // latest stock price
+            gain_loss_$: (quote.change * stock.num_shares).toFixed(2), // today's gain loss
+            total_gain_loss_$: ((quote.latestPrice * stock.num_shares) - stock.total_cost).toFixed(2), // total gain loss
+            w_avg_price: stock.weighted_average_price.toFixed(2), // average price of purchases
+            curr_value: (quote.latestPrice * stock.num_shares).toFixed(2), // current value of holdings
+            quant: stock.num_shares, // number of shares owned
+            cost_basis: stock.total_cost.toFixed(2) // original purchase value
+        });
+    }
+
+    // return data needed to build portfolio page
+    return portfolio;
+}
+
 module.exports = {
     getStockBySymbol,  
     buyStock,
     sellStock,
-    getCurrStockPrice,
     getAccVal,
-    getAllAccVals
+    getAllAccVals,
+    getUserStocks,
+    getQuote,
+    buildPortfolioTable
 }

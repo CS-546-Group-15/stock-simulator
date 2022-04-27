@@ -4,27 +4,33 @@
   {{!--
   <p>This will be the user's portfolio page</p>
   <h2>Welcome {{user.username}}!</h2> --}}
-  <p>Total Account Assets: ${{userVal}}</p>
-  <p>Liquid Assets: ${{user.cash}}</p>
+  <p>Account Value: ${{userVal}}</p>
+  <p>Cash Available to Trade: ${{user.cash}}</p>
   <h2>Position Overview</h2>
   <table class="table table-hover table-striped table-bordered">
     <thead class="thead-dark table-secondary">
       <tr>
-        <th>Ticker</th>
-        <th>Shares</th>
-        <th>Bought At</th>
-        <th>Current Price</th>
-        <th>% Change</th>
+        <th>Symbol</th>
+        <th>Last Price</th>
+        <th>Today's Gain/Loss</th>
+        <th>Total Gain/Loss</th>
+        <th>Weighted Cost Per Share</th>
+        <th>Current Value</th>
+        <th>Quantity</th>
+        <th>Cost Basis</th>
         
       </tr>
     </thead>
     {{#each stockList}}
       <tr>
-        <td>{{this.ticker}}</td>
-        <td>{{this.shares}}</td>
-        <td>${{this.bought_at}}</td>
-        <td>${{this.curr_price}}</td>
-        <td>{{this.percent_change}}%</td>
+        <td>{{this.symbol}}</td>
+        <td>${{this.last_price}}</td>
+        <td>${{this.gain_loss_$}}</td>
+        <td>${{this.total_gain_loss_$}}</td>
+        <td>${{this.w_avg_price}}</td>
+        <td>${{this.curr_value}}</td>
+        <td>{{this.quant}}</td>
+        <td>${{this.cost_basis}}</td>
       </tr>
     {{/each}}
   </table>
