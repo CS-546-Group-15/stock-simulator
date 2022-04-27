@@ -62,6 +62,8 @@ async function getUser(username) {
     return user;
 }
 
+// STILL NEED UPDATE USERS. WILL IMPEMPLENT ONCE WE KNOW WHAT WILL BE CHANGABLE
+
 async function checkUser(username, password) {
     // validate inputs
     validation.checkUsername(username);
@@ -89,7 +91,8 @@ async function getAllUsers() {
     // get list of users
     const userList = await userCollection.find({}).toArray();
     if (!userList) throw 'Could not get all users';
-    return userList.sort((x,y) => (x.cash > y.cash) ? -1 : ((y.cash > x.cash) ? 1 : 0)); // return user list sorted in decending order
+    return userList; // reverted back to this for now
+    // return userList.sort((x,y) => (x.cash > y.cash) ? -1 : ((y.cash > x.cash) ? 1 : 0)); // return user list sorted in decending order by cash
 }
 
 module.exports = {

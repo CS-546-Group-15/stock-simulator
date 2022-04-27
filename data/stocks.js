@@ -4,6 +4,7 @@ const { ObjectId } = require("mongodb");
 const axios = require('axios').default;
 const mongoCollections = require('../config/mongoCollections');
 const users = mongoCollections.users;
+const userData = require('users.js');
 
 
 async function getStockBySymbol(symbol) {
@@ -134,7 +135,7 @@ async function sellStock(userId, symbol, shares) { // TODO: STILL NEED TO DEAL W
 
     let date_time = new Date().toUTCString(); // date and time of purchase
 
-    // get purchasing user
+    // get selling user
     const userCollection = await users();
     const user = await userCollection.findOne({ _id: ObjectId(userId) });
     if (!user) throw `User doesn't exist with id ${userId}`;
@@ -196,8 +197,47 @@ async function sellStock(userId, symbol, shares) { // TODO: STILL NEED TO DEAL W
     return { sold: true };
 }
 
+async function getAccVal(userId) {
+    // validate inputs
+    validation.checkId(userId);
+    
+    // format inputs
+    userId = userId.trim();
+
+    // get user from collection
+    const userCollection = await users();
+    const user = await userCollection.findOne({ _id: ObjectId(userId) });
+    if (!user) throw `User doesn't exist with id ${userId}`;
+
+    let accVal = user.cash; // set initial account balance to cash balance
+    for(stock of user.stocks) {
+        stockApiData = await getStockBySymbol(stock.symbol); // api call for current stock info
+        if(stockApiData.length < 1) throw `Could not find stock with symbol ${symbol}`; // check if symbol was found
+        stockData = stockApiData[0]; // get stock object
+
+        // increment account value by current value of each stock
+        accVal += stockData.lastSalePrice * stock.num_shares;
+    }
+
+    return accVal; // return total account value
+}
+
+async function getAllAccVals() {
+    const users = await userData.getAllUsers(); // get all users returned as a list
+    let accVals = []; // accumulator list
+
+    for(user of users) { // loop through all users
+        let accVal = getAccVal(user._id.toString()); // calculate user account value
+        accVals.push({ username: user.username, acc_value: accVal }); // append to list
+    }
+
+    return accVals.sort((x,y) => (x.acc_value > y.acc_value) ? -1 : ((y.acc_value > x.acc_value) ? 1 : 0)); // return list sorted in decending order of account values
+}
+
 module.exports = {
     getStockBySymbol,  
     buyStock,
-    sellStock
+    sellStock,
+    getAccVal,
+    getAllAccVals
 }
