@@ -7,7 +7,7 @@ const discussionRoutes = require('./discussion');
 const portfolioRoutes = require('./portfolio');
 
 const data = require('../data');
-const userData = data.users;
+const userData = data.stocks;
 
 const constructorMethod = (app) => {
   //  use all routes
@@ -23,10 +23,10 @@ const constructorMethod = (app) => {
   app.get('/', async (req, res) => {
       if(req.session.user) {
         //can have it render with welcome name or whatever here
-        const users = await userData.getAllUsers();
+        const users = await userData.getAllAccVals();
         res.render('display/landing', {users: users, authenticated: true});
       } else {
-        const users = await userData.getAllUsers();
+        const users = await userData.getAllAccVals();
         res.render('display/landing', {users: users, authenticated: false});
       }
   });
