@@ -14,6 +14,12 @@ app.use(express.urlencoded({ extended: true }));
 app.engine('handlebars', exphbs.engine({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 
+const Handlebars = require('handlebars');
+Handlebars.registerHelper("counter", function (index){
+  return index + 1;
+});
+
+
 app.use(
   session({
     name: 'AuthCookie',
