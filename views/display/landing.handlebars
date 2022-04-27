@@ -1,20 +1,22 @@
 {{!-- Main landing page for whoever first comes to our site. Prompts with login or signup. --}}
 <h1 class="mb-3">Welcome to Stock Simulator!</h1>
-<p>Little blurb ab us</p>
+<p>The stock trading simulator that will rock your world.</p>
 
-<p>Leaderboards will go here</p>
-
-<table id="leaderboard">
-  <tr>
-    <th>Rank</th>
-    <th>Name</th>
-    <th>Money</th>
-  </tr>
-  {{#each users}}
+<table class="table table-hover table-striped table-bordered">
+  <thead class="thead-dark table-secondary">
     <tr>
-        <td>#{{counter @index}}</td>
+      <th scope="col">Position</th>
+      <th scope="col">Username</th>
+      <th scope="col">Account Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each users}}
+      <tr>
+        <th scope="row">#{{counter @index}}</th>
         <td>{{this.username}}</td>
         <td>{{this.acc_value}}</td>
-    </tr>
-  {{/each}}
+      </tr>
+    {{/each}}
+  </tbody>
 </table>
