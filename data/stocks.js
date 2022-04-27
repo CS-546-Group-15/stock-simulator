@@ -3,7 +3,7 @@ const environment = require('../environment');
 const { ObjectId } = require("mongodb");
 const axios = require('axios').default;
 const mongoCollections = require('../config/mongoCollections');
-// const users = mongoCollections.users; DON'T NEED THIS FOR NOW
+const users = mongoCollections.users;
 const userData = require('./users.js');
 
 
@@ -50,6 +50,7 @@ async function buyStock(userId, symbol, shares) { // TODO: STILL NEED TO DEAL WI
     validation.checkId(userId);
     validation.checkSymbol(symbol);
     validation.checkShares(shares);
+    let userCollection = await users();
 
     // format inputs
     userId = userId.trim();
@@ -129,6 +130,7 @@ async function sellStock(userId, symbol, shares) { // TODO: STILL NEED TO DEAL W
     validation.checkId(userId);
     validation.checkSymbol(symbol);
     validation.checkShares(shares);
+    let userCollection = await users();
 
     // format inputs
     userId = userId.trim();
