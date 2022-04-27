@@ -6,13 +6,13 @@
 
 <table id="leaderboard">
   <tr>
-    <th>Position</th>
+    <th>Rank</th>
     <th>Name</th>
     <th>Money</th>
   </tr>
   {{#each users}}
     <tr>
-        <td>pos</td>
+        <td>#{{counter @index}}</td>
         <td>{{this.username}}</td>
         <td>{{this.cash}}</td>
     </tr>
