@@ -3,7 +3,7 @@ const environment = require('../environment');
 const { ObjectId } = require("mongodb");
 const axios = require('axios').default;
 const mongoCollections = require('../config/mongoCollections');
-// const users = mongoCollections.users; DON'T NEED THIS FOR NOW
+const users = mongoCollections.users;
 const userData = require('./users.js');
 
 
@@ -50,6 +50,7 @@ async function buyStock(userId, symbol, shares) { // TODO: STILL NEED TO DEAL WI
     validation.checkId(userId);
     validation.checkSymbol(symbol);
     validation.checkShares(shares);
+    let userCollection = await users();
 
     // format inputs
     userId = userId.trim();
@@ -129,6 +130,7 @@ async function sellStock(userId, symbol, shares) { // TODO: STILL NEED TO DEAL W
     validation.checkId(userId);
     validation.checkSymbol(symbol);
     validation.checkShares(shares);
+    let userCollection = await users();
 
     // format inputs
     userId = userId.trim();
@@ -200,6 +202,33 @@ async function sellStock(userId, symbol, shares) { // TODO: STILL NEED TO DEAL W
     return { sold: true };
 }
 
+//To be used in account.portfolio to get curr price of stock
+async function getCurrStockPrice(userId){
+    // validate inputs
+    validation.checkId(userId);
+    
+    // format inputs
+    userId = userId.trim();
+
+    // get user from collection
+    const user =  await userData.getUserById(userId);
+    let stockHelper = [];
+    for(stock of user.stocks){
+        let stockApiData = await getStockBySymbol(stock.symbol);
+        if(stockApiData.length < 1) throw `Could not find stock with symbol ${symbol}`;
+        let stockData = stockApiData[0];
+        stockHelper.push({
+            ticker: stock.symbol,
+            shares: stock.num_shares,
+            bought_at: stock.weighted_average_price.toFixed(2),
+            curr_price: stockData.lastSalePrice.toFixed(2),
+            percent_change: (((stockData.lastSalePrice/stock.weighted_average_price) * 100).toFixed(2) - 100).toFixed(2)
+        })
+    }
+    return stockHelper;
+
+}
+
 async function getAccVal(userId) {
     // validate inputs
     validation.checkId(userId);
@@ -239,6 +268,7 @@ module.exports = {
     getStockBySymbol,  
     buyStock,
     sellStock,
+    getCurrStockPrice,
     getAccVal,
     getAllAccVals
 }

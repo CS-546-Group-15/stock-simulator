@@ -2,13 +2,16 @@ const express = require('express');
 const router = express.Router();
 const data = require('../data/');
 const users = data.users;
-const { ObjectId } = require("mongodb");
+const stocks = data.stocks;
 
 //show discussion page
 router.get('/', async (req, res) => {
     if(req.session.user) {
+        let userId = req.session.user.userId;
         let user = await users.getUser(req.session.user.username);
-        res.render('display/portfolio', {user: user, authenticated: true});
+        const userVal = await stocks.getAccVal(userId.toString());
+        let userStock = await stocks.getCurrStockPrice(userId.toString());
+        res.render('display/portfolio', {stockList: userStock, user: user, userVal: userVal, authenticated: true});
     } else {
         res.redirect('/login');
     }
