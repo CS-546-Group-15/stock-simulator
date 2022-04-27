@@ -1,4 +1,13 @@
-<h1 class="mb-3">Discussion</h1>
-
-<p>This will be the discussion page</p>
+{{!-- This page will show all the posts in the entire discussion database --}}
+<h1 class="mb-3">Discussion Page</h1>
+<p>{{error}}</p>
+<section>
+  <h2>Posts</h2>
+  {{#each posts}}  
+    <article class="post">
+      <h2><a href="/posts/{{_id}}">{{title}}</a></h2>
+      <p>{{body}}</p>
+    </article>
+  {{/each}}
+</section>
 <a class="new-post" href="discussion/newPost">Make a new post here!</a>
