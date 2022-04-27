@@ -73,6 +73,10 @@ async function buyStock(userId, symbol, shares) { // TODO: STILL NEED TO DEAL WI
     let price_purchased = stockData.lastSalePrice;
     let totalCost = price_purchased * shares; // calculate for total cost
 
+    //checks if user has capital to buy the stock!
+    if(totalCost > user.cash)
+        throw `Cannot buy ${shares} shares of '${symbol}' worth $${totalCost.toFixed(2)}. You only have $${user.cash.toFixed(2)}`
+
     // check if user owns the stock being purchased
     owned = user.stocks.filter(stock => stock.symbol === symbol);
     if(owned.length < 1) { // case: user does not own the stock being purchased
@@ -169,6 +173,10 @@ async function sellStock(userId, symbol, shares) { // TODO: STILL NEED TO DEAL W
             );
             if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw "Could not sell stock";
             return { sold: true }; // confirm sale
+        } else if ((stock.num_shares - shares) < 0){
+            let plural = (stock.num_shares==1) ? '' : 's';
+            let pluralShares = (shares == 1) ? '' : 's';
+            throw `Cannot sell ${shares} share${pluralShares} of ${symbol}. You only have ${stock.num_shares} share${plural}!`
         }
 
         avgPrice = ((stock.weighted_average_price * stock.num_shares) - (totalCost)) / (stock.num_shares - shares); // calculate weighted average price from previous average and new price
