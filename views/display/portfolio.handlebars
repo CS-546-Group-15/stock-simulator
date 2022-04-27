@@ -12,14 +12,19 @@
       <tr>
         <th>Ticker</th>
         <th>Shares</th>
-        <th>Investment</th>
+        <th>Bought At</th>
+        <th>Current Price</th>
+        <th>% Change</th>
+        
       </tr>
     </thead>
-    {{#each user.stocks}}
+    {{#each stockList}}
       <tr>
-        <td>{{this.symbol}}</td>
-        <td>{{this.num_shares}}</td>
-        <td>${{this.total_cost}}</td>
+        <td>{{this.ticker}}</td>
+        <td>{{this.shares}}</td>
+        <td>${{this.bought_at}}</td>
+        <td>${{this.curr_price}}</td>
+        <td>{{this.percent_change}}%</td>
       </tr>
     {{/each}}
   </table>

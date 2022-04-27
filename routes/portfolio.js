@@ -10,7 +10,8 @@ router.get('/', async (req, res) => {
         let userId = req.session.user.userId;
         let user = await users.getUser(req.session.user.username);
         const userVal = await stocks.getAccVal(userId.toString());
-        res.render('display/portfolio', {user: user, userVal: userVal, authenticated: true});
+        let userStock = await stocks.getCurrStockPrice(userId.toString());
+        res.render('display/portfolio', {stockList: userStock, user: user, userVal: userVal, authenticated: true});
     } else {
         res.redirect('/login');
     }
