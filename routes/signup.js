@@ -16,8 +16,6 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
     // get req.body username and password
     let { username, password } = req.body;
-    console.log(username);
-    console.log(password);
     //error check
     try {
         validation.checkUsername(username);
@@ -27,15 +25,15 @@ router.post('/', async (req, res) => {
         res.status(400).render('display/signup', {error: e, authenticated: false});
         return;
     }
-    
+
     //ensure case insensitivity
     username = username.toLowerCase();
     try {
         //create user
         // let createdUser = await userData.createUser(email, username, password);
-        let createdUser = await userData.createUser(username, password);
+        let result = await userData.createUser(username, password);
         
-        if(createdUser.userInserted == true) {
+        if(result.userCreated == true) {
             res.redirect('/login');
             return;
         }
@@ -44,7 +42,7 @@ router.post('/', async (req, res) => {
         return;
     }
 
-    // res.status(500).render('display/signup', { error: 'Internal Server Error' });
+    res.status(500).render('display/signup', { error: 'Internal Server Error' });
     return;
 });
 
