@@ -2,4 +2,36 @@
 <h1 class="mb-3">Welcome {{username}}!</h1>
 <p>Have button here to update profile.</p>
 <p>View your portfolio: --insert link here to portfolio--</p>
-<a class="logoutLink" href="/logout">Logout</a>
+ {{!-- <a class="logoutLink"  href="/logout">Logout</a> --}}
+
+
+{{!-- Modal for logging out on account page 
+Credit to w3schools --}}
+
+<a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
+    Logout
+  </a>
+
+  <div class="modal" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Logout</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+       Are you sure you want to logout?
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <a class="logoutLink"  href="/logout">Logout</a>
+      </div>
+
+    </div>
+  </div>
+</div>
