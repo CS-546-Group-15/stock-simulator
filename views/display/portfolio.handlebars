@@ -1,11 +1,11 @@
 {{!-- This will hold our stock portfolio for each respective user. --}}
 <article>
 <h1 class="mb-3">My Portfolio</h1>
-
-<p>This will be the user's portfolio page</p>
-<h2>Welcome {{user.username}}!</h2>
-<p>Account Total (TODO): {{user.cash}}</p>
-<p>Liquid Assets: {{user.cash}}</p>
+{{!--
+  <p>This will be the user's portfolio page</p>
+  <h2>Welcome {{user.username}}!</h2> --}}  
+<p>Total Account Assets: ${{userVal}}</p>
+<p>Liquid Assets: ${{user.cash}}</p>
 
 <table id="leaderboard">
   <tr>
