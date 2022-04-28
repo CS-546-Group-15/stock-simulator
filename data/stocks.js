@@ -18,9 +18,15 @@ async function getStockBySymbol(symbol) {
 
   //data provided by IEX Cloud
   //https://iexcloud.io/
-  const url = `https://cloud.iexapis.com/stable/tops?token=${token}&symbols=${symbol}`;
-  const { data } = await axios.get(url);
-  return data;
+  try {
+        const url = `https://cloud.iexapis.com/stable/tops?token=${token}&symbols=${symbol}`;
+        const { data } = await axios.get(url);
+        return data;
+  } catch (e) {
+        //console.log(e);
+        return;
+  }
+  
 
   /*
   EXAMPLE OF WHAT THE DATA RETURNED WILL BE GIVEN symbol = 'aapl'
@@ -54,9 +60,15 @@ async function getQuote(symbol) {
 
     //data provided by IEX Cloud
     //https://iexcloud.io/
-    const url = `https://cloud.iexapis.com/stable/stock/${symbol}/quote?token=${token}`;
-    const { data } = await axios.get(url);
-    return data;
+    try {
+        const url = `https://cloud.iexapis.com/stable/stock/${symbol}/quote?token=${token}`;
+        const { data } = await axios.get(url);
+        return data;
+    } catch (e) {
+        console.log(e);
+        return;
+    }
+    
 }
 
 
@@ -245,7 +257,7 @@ async function getAccVal(userId) {
         accVal += stockData.lastSalePrice * stock.num_shares;
     }
 
-    return accVal; // return total account value
+    return accVal.toFixed(2); // return total account value
 }
 
 async function getAllAccVals() {
@@ -288,7 +300,13 @@ async function buildPortfolioTable(userId) {
     let portfolio = [];
 
     for(stock of userStocks) { // build portfolio data
-        let quote = await getQuote(stock.symbol);
+        let quote;
+        try {
+            quote = await getQuote(stock.symbol);
+        } catch (e) {
+            throw e;
+        }
+        
         portfolio.push({
             symbol: stock.symbol, // stock ticker
             last_price: quote.latestPrice, // latest stock price
