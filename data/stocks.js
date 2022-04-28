@@ -188,7 +188,7 @@ async function sellStock(userId, symbol, shares) { // TODO: STILL NEED TO DEAL W
                     'stocks.symbol': symbol
                 },
                 {
-                    $inc: { cash:totalCost },
+                    $inc: { cash: totalCost },
                     $pull: { stocks: { symbol: symbol } } 
                 } // remove subdoc
             );
