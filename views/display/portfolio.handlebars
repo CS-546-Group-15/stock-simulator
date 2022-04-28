@@ -18,7 +18,7 @@
         <th>Current Value</th>
         <th>Quantity</th>
         <th>Cost Basis</th>
-        
+
       </tr>
     </thead>
     {{#each stockList}}
@@ -34,42 +34,44 @@
       </tr>
     {{/each}}
   </table>
+
   <h5>Buy/Sell Stocks</h5>
   <div class="row">
     <div class="col-sm-6">
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">Buy Stocks</h5>
-          <form>
+          <form id="buyStock-form" action="/portfolio/buy" method="POST">
             <div class="form-group row">
-              <label
-                for="inputBuySymbol"
-                class="col-sm-5 col-form-label"
-              >Stock Symbol</label>
+              <label for="symbol" class="col-sm-5 col-form-label">Stock Symbol</label>
               <div class="col-sm-10">
                 <input
                   type="string"
                   class="form-control"
-                  id="inputBuySymbol"
+                  id="symbol"
+                  name="symbol"
                   placeholder="AAPL"
                 />
               </div>
             </div>
             <div class="form-group row">
               <label
-                for="inputBuyShares"
+                for="num_shares"
                 class="col-sm-5 col-form-label"
               >Shares</label>
               <div class="col-sm-10">
                 <input
                   type="number"
                   class="form-control"
-                  id="inputBuyShares"
+                  id="num_shares"
+                  name="num_shares"
                   placeholder="55"
                 />
               </div>
             </div>
             <div class="form-group row">
+              <p class="error">{{buyError}}</p>
+
               <div class="col-sm-10">
                 <button type="submit" class="btn btn-primary">Buy</button>
               </div>
@@ -82,36 +84,36 @@
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">Sell Stocks</h5>
-          <form>
+          <form id="sellStock-form" action="/portfolio/sell" method="POST">
             <div class="form-group row">
-              <label
-                for="inputBuySymbol"
-                class="col-sm-5 col-form-label"
-              >Stock Symbol</label>
+              <label for="symbol" class="col-sm-5 col-form-label">Stock Symbol</label>
               <div class="col-sm-10">
                 <input
                   type="string"
                   class="form-control"
-                  id="inputBuySymbol"
+                  id="symbol"
                   placeholder="AAPL"
+                  name="symbol"
                 />
               </div>
             </div>
             <div class="form-group row">
               <label
-                for="inputBuyShares"
+                for="num_shares"
                 class="col-sm-5 col-form-label"
               >Shares</label>
               <div class="col-sm-10">
                 <input
                   type="number"
                   class="form-control"
-                  id="inputBuyShares"
+                  id="num_shares"
                   placeholder="55"
+                  name="num_shares"
                 />
               </div>
             </div>
             <div class="form-group row">
+              <p class="error">{{sellError}}</p>
               <div class="col-sm-10">
                 <button type="submit" class="btn btn-primary">Sell</button>
               </div>
