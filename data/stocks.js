@@ -23,7 +23,7 @@ async function getStockBySymbol(symbol) {
         const { data } = await axios.get(url);
         return data;
   } catch (e) {
-        //console.log(e);
+        console.log(e);
         return;
   }
   
@@ -63,6 +63,7 @@ async function getQuote(symbol) {
     try {
         const url = `https://cloud.iexapis.com/stable/stock/${symbol}/quote?token=${token}`;
         const { data } = await axios.get(url);
+        // console.log(data);
         return data;
     } catch (e) {
         console.log(e);
@@ -92,15 +93,19 @@ async function buyStock(userId, symbol, shares) { // TODO: STILL NEED TO DEAL WI
     const user = await userData.getUserById(userId);
 
     // get stock from API call
-    stockApiData = await getStockBySymbol(symbol);
+    // stockApiData = await getStockBySymbol(symbol);
+    stockApiData = await getQuote(symbol); // switched to using Quote API call for now
 
     // check if symbol could be found
-    if(stockApiData.length < 1) throw `Could not find stock with symbol ${symbol}`;
+    // if(stockApiData.length < 1) throw `Could not find stock with symbol ${symbol}`;
+    if(!stockApiData) throw `Could not find stock with symbol ${symbol}`;
     // api call returns an array, to get desired stock, get first element of that array
-    stockData = stockApiData[0];
+    // stockData = stockApiData[0];
+    stockData = stockApiData;
 
     // set price purchased to last sale price
-    let price_purchased = stockData.lastSalePrice;
+    // let price_purchased = stockData.lastSalePrice;
+    let price_purchased = stockData.latestPrice; // switched to using Quote API call for now
     let totalCost = price_purchased * shares; // calculate for total cost
 
     //checks if user has capital to buy the stock!
@@ -174,15 +179,19 @@ async function sellStock(userId, symbol, shares) { // TODO: STILL NEED TO DEAL W
     const user = await userData.getUserById(userId);
 
     // get stock from API call
-    stockApiData = await getStockBySymbol(symbol);
+    // stockApiData = await getStockBySymbol(symbol);
+    stockApiData = await getQuote(symbol); // switched to using Quote API for now
 
     // check if symbol could be found
-    if(stockApiData.length < 1) throw `Could not find stock with symbol ${symbol}`;
+    // if(stockApiData.length < 1) throw `Could not find stock with symbol ${symbol}`;
+    if(!stockApiData) throw `Could not find stock with symbol ${symbol}`;
+
     // api call returns an array, to get desired stock, get first element of that array
-    stockData = stockApiData[0];
+    stockData = stockApiData;
 
     // set price sold to last sale price
-    let price_sold = stockData.lastSalePrice;
+    // let price_sold = stockData.lastSalePrice;
+    let price_sold = stockData.latestPrice; // switched to using Quote API call for now
     let totalCost = price_sold * shares; // calculate for total cost
 
     // check if user owns the stock being purchased
@@ -249,12 +258,13 @@ async function getAccVal(userId) {
 
     let accVal = user.cash; // set initial account balance to cash balance
     for(stock of user.stocks) {
-        stockApiData = await getStockBySymbol(stock.symbol); // api call for current stock info
-        if(stockApiData.length < 1) throw `Could not find stock with symbol ${symbol}`; // check if symbol was found
-        stockData = stockApiData[0]; // get stock object
+        stockApiData = await getQuote(stock.symbol); // api call for current stock info // SWITCHED TO QUOTE API CALL
+        // if(stockApiData.length < 1) throw `Could not find stock with symbol ${stock.symbol}`; // check if symbol was found
+        if(!stockApiData) throw `Could not find stock with symbol ${stock.symbol}`; // check if symbol was found
+        stockData = stockApiData; // get stock object
 
         // increment account value by current value of each stock
-        accVal += stockData.lastSalePrice * stock.num_shares;
+        accVal += stockData.latestPrice * stock.num_shares; // SWITCHED TO QUOTE API CALL
     }
 
     return accVal.toFixed(2); // return total account value
