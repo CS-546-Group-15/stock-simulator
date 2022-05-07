@@ -103,6 +103,9 @@ async function buyStock(userId, symbol, shares) { // TODO: STILL NEED TO DEAL WI
     // stockData = stockApiData[0];
     stockData = stockApiData;
 
+    // check if market is closed
+    if(!stockData.isUSMarketOpen) throw 'Cannot purchase stock: the US Market is currently closed.'
+
     // set price purchased to last sale price
     // let price_purchased = stockData.lastSalePrice;
     let price_purchased = stockData.latestPrice; // switched to using Quote API call for now
@@ -127,12 +130,12 @@ async function buyStock(userId, symbol, shares) { // TODO: STILL NEED TO DEAL WI
             { _id: ObjectId(userId) },
             {
                 $inc: { cash: -totalCost }, // update cash amount
-                $addToSet: { stocks: stockPurchased } // add new stock to stock
+                $addToSet: { stocks: stockPurchased } // add new stock to stocks
             }
         );
         // check for errors updating
-        if (!updateInfo.matchedCount && !updateInfo.modifiedCount)
-        throw "Could not purchase stock";
+        if (!updateInfo.matchedCount && !updateInfo.modifiedCount) throw "Could not purchase stock";
+
     } else { // user owns the stock being purchased
         stock = owned[0]; // get owned stock info
         avgPrice = ((stock.weighted_average_price * stock.num_shares) + (totalCost)) / (stock.num_shares + shares); // calculate weighted average price from previous average and new price
@@ -185,6 +188,9 @@ async function sellStock(userId, symbol, shares) { // TODO: STILL NEED TO DEAL W
     // check if symbol could be found
     // if(stockApiData.length < 1) throw `Could not find stock with symbol ${symbol}`;
     if(!stockApiData) throw `Could not find stock with symbol ${symbol}`;
+
+    // check if market is closed
+    if(!stockData.isUSMarketOpen) throw 'Cannot purchase stock: the US Market is currently closed.'
 
     // api call returns an array, to get desired stock, get first element of that array
     stockData = stockApiData;
