@@ -4,9 +4,10 @@
   <h1>Posts</h1>
   {{#each posts}}  
     <article class="post">
-      <h2><a href="/posts/{{_id}}">{{title}}</a></h2>
-      <p>{{body}}</p>
+      <h2><a href="/discussion/{{_id}}">{{title}}</a></h2>
+      <p>{{posts.body}}</p>
     </article>
   {{/each}}
+  <a href="/discussion">Back to All Posts</a>
 </section>
-
+<a class="new-post" href="discussion/newPost">Make a new post here!</a>

@@ -21,6 +21,9 @@ async function getPostsByTag(tag) {
 //  Gets a post by ID, used for getting a specific post
 async function getPostById(id) {
     const postCollection = await posts();
+    // console.log(id);
+    id = ObjectId(id);
+    // console.log(id);
     const post = await postCollection.findOne({_id: id});
 
     if (!post) throw 'Post not found';
@@ -40,7 +43,7 @@ async function createPost(userID, title, info, tags) {
     const user = await userCollection.findOne({ _id: ObjectId(userID) });
 
     if (!user) throw "User doesn't exist with that Id"; // no user found
-
+    tagsArr = tags.split(",");
     // new post
     let newPost = {
         userID: userID,
@@ -48,7 +51,7 @@ async function createPost(userID, title, info, tags) {
         title: title,
         info: info,
         utc_date: date_time,
-        tags: tags, 
+        tags: tagsArr, 
         comments: [],
     };
 
