@@ -103,11 +103,10 @@ async function removePost(id) {
     } catch (e) {
       return;
     }
-    const deletionInfo = await postCollection.removeOne({_id: id});
+    const deletionInfo = await postCollection.deleteOne({_id: ObjectId(id)});
     if (deletionInfo.deletedCount === 0) {
       throw `Could not delete post with id of ${id}`;
     }
-    await users.removePostFromUser(post.poster.id, id);
     return true;
 }
 

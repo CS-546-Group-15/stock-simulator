@@ -3,7 +3,7 @@
   <address>Posted by {{{ name }}}</address>
   <p>{{ body }}</p>
   {{#ifCond name authUser.username}}
-    <form action="/discussion/{{postId}}" method="DELETE">  
+    <form action="/discussion/{{postId}}?_method=DELETE" method="POST" class="new-post-form">
         <button type = "submit">Delete Post?</button>
     </form>
   {{/ifCond}}

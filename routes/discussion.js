@@ -118,7 +118,9 @@ router.post('/comment', async (req, res) => {
 router.put('/:id', async (req, res) => {
   let { userId, title, info, tags } = req.body;
     try {
-      await postData.getPostById(req.params.id);
+      let pData = await postData.getPostById(req.params.id);
+      if(req.session.user.username != pData.username)
+        throw "User isn't authenticated to modify this post";
     } catch (e) {
       res.status(404).render('display/error', {error: e});
       return;
@@ -133,19 +135,21 @@ router.put('/:id', async (req, res) => {
 
 //  Delete a post from the user and discussion board
 router.delete('/:id', async (req, res) => {
-  try {
-    console.log("begin");
-    await postData.getPostById(req.params.id);
-    console.log("wow");
+  
+
+  try { //post doesn't exist
+    let pData = await postData.getPostById(req.params.id);
+    console.log(req.session.user.username + " " + pData.username);
+    if(req.session.user.username != pData.username)
+      throw "User isn't authenticated to delete this post";
   } catch (e) {
     res.status(404).render('error/error', {error: e});
     return;
   }
   try {
-    console.log("close");
     await postData.removePost(req.params.id);
-    console.log("HERE");
-    res.sendStatus(200);
+    let posts = await getAllPosts();
+    res.status(200).render('posts/discussion', { error: "Successfully Deleted Comment"});
   } catch (e) {
     res.status(500).render('error/error', {error: e});
   }
