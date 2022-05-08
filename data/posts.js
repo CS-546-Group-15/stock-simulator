@@ -4,7 +4,7 @@ const users = mongoCollections.users;
 const validation = require("../validation.js");
 const { ObjectId } = require("mongodb");
 const res = require("express/lib/response");
-const { post } = require("../routes/discussion");
+
 
 //  Display all posts so far in discussion (might limit to certain amount)
 async function getAllPosts() {
