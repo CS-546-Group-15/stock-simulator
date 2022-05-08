@@ -102,6 +102,11 @@ footer {
   padding-left: 4px;
 }
 
+.commentP {
+  margin-right: 10px;
+  margin-bottem: 10px;
+}
+
 .row_card {
   margin: 0px;
   padding: 0px;

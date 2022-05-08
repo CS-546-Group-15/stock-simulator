@@ -114,25 +114,6 @@ router.post('/comment', async (req, res) => {
   }
 });
 
-//  Update/modify an existing post
-router.put('/:id', async (req, res) => {
-  let { userId, title, info, tags } = req.body;
-    try {
-      let pData = await postData.getPostById(req.params.id);
-      if(req.session.user.username != pData.username)
-        throw "User isn't authenticated to modify this post";
-    } catch (e) {
-      res.status(404).render('display/error', {error: e});
-      return;
-    }
-    try {
-      const updatedPost = await postData.updatePost(req.params.id, updatedData);
-      res.json(updatedPost);
-    } catch (e) {
-      res.status(500).json({error: e});
-    }
-});
-
 //  Delete a post from the user and discussion board
 router.delete('/:id', async (req, res) => {
   
