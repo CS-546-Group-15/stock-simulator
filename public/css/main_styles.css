@@ -8,7 +8,10 @@
 body {
   margin-left: 2%;
   margin-right: 2%;
-  margin-top: 70px;
+  margin-top: 55px;
+  min-height: 400px;
+  margin-bottom: 56px;
+  clear: both;
 }
 
 
@@ -75,3 +78,9 @@ footer {
 
 }
 
+.bootstrap-tagsinput .tag {
+  margin-right: 2px;
+  color: white !important;
+  background-color: #0d6efd;
+  padding: 0.2rem;
+}

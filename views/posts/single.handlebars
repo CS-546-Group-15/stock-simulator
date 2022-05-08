@@ -2,6 +2,12 @@
   <h1>{{ title }}</h1>
   <address>Posted by {{{ name }}}</address>
   <p>{{ body }}</p>
+  {{#ifCond name authUser.username}}
+    <form action="/discussion/"+{{postId}} method="DELETE">  
+        <button type = "submit">Delete Post?</button>
+    </form>
+  {{/ifCond}}
+  {{!-- <p>{{authUser.username}}</p> --}}
 
   {{#if tags.length }}
     <h3>Tags</h3>
@@ -17,7 +23,12 @@
   <ul class = "">
     {{#each post.comments}}
       <div class = "card mb-3">
-        <h4 class = "card-header">Posted By: {{this.username}}</h4>  
+        <h4 class = "card-header">Posted By: {{this.username}}</h4>
+        <p>{{authUser.username}}</p>
+        {{#ifCond authUser.username this.username}}  
+          <p>Edit Post?</p>
+          <p>Delete Comment?</p>
+        {{/ifCond}}
         <div class = "card-text">
           <p>{{this.comment}}</p>  
         </div>

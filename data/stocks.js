@@ -340,6 +340,55 @@ async function buildPortfolioTable(userId) {
     // return data needed to build portfolio page
     return portfolio;
 }
+//  this function will get the date of the first purhcased stock to calculate efficiency
+function getFirstDate(stocksArr) {
+    //  have variable for todays date
+    let today = new Date();
+    //  variables will hold the date the stock was first purchased and the age in days since then
+    let currStockDate, age;
+    //  will hold the oldest/largest difference between purchase date and today's date
+    let oldest = 0;
+    //  hold age val in milliseconds
+    let milliAge;
+    //  loop through array of stocks to find the oldest
+    stocksArr.forEach(stock => {
+        //  need to convert back from UTCString to a date we can work with
+        currStockDate = new Date(stock.date_time);
+        milliAge = today.getTime() - currStockDate.getTime();
+        age = Math.ceil(milliAge/(1000 * 60 * 60 * 24));
+        if(age > oldest) oldest = age;
+    })
+    return oldest;
+}
+
+//  this function will calculate the user's efficiency for their trading portfolio
+async function getEfficiency(accVal, userId) {
+    /*  
+        get the array of stocks for the user
+        if empty, it implies user has no stocks and we can say the efficiency is null
+        (we do null instead of 0 since efficiency can be 0 if accVal somehow equals the starting val)
+        in displaying it on their portfolio, if null then show a message stating they have yet to purchase any stocks
+    */
+    let efficiency = null;
+    let stocksArr = await getUserStocks(userId);
+    if(!stocksArr) return efficiency;
+    //  get the current date, and find the oldest purchased date for a stock
+    let today = new Date();
+    let oldestDate = getFirstDate(stocksArr);
+    /*  
+        Calculate the difference between days here. 
+    */
+    //  get the date into milliseconds
+    let efficiencyAge = today.getTime() - oldestDate.getTime();
+    //  convert milliseconds to days using dimensional analysis (1000ms/1s -> 60s/1min -> 60min/1hr -> 24hr/1day)
+    let days = Math.ceil(efficiencyAge/(1000 * 60 * 60 * 24));
+    /*
+        Calculate Efficiency
+        Equation: Account Value-(10000)/(Days since first purchase)
+    */
+    efficiency = (accVal-10000)/days;
+    return efficiency;
+}
 
 module.exports = {
     getStockBySymbol,  
@@ -349,5 +398,6 @@ module.exports = {
     getAllAccVals,
     getUserStocks,
     getQuote,
-    buildPortfolioTable
+    buildPortfolioTable,
+    getEfficiency
 }
