@@ -27,7 +27,7 @@
     </thead>
     {{#each stockList}}
       <tr>
-        <td id="symbolLink"><a href="#" data-bs-toggle="modal" data-bs-target="#quoteModal">{{this.symbol}}</a></td>
+        <td><a href="#" data-bs-toggle="modal" data-bs-target="#quoteModal">{{this.symbol}}</a></td>
         <td>${{this.last_price}}</td>
         <td>${{this.gain_loss_$}}</td>
         <td>${{this.total_gain_loss_$}}</td>
@@ -44,7 +44,7 @@
       <div class="modal-content">
 
         <div class="modal-header">
-          <h4 class="bodal-title" id="stock-symbol"></h4>
+          <h4 class="bodal-title" id="stock-symbol">Symbol</h4>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
 
@@ -63,12 +63,12 @@
           <h5 class="card-title">Buy Stocks</h5>
           <form id="buyStock-form" action="/portfolio/buy" method="POST">
             <div class="form-group row">
-              <label for="symbol" class="col-sm-5 col-form-label">Stock Symbol</label>
+              <label for="symbol_buy" class="col-sm-5 col-form-label">Stock Symbol</label>
               <div class="col-sm-10">
                 <input
-                  type="string"
+                  type="text"
                   class="form-control"
-                  id="symbol"
+                  id="symbol_buy"
                   name="symbol"
                   placeholder="AAPL"
                 />
@@ -76,14 +76,14 @@
             </div>
             <div class="form-group row">
               <label
-                for="num_shares"
+                for="num_shares_buy"
                 class="col-sm-5 col-form-label"
               >Shares</label>
               <div class="col-sm-10">
                 <input
                   type="number"
                   class="form-control"
-                  id="num_shares"
+                  id="num_shares_buy"
                   name="num_shares"
                   placeholder="55"
                 />
@@ -106,12 +106,12 @@
           <h5 class="card-title">Sell Stocks</h5>
           <form id="sellStock-form" action="/portfolio/sell" method="POST">
             <div class="form-group row">
-              <label for="symbol" class="col-sm-5 col-form-label">Stock Symbol</label>
+              <label for="symbol_sell" class="col-sm-5 col-form-label">Stock Symbol</label>
               <div class="col-sm-10">
                 <input
-                  type="string"
+                  type="text"
                   class="form-control"
-                  id="symbol"
+                  id="symbol_sell"
                   placeholder="AAPL"
                   name="symbol"
                 />
@@ -119,14 +119,14 @@
             </div>
             <div class="form-group row">
               <label
-                for="num_shares"
+                for="num_shares_sell"
                 class="col-sm-5 col-form-label"
               >Shares</label>
               <div class="col-sm-10">
                 <input
                   type="number"
                   class="form-control"
-                  id="num_shares"
+                  id="num_shares_sell"
                   placeholder="55"
                   name="num_shares"
                 />
