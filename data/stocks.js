@@ -63,10 +63,8 @@ async function getQuote(symbol) {
     try {
         const url = `https://cloud.iexapis.com/stable/stock/${symbol}/quote?token=${token}`;
         const { data } = await axios.get(url);
-        // console.log(data);
         return data;
     } catch (e) {
-        console.log(e);
         return;
     }
     
@@ -394,7 +392,7 @@ async function getEfficiency(accVal, userId) {
     */
     days = days-oldestDateDays;
     efficiency = (accVal-10000)/days;
-    return efficiency;
+    return efficiency.toFixed(2);
 }
 
 module.exports = {

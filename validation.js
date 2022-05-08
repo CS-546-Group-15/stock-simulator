@@ -120,8 +120,9 @@ function checkId(id) {
 
 function checkShares(shares) {
     if(!shares) throw 'must provide a valid number';
+    shares = Number(shares);
     if(typeof shares !== 'number') throw 'shares must be of type number';
-    if(shares < 1) throw 'shares must be a positive whole number';
+    if(shares < 1 || !Number.isInteger(shares) || isNaN(shares)) throw 'shares must be a positive whole number';
     // TODO: need to add more checks for thoroughness
 }
 
