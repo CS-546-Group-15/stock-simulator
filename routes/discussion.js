@@ -63,7 +63,7 @@ router.post('/', async (req, res) => {
       //   console.log(userId);
       let { title, tags, info } = req.body;
       // console.log(title);
-      // console.log(tags);
+      console.log(tags);
       // console.log(info);
       try {
           validation.checkCreatePost(userId, title, info, tags);
@@ -155,7 +155,7 @@ router.delete('/comment/:id', async(req, res) => {
   if(req.session.user) {
     try{
       await postData.removeComment(req.params.id);
-      res.sendStatus(200);
+      res.status(200).render('posts/discussion', { error: "Successfully Deleted Comment"});
     } catch(e){
       res.status(500).render('error/error', {error: e});
     }

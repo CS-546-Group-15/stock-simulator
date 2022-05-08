@@ -24,10 +24,11 @@
     {{#each post.comments}}
       <div class = "card mb-3">
         <h4 class = "card-header">Posted By: {{this.username}}</h4>
-        <p>{{authUser.username}}</p>
-        {{#ifCond authUser.username this.username}}  
+        {{#ifCond ../authUser.username this.username}}  
           <p>Edit Post?</p>
-          <p>Delete Comment?</p>
+          <form action="/discussion/comment" method="POST" class="new-post-form">
+            <button type="submit">Submit Post</button>
+          </form>
         {{/ifCond}}
         <div class = "card-text">
           <p>{{this.comment}}</p>  

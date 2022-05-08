@@ -6,6 +6,10 @@
   <h2>Welcome {{user.username}}!</h2> --}}
   <p>Account Value: ${{userVal}}</p>
   <p>Cash Available to Trade: ${{user.cash}}</p>
+    {{#ifCond efficiencyRating null}}
+      <p>Cannot evaluate efficiency since no stocks have been purchased.</p>
+      {{else}} <p>User Efficiency: {{ efficiencyRating }}%</p>
+    {{/ifCond}}
   <h2>Position Overview</h2>
   <table class="table table-hover table-striped table-bordered" id="stocks">
     <thead class="thead-dark table-secondary">

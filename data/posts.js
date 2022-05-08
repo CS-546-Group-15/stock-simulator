@@ -163,8 +163,9 @@ async function removeComment(commentID) {
     const parent = await postCollection.findOne(
         { "comments._id": ObjectId(commentID) }
     );
-    await postCollection.updateOne({ _id: parent._id },
+    const updateInfo = await postCollection.updateOne({ _id: parent._id },
         { $pull: { comments: { "_id": ObjectId(commentID) } } }, false, false);
+    if(updateInfo === 0) `Could not delete comment.`
 }
 
 module.exports = {

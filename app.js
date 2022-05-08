@@ -20,8 +20,8 @@ Handlebars.registerHelper("counter", function (index){
 });
 
 Handlebars.registerHelper('ifCond', function(v1, v2, options) {
-  console.log("1st" + v1);
-  console.log("2nd" + v2);
+  // console.log("1st" + v1);
+  // console.log("2nd" + v2);
   if(v1 == v2) {
     return options.fn(this);
   }

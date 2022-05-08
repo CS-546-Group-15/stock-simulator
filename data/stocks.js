@@ -371,21 +371,23 @@ async function getEfficiency(accVal, userId) {
     */
     let efficiency = null;
     let stocksArr = await getUserStocks(userId);
-    if(!stocksArr) return efficiency;
+    // console.log(stocksArr);
+    if(stocksArr.length == 0) return efficiency;
     //  get the current date, and find the oldest purchased date for a stock
     let today = new Date();
-    let oldestDate = getFirstDate(stocksArr);
+    let oldestDateDays = getFirstDate(stocksArr);
     /*  
         Calculate the difference between days here. 
     */
     //  get the date into milliseconds
-    let efficiencyAge = today.getTime() - oldestDate.getTime();
+    today = today.getTime();
     //  convert milliseconds to days using dimensional analysis (1000ms/1s -> 60s/1min -> 60min/1hr -> 24hr/1day)
-    let days = Math.ceil(efficiencyAge/(1000 * 60 * 60 * 24));
+    let days = Math.ceil(today/(1000 * 60 * 60 * 24));
     /*
         Calculate Efficiency
         Equation: Account Value-(10000)/(Days since first purchase)
     */
+    days = days-oldestDateDays;
     efficiency = (accVal-10000)/days;
     return efficiency;
 }
