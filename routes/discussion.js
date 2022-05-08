@@ -119,7 +119,8 @@ router.delete('/:id', async (req, res) => {
   try {
     await postData.removePost(req.params.id);
     let posts = await getAllPosts();
-    res.status(200).render('posts/discussion', { deletionMsg: "Successfully Deleted Post", authenticated: true, posts: posts});
+    let goBack = true;
+    res.status(200).render('posts/discussion', { deletionMsg: "Successfully Deleted Post", authenticated: true, posts: posts, flag: goBack});
   } catch (e) {
     res.status(500).render('error/error', {error: e, authenticated: true});
   }

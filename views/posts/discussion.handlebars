@@ -5,9 +5,17 @@
   <h2>Posts</h2>
   {{#each posts}}  
     <article class="post">
-      <h2><a href="./discussion/{{_id}}">{{title}}</a></h2>
+      {{#if flag}}
+      <h2><a href="/../discussion/{{_id}}">{{title}}</a></h2>
+      {{else}}
+      <h2><a href="../discussion/{{_id}}">{{title}}</a></h2>
+      {{/if}}
       <p>{{body}}</p>
     </article>
   {{/each}}
 </section>
-<a class="new-post" href="./discussion/newPost">Make a new post here!</a>
+{{#if flag}}
+<a class="new-post" href="/../discussion/newPost">Make a new post here!</a>
+{{else}}
+<a class="new-post" href="/../discussion/newPost">Make a new post here!</a>
+{{/if}}
