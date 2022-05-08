@@ -149,7 +149,7 @@ router.delete('/:id', async (req, res) => {
   try {
     await postData.removePost(req.params.id);
     let posts = await getAllPosts();
-    res.status(200).render('posts/discussion', { error: "Successfully Deleted Comment"});
+    res.status(200).render('posts/discussion', { error: "Successfully Deleted Post", authenticated: true});
   } catch (e) {
     res.status(500).render('error/error', {error: e});
   }
@@ -160,7 +160,7 @@ router.delete('/comment/:id', async(req, res) => {
   if(req.session.user) {
     try{
       await postData.removeComment(req.params.id);
-      res.status(200).render('posts/discussion', { error: "Successfully Deleted Comment"});
+      res.status(200).render('posts/discussion', { error: "Successfully Deleted Comment", authenticated: true});
     } catch(e){
       res.status(500).render('error/error', {error: e});
     }
