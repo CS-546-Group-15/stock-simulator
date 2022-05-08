@@ -39,7 +39,6 @@
         }
 
         $.ajax(requestConfig).then(function (responseMessage) { // API call returning quote data
-            console.log(responseMessage);
             // populate modal with stock info
             modalSymbol.append(`${currentSymbol}`);
             modalBody.append(`<p>Latest Price: \$${responseMessage.latestPrice}</p>`);
