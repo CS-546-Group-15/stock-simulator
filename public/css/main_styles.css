@@ -84,3 +84,19 @@ footer {
   background-color: #0d6efd;
   padding: 0.2rem;
 }
+
+.card-text {
+  margin-left: 16px;
+  padding-top: 8px;
+  margin-bottom: 0px;
+}
+
+.comment_foot {
+  text-align: right;
+  margin: 0px;
+  font-size: .8vw;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-right: 4px;
+  padding-left: 4px;
+}

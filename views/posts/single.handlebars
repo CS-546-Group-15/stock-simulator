@@ -23,20 +23,22 @@
   <ul class = "">
     {{#each post.comments}}
       <div class = "card mb-3">
-        <h4 class = "card-header">Posted By: {{this.username}}</h4>
+        <h5 class = "card-text">Posted By: {{this.username}}</h5>
+        
+        <div class = "card-text">
+          <p class = "commentP">{{this.comment}}</p>  
+        </div>
         {{#ifCond ../authUser.username this.username}}  
-          {{!-- <p>_{{this._id}} id{{this.id}} postId{{this.postId}} ID{{this.postID}}</p> --}}
+        <div class= "btn-group">
           <form action="/discussion/comment/{{this._id}}?_method=PUT" method="POST" class="new-post-form">
             <button type="submit">Edit Post</button>
           </form>
           <form action="/discussion/comment/{{this._id}}?_method=DELETE" method="POST" class="new-post-form">
             <button type="submit">Delete Post</button>
           </form>
+          </div>
         {{/ifCond}}
-        <div class = "card-text">
-          <p>{{this.comment}}</p>  
-        </div>
-        <p class = "card-footer bg-transparent">Posted On: {{this.utc_date}}</p>
+        <p class = "card-footer bg-transparent comment_foot">{{this.utc_date}}</p>
       </div>
     {{/each}}
   </ul>
@@ -53,11 +55,9 @@
         <label for="comment">
           Comment:
           <textarea type = "text" class="form-control" id="comment" name = "comment" rows="3"></textarea>
-          {{!-- <input type="text" id="comment" name= 'comment' placeholder="Twitter gets Musk'd" value="{{post.comment}}" class="full-width-input"/> --}}
         </label>
         <input type = "hidden" name = "postId" id="postId" value = {{postId}}>
       </div>
-      {{!-- <div class="form-group"></div> --}}
       <p>{{error}}</p>
       <button type="submit">Submit Post</button>
       <button type="reset">Clear Form</button>
