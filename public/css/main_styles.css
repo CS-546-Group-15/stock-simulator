@@ -117,16 +117,12 @@ footer {
   /*optional*/
   font-family: arial, sans-serif;
   /*input has OS specific font-family*/
+  text-decoration: underline;
   font-style: italic;
   cursor: pointer;
   margin-right: 5px;
   text-align: right;
   justify-content: right;
-}
-
-.button_link::hover{
-  color: #069;
-  text-decoration: underline;
 }
 
 .right_aln {

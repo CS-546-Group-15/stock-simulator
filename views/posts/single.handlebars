@@ -1,22 +1,28 @@
 <article class="post">
-  <h1>{{ title }}</h1>
-  <address>Posted by {{{ name }}}</address>
-  <p>{{ body }}</p>
+  <div class = "card">
+    <div class = "card-body">
+  <div class = "card-title row">
+
+  <h1 class="col">{{ title }}</h1>
   {{#ifCond name authUser.username}}
-    <form action="/discussion/{{postId}}?_method=DELETE" method="POST" class="new-post-form">
-        <button type = "submit">Delete Post?</button>
+    <form action="/discussion/{{postId}}?_method=DELETE" method="POST" class="new-post-form col button_link">
+        <button type = "submit">Delete Post</button>
     </form>
   {{/ifCond}}
-  {{!-- <p>{{authUser.username}}</p> --}}
-
+  </div>
+  <address class = "card-subtitle text-muted">Posted by {{{ name }}}</address>
+  <p>{{ body }}</p>
+  
+  <div class = "card-subtitle text-muted">
   {{#if tags.length }}
-    <h3>Tags</h3>
+    <h5>Tags</h5>
     <ul>
       {{#each tags}}
         <li><a href="/discussion/tag/{{this}}">{{this}}</a></li>
       {{/each}}
     </ul>
   {{/if}}
+  </div>
 
   <h2>Comments:</h2>
   {{#if post.comments}}
@@ -53,6 +59,7 @@
   </ul>
   {{/if}}
 
+
   {{#if authenticated}}
   <h2>Make a new comment:</h2>
     <form action="/discussion/comment" method="POST" class="new-post-form">
@@ -64,11 +71,13 @@
         <input type = "hidden" name = "postId" id="postId" value = {{postId}}>
       </div>
       <p>{{error}}</p>
-      <button type="submit">Submit Post</button>
+      <button type="submit">Submit Comment</button>
       <button type="reset">Clear Form</button>
     </form>
   {{else}}
     <p>Sign in to make a new comment!</p>
   {{/if}}
   <a href="/discussion">Back to All Posts</a>
+  </div>
+  </div>
 </article>
