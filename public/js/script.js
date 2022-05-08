@@ -6,8 +6,16 @@
     var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
         const popoverId = popoverTriggerEl.attributes['data-content-id'];
         const contentEl = $(`#${popoverId.value}`).html();
+        bootstrap.Tooltip.Default.allowList.table = [];
+        bootstrap.Tooltip.Default.allowList.tr = [];
+        bootstrap.Tooltip.Default.allowList.th = [];
+        bootstrap.Tooltip.Default.allowList.td = [];
+        bootstrap.Tooltip.Default.allowList.div = [];
+        bootstrap.Tooltip.Default.allowList.tbody = [];
+        bootstrap.Tooltip.Default.allowList.thead = [];
         return new bootstrap.Popover(popoverTriggerEl, {
             html: true,
+            container: 'body',
             content: contentEl
         });
     });
