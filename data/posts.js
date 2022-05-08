@@ -4,6 +4,7 @@ const users = mongoCollections.users;
 const validation = require("../validation.js");
 const { ObjectId } = require("mongodb");
 const res = require("express/lib/response");
+const { post } = require("../routes/discussion");
 
 //  Display all posts so far in discussion (might limit to certain amount)
 async function getAllPosts() {
@@ -154,6 +155,7 @@ async function createComment(postID, userID, comment) {
     return userComment;
 }
 
+
 async function removeComment(commentID) {
     //error check inputs
     validation.checkRemoveComment(commentID);
@@ -167,6 +169,40 @@ async function removeComment(commentID) {
         { $pull: { comments: { "_id": ObjectId(commentID) } } }, false, false);
 }
 
+async function getCommentById(commentId){
+    validation.checkGetComment(commentId);
+    const postCollection = await posts();
+    
+    const comment = await postCollection.findOne({'comments._id': ObjectId(commentId)},
+        {projection: {'comments.$': true}}
+    );
+
+    if(comment == null)
+        throw "Album couldn't be found";
+
+    return comment.comments[0];
+}
+
+async function updateComment(commentId, comment){
+    //error check inputs
+    validation.checkUpdateComment(commentId, comment);
+    let date_time = new Date().toUTCString();
+
+    const postCollection = await posts();
+    const postComment = await getCommentById(commentId);
+
+    const parent = await postCollection.findOne(
+        { "comments._id": ObjectId(commentId) }
+    );
+    const post = await postCollection.findOne({ _id: ObjectId(parent._id) });
+
+    const updateInfo = await postCollection.updateOne({_id: post._id, "comments._id": commentId},
+        {"$set": {"comments.$.comment": comment, "comments.$.utc_date": date_time}}    
+    );
+
+    
+}
+
 module.exports = {
     getAllPosts,
     getPostsByTag,
@@ -175,5 +211,7 @@ module.exports = {
     updatePost,
     removePost,
     createComment,
-    removeComment
+    removeComment,
+    getCommentById,
+    updateComment
 };

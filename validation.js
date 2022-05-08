@@ -83,6 +83,17 @@ function checkRemoveComment(commentID) {
     //probably just need to check if valid object ID.
 }
 
+function checkGetComment(commentId){
+    if(!commentId) throw "Must provide a comment ID";
+
+    //ERROR CHECKING PLS
+}
+
+function checkUpdateComment(commentId, comment){
+    if(!commentId) throw "Must provide a comment ID";
+    if(!comment) throw "Must provide a comment";
+}
+
 function checkSymbol(symbol) {
     if (!symbol) throw "Must provide a symbol";
     if (typeof symbol !== 'string') throw "Symbol must be of type string";
@@ -122,6 +133,8 @@ module.exports = {
     checkUpdatePost,
     checkCreateComment,
     checkRemoveComment,
+    checkUpdateComment,
+    checkGetComment,
     checkSymbol,
     checkId,
     checkShares
