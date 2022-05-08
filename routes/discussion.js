@@ -46,7 +46,7 @@ router.get('/tag/:tag', async (req, res) => {
   const postList = await postData.getPostsByTag(req.params.tag);
   // console.log(postList);
   authenticatedQ = (req.session.user) ? true : false
-  res.render('posts/posts', {posts: postList, authenticated: authenticatedQ});
+  res.render('posts/posts', {posts: postList, authenticated: authenticatedQ, tag: true});
   
 });
 
