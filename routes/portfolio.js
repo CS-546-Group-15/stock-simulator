@@ -14,6 +14,7 @@ router.get("/", async (req, res) => {
     let userStocks = await stocks.buildPortfolioTable(userId);
     let efficiencyRating = await stocks.getEfficiency(userVal, userId);
     // console.log(efficiencyRating);
+    user.cash = user.cash.toFixed(2); // eliminates extraneous decimal places
     res.render("display/portfolio", {
       stockList: userStocks,
       user: user,

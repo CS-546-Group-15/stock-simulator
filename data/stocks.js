@@ -85,7 +85,7 @@ async function buyStock(userId, symbol, shares) { // TODO: STILL NEED TO DEAL WI
 
     // format inputs
     userId = userId.trim();
-    symbol = symbol.trim();
+    symbol = symbol.trim().toUpperCase();
 
     let date_time = new Date().toUTCString(); // date and time of purchase
 
@@ -175,7 +175,7 @@ async function sellStock(userId, symbol, shares) { // TODO: STILL NEED TO DEAL W
 
     // format inputs
     userId = userId.trim();
-    symbol = symbol.trim();
+    symbol = symbol.trim().toUpperCase();
 
     let date_time = new Date().toUTCString(); // date and time of purchase
 
@@ -287,7 +287,12 @@ async function getAllAccVals() {
         accVals.push({ username: user.username, acc_value: accVal, stocks: user.stocks }); // append to list
     }
 
-    return accVals.sort((x,y) => (x.acc_value > y.acc_value) ? -1 : ((y.acc_value > x.acc_value) ? 1 : 0)); // return list sorted in decending order of account values
+    return accVals.sort(function (x,y) {
+        // comparison function for sorting in descending order by acc_value
+        let fst = parseInt(x.acc_value);
+        let snd = parseInt(y.acc_value);
+        return (fst > snd) ? -1 : ((fst < snd) ? 1 : 0);
+    }); // return list sorted in decending order of account values
 }
 
 async function getUserStocks(userId) {
