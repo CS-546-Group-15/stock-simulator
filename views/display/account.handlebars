@@ -3,7 +3,17 @@
         <h1 class="mb-3">Account</h1>
         <p>Currently logged in as: {{username}}</p>
 
-        <a class="logoutLink" data-bs-toggle="modal" data-bs-target="#logoutModal">Log out</a>
+        <div class="my-2">
+            <a href="/account/update" class="btn btn-primary">Update Password</a>
+        </div>
+
+        {{#if updated}}
+            <p class="text-primary">Successfully updated password!</p>
+        {{/if}}
+
+        <div>
+            <a class="logoutLink btn btn-primary" data-bs-toggle="modal" data-bs-target="#logoutModal">Log out</a>
+        </div>
 
         <div class="modal" id="logoutModal">
             <div class="modal-dialog">

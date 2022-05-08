@@ -29,7 +29,7 @@ function checkPassword(password) {
     if (password.trim().length < 6) throw "Password must be at least 6 characters long"
     for (character of password) {
         if (character === ' ') {
-            throw "password must not contain spaces.";
+            throw "Password must not contain spaces.";
         }
     }
 }

@@ -70,8 +70,6 @@ async function getUser(username) {
     return user;
 }
 
-// STILL NEED UPDATE USERS. WILL IMPEMPLENT ONCE WE KNOW WHAT WILL BE CHANGABLE
-
 async function checkUser(username, password) {
     // validate inputs
     validation.checkUsername(username);
@@ -103,11 +101,37 @@ async function getAllUsers() {
     // return userList.sort((x,y) => (x.cash > y.cash) ? -1 : ((y.cash > x.cash) ? 1 : 0)); // return user list sorted in decending order by cash
 }
 
+async function updateUser(username, newPassword) {
+    //validate inputs
+    validation.checkUsername(username);
+    validation.checkPassword(newPassword);
+
+    //get user
+    let updatedUser = await getUser(username);
+    
+    //hash new password
+    const hashPassword = await bcrypt.hash(newPassword, saltRounds);
+
+    //replace old with new
+    updatedUser.password = hashPassword;
+    
+    const userCollection = await users();
+
+    //update
+    const updatedInfo = await userCollection.updateOne(
+        { username: username },
+        { $set: updatedUser }
+    );
+    if (updatedInfo.modifiedCount !== 1) throw "Failed to update user"
+    return;
+}
+
 module.exports = {
     getUserById,
     createUser,
     checkUser,
     getUser,
     checkUser,
-    getAllUsers
+    getAllUsers,
+    updateUser
 };
