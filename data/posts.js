@@ -22,12 +22,21 @@ async function getPostsByTag(tag) {
 //  Gets a post by ID, used for getting a specific post
 async function getPostById(id) {
     const postCollection = await posts();
-    // console.log(id);
     id = ObjectId(id);
-    // console.log(id);
     const post = await postCollection.findOne({_id: id});
 
     if (!post) throw 'Post not found';
+    return post;
+}
+
+async function getPostByCommentId(commentId){
+    validation.checkGetComment(commentId);
+
+    const postCollection = await posts();
+    const parent = await postCollection.findOne(
+        { "comments._id": ObjectId(commentId) }
+    );
+    const post = await postCollection.findOne({ _id: ObjectId(parent._id) });
     return post;
 }
 
@@ -207,6 +216,7 @@ module.exports = {
     getAllPosts,
     getPostsByTag,
     getPostById,
+    getPostByCommentId,
     createPost,
     updatePost,
     removePost,

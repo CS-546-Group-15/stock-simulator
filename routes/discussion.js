@@ -35,10 +35,8 @@ router.get('/:id', async (req, res) => {
   let authUser = "";
   if(authenticatedQ)
     authUser = await getUserById(req.session.user.userId);
-  console.log(authUser.username);
   try {
       const post = await postData.getPostById(req.params.id);
-      // console.log(post);
       res.render('posts/single', {post: post, title: post.title, name: post.username, body: post.info, tags: post.tags, postId: req.params.id, authenticated: authenticatedQ, authUser: authUser});
     } catch (e) {
       res.status(500).json({error: e});
@@ -47,9 +45,7 @@ router.get('/:id', async (req, res) => {
 
 //  Get a blogs that contain tags given
 router.get('/tag/:tag', async (req, res) => {
-  // console.log("tag");
   const postList = await postData.getPostsByTag(req.params.tag);
-  // console.log(postList);
   authenticatedQ = (req.session.user) ? true : false
   res.render('posts/posts', {posts: postList, authenticated: authenticatedQ, tag: true});
   
@@ -61,11 +57,7 @@ router.post('/', async (req, res) => {
       //  we need to get the userId param
       // let blogPostData = req.body;
       userId = req.session.user.userId;
-      //   console.log(userId);
       let { title, tags, info } = req.body;
-      // console.log(title);
-      console.log(tags);
-      // console.log(info);
       try {
           validation.checkCreatePost(userId, title, info, tags);
       } catch(e) {
@@ -76,7 +68,6 @@ router.post('/', async (req, res) => {
       try {
           const newPost = await postData.createPost(userId, title, info, tags || []);
           const name = await getUserById(userId);
-          console.log("++++++++++" + name.username);
           // tagArr = newPost.tags.split(",");
 
           res.render(`posts/single`, {post: newPost, title: title, name: name.username, body: info, tags: newPost.tags, postId: newPost._id, authenticated: true, authUser: name});
@@ -94,9 +85,7 @@ router.post('/comment', async (req, res) => {
   if(req.session.user) {
     userId = req.session.user.userId;
     authUser = await getUserById(userId);
-    //console.log(userId);
     let { comment, postId } = req.body;
-    //console.log(comment);
     try{
       validation.checkCreateComment(postId, userId, comment);
     } catch(e){
@@ -116,23 +105,24 @@ router.post('/comment', async (req, res) => {
 
 //  Delete a post from the user and discussion board
 router.delete('/:id', async (req, res) => {
-  
-
+  if(!req.session.user){
+    res.status(500).render('error/error', {error: "Must be authenticated to delete a post", authenticated: false});
+  }
   try { //post doesn't exist
     let pData = await postData.getPostById(req.params.id);
-    console.log(req.session.user.username + " " + pData.username);
     if(req.session.user.username != pData.username)
       throw "User isn't authenticated to delete this post";
   } catch (e) {
-    res.status(404).render('error/error', {error: e});
+    res.status(404).render('error/error', {error: e, authenticated: true});
     return;
   }
   try {
     await postData.removePost(req.params.id);
     let posts = await getAllPosts();
-    res.status(200).render('posts/discussion', { error: "Successfully Deleted Post", authenticated: true});
+    let goBack = true;
+    res.status(200).render('posts/discussion', { deletionMsg: "Successfully Deleted Post", authenticated: true, posts: posts, flag: goBack});
   } catch (e) {
-    res.status(500).render('error/error', {error: e});
+    res.status(500).render('error/error', {error: e, authenticated: true});
   }
 });
 
@@ -140,11 +130,21 @@ router.delete('/:id', async (req, res) => {
 router.delete('/comment/:id', async(req, res) => {
   if(req.session.user) {
     try{
+      let userId = req.session.user.userId;
+      
+      let authUser = await getUserById(userId);
+      let commentUser = await postData.getCommentById(req.params.id);
+      if(req.session.user.username != commentUser.username)
+        throw "User isn't authenticated to delete this post";
+      let badpost = await postData.getPostByCommentId(req.params.id);
       await postData.removeComment(req.params.id);
-      res.status(200).render('posts/discussion', { error: "Successfully Deleted Comment", authenticated: true});
+      let post = await postData.getPostById(badpost._id);
+      res.status(200).render('posts/single', { deletionMsg: "Successfully Deleted Post", post: post, title: post.title, name: post.username, body: post.info, tags: post.tags, postId: post._id, authenticated: true, authUser: authUser});
     } catch(e){
       res.status(500).render('error/error', {error: e});
     }
+  } else {
+    res.status(500).render('error/error', {error: "Must be authenticated to delete a comment", authenticated: false});
   }
 });
 
