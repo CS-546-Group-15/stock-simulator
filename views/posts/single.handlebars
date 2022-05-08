@@ -28,26 +28,28 @@
   {{#if post.comments}}
   <ul class = "">
     {{#each post.comments}}
-      <div class = "card mb-3">
-        
-        <div class = "row row_card">
-        <h5 class = "card-text col">Posted By: {{this.username}}</h5>
+      <li>
+        <div class = "card mb-3">
+          
+          <div class = "row row_card">
+          <h5 class = "card-text col">Posted By: {{this.username}}</h5>
 
-        {{#ifCond ../authUser.username this.username}}  
-        <div class= "btn-group col row_card d-flex">
-          <form action="/discussion/comment/{{this._id}}?_method=DELETE" method="POST" class="new-post-form right_aln">
-            <button type="submit" class="button_link"> delete</button>
-          </form>
+          {{#ifCond ../authUser.username this.username}}  
+          <div class= "btn-group col row_card d-flex">
+            <form action="/discussion/comment/{{this._id}}?_method=DELETE" method="POST" class="new-post-form right_aln">
+              <button type="submit" class="button_link"> delete</button>
+            </form>
+            </div>
+          {{/ifCond}}
+
           </div>
-        {{/ifCond}}
-
+          <div class = "card-text">
+            <p class = "commentP">{{this.comment}}</p>  
+          </div>
+          
+          <p class = "card-footer bg-transparent comment_foot ">{{this.utc_date}}</p>
         </div>
-        <div class = "card-text">
-          <p class = "commentP">{{this.comment}}</p>  
-        </div>
-        
-        <p class = "card-footer bg-transparent comment_foot ">{{this.utc_date}}</p>
-      </div>
+      </li>
     {{/each}}
   </ul>
   {{else}}
@@ -63,7 +65,7 @@
       <div class="form-group">
         <label for="comment">
           Comment:
-          <textarea type = "text" class="form-control" id="comment" name = "comment" rows="3"></textarea>
+          <textarea class="form-control" id="comment" name = "comment" rows="3"></textarea>
         </label>
         <input type = "hidden" name = "postId" id="postId" value = {{postId}}>
       </div>
