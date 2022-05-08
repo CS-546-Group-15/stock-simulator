@@ -19,6 +19,14 @@ Handlebars.registerHelper("counter", function (index){
   return index + 1;
 });
 
+Handlebars.registerHelper('ifCond', function(v1, v2, options) {
+  console.log("1st" + v1);
+  console.log("2nd" + v2);
+  if(v1 == v2) {
+    return options.fn(this);
+  }
+  return options.inverse(this);
+});
 
 app.use(
   session({

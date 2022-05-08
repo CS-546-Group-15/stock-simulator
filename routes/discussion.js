@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const validation = require('../validation');
 const data = require('../data');
-const { getUserById } = require('../data/users');
+const { getUserById, getUser } = require('../data/users');
 const { getAllPosts } = require('../data/posts');
 const postData = data.posts;
 
@@ -31,10 +31,14 @@ router.get('/newPost', async (req, res) => {
 //  Get a specific blog post by id
 router.get('/:id', async (req, res) => {
   let authenticatedQ = (req.session.user) ? true : false
+  let authUser = "";
+  if(authenticatedQ)
+    authUser = await getUserById(req.session.user.userId);
+  console.log(authUser.username);
   try {
       const post = await postData.getPostById(req.params.id);
       // console.log(post);
-      res.render('posts/single', {post: post, title: post.title, name: post.username, body: post.info, tags: post.tags, postId: req.params.id, authenticated: authenticatedQ});
+      res.render('posts/single', {post: post, title: post.title, name: post.username, body: post.info, tags: post.tags, postId: req.params.id, authenticated: authenticatedQ, authUser: authUser});
     } catch (e) {
       res.status(500).json({error: e});
     }
@@ -71,9 +75,10 @@ router.post('/', async (req, res) => {
       try {
           const newPost = await postData.createPost(userId, title, info, tags || []);
           const name = await getUserById(userId);
+          console.log("++++++++++" + name.username);
           // tagArr = newPost.tags.split(",");
 
-          res.render(`posts/single`, {post: newPost, title: title, name: name.username, body: info, tags: newPost.tags, postId: newPost._id, authenticated: true});
+          res.render(`posts/single`, {post: newPost, title: title, name: name.username, body: info, tags: newPost.tags, postId: newPost._id, authenticated: true, authUser: name});
       } catch (e) {
           res.status(500).render('posts/newPost', {error: e, authenticated: false});
       }
@@ -87,6 +92,7 @@ router.post('/', async (req, res) => {
 router.post('/comment', async (req, res) => {
   if(req.session.user) {
     userId = req.session.user.userId;
+    authUser = await getUserById(userId);
     //console.log(userId);
     let { comment, postId } = req.body;
     //console.log(comment);
@@ -100,12 +106,10 @@ router.post('/comment', async (req, res) => {
       const newComment = await postData.createComment(postId, userId, comment);
       const post = await postData.getPostById(postId);
 
-      res.render(`posts/single`, {post: post, title: post.title, name: post.username, body: post.info, tags: post.tags, postId: postId, authenticated: true});
+      res.render(`posts/single`, {post: post, title: post.title, name: post.username, body: post.info, tags: post.tags, postId: postId, authenticated: true, authUser: authUser});
   } catch (e) {
       res.status(500).render('posts/single', {error: e, post: post, title: post.title, name: post.username, body: post.info, tags: post.tags, postId: postId, authenticated: true});
   }
-  } else{
-
   }
 });
 
@@ -129,16 +133,32 @@ router.put('/:id', async (req, res) => {
 //  Delete a post from the user and discussion board
 router.delete('/:id', async (req, res) => {
   try {
+    console.log("begin");
     await postData.getPostById(req.params.id);
+    console.log("wow");
   } catch (e) {
     res.status(404).render('error/error', {error: e});
     return;
   }
   try {
+    console.log("close");
     await postData.removePost(req.params.id);
+    console.log("HERE");
     res.sendStatus(200);
   } catch (e) {
     res.status(500).render('error/error', {error: e});
+  }
+});
+
+//  Delete a comment from a post
+router.delete('/comment/:id', async(req, res) => {
+  if(req.session.user) {
+    try{
+      await postData.removeComment(req.params.id);
+      res.sendStatus(200);
+    } catch(e){
+      res.status(500).render('error/error', {error: e});
+    }
   }
 });
 
