@@ -88,6 +88,7 @@ footer {
 .card-text {
   margin-left: 16px;
   padding-top: 8px;
+  padding-left: 0px;
   margin-bottom: 0px;
 }
 
@@ -99,4 +100,35 @@ footer {
   padding-bottom: 4px;
   padding-right: 4px;
   padding-left: 4px;
+}
+
+.row_card {
+  margin: 0px;
+  padding: 0px;
+  justify-content: right;
+}
+
+
+.button_link {
+  background: none!important;
+  font-size: .8vw;
+  border: none;
+  padding: 0!important;
+  /*optional*/
+  font-family: arial, sans-serif;
+  /*input has OS specific font-family*/
+  font-style: italic;
+  cursor: pointer;
+  margin-right: 5px;
+  text-align: right;
+  justify-content: right;
+}
+
+.button_link::hover{
+  color: #069;
+  text-decoration: underline;
+}
+
+.right_aln {
+  align-self: right;
 }
