@@ -10,4 +10,8 @@
   {{/each}}
   <a href="/discussion">Back to All Posts</a>
 </section>
+{{#if tag}}
+<a class="new-post" href="../../discussion/newPost">Make a new post here!</a>
+{{else}}
 <a class="new-post" href="discussion/newPost">Make a new post here!</a>
+{{/if}}

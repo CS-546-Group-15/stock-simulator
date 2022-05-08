@@ -21,7 +21,7 @@ router.get('/', async (req, res) => {
 //show discussion page
 router.get('/newPost', async (req, res) => {
     if(req.session.user) {
-        res.render('posts/newPost', {});
+        res.render('posts/newPost', {authenticated: true});
     } else {
         res.render('display/login', {error: 'Please log in to make a new post.'});
     }
@@ -30,10 +30,11 @@ router.get('/newPost', async (req, res) => {
   
 //  Get a specific blog post by id
 router.get('/:id', async (req, res) => {
+  let authenticatedQ = (req.session.user) ? true : false
   try {
       const post = await postData.getPostById(req.params.id);
       // console.log(post);
-      res.render('posts/single', {title: post.title, name: post.username, body: post.info, tags: post.tags});
+      res.render('posts/single', {post: post, title: post.title, name: post.username, body: post.info, tags: post.tags, postId: req.params.id, authenticated: authenticatedQ});
     } catch (e) {
       res.status(500).json({error: e});
     }
@@ -44,7 +45,9 @@ router.get('/tag/:tag', async (req, res) => {
   // console.log("tag");
   const postList = await postData.getPostsByTag(req.params.tag);
   // console.log(postList);
-    res.render('posts/posts', {posts: postList});
+  authenticatedQ = (req.session.user) ? true : false
+  res.render('posts/posts', {posts: postList, authenticated: authenticatedQ, tag: true});
+  
 });
 
 //  Post your blog to the discussion board
@@ -61,7 +64,7 @@ router.post('/', async (req, res) => {
       try {
           validation.checkCreatePost(userId, title, info, tags);
       } catch(e) {
-          res.render('posts/newPost', { error: e,});
+          res.render('posts/newPost', {error: e, authenticated: true});
           return;
       }
       
@@ -70,13 +73,39 @@ router.post('/', async (req, res) => {
           const name = await getUserById(userId);
           // tagArr = newPost.tags.split(",");
 
-          res.render(`posts/single`, {title: title, name: name.username, body: info, tags: newPost.tags});
+          res.render(`posts/single`, {post: newPost, title: title, name: name.username, body: info, tags: newPost.tags, postId: newPost._id, authenticated: true});
       } catch (e) {
-          res.status(500).render('posts/newPost', {error: e});
+          res.status(500).render('posts/newPost', {error: e, authenticated: false});
       }
   }
   else {
       res.render('display/login', {error: "Please log in to post to the discussion board."});
+  }
+});
+
+// Post your comment to the discussion board
+router.post('/comment', async (req, res) => {
+  if(req.session.user) {
+    userId = req.session.user.userId;
+    //console.log(userId);
+    let { comment, postId } = req.body;
+    //console.log(comment);
+    try{
+      validation.checkCreateComment(postId, userId, comment);
+    } catch(e){
+      //ERROR IF EMPTY
+    }
+    
+    try {
+      const newComment = await postData.createComment(postId, userId, comment);
+      const post = await postData.getPostById(postId);
+
+      res.render(`posts/single`, {post: post, title: post.title, name: post.username, body: post.info, tags: post.tags, postId: postId, authenticated: true});
+  } catch (e) {
+      res.status(500).render('posts/single', {error: e, post: post, title: post.title, name: post.username, body: post.info, tags: post.tags, postId: postId, authenticated: true});
+  }
+  } else{
+
   }
 });
 
