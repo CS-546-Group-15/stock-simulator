@@ -98,7 +98,8 @@ router.post('/comment', async (req, res) => {
 
       res.render(`posts/single`, {post: post, title: post.title, name: post.username, body: post.info, tags: post.tags, postId: postId, authenticated: true, authUser: authUser});
   } catch (e) {
-      res.status(500).render('posts/single', {error: e, post: post, title: post.title, name: post.username, body: post.info, tags: post.tags, postId: postId, authenticated: true});
+      const post = await postData.getPostById(postId);
+      res.status(500).render('posts/single', {errorComment: e, post: post, title: post.title, name: post.username, body: post.info, tags: post.tags, postId: postId, authenticated: true});
   }
   }
 });

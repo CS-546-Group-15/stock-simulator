@@ -1,4 +1,4 @@
-<p>{{error}}</p>
+
 <article class="new-post">
   <h1>Add to the discussion.</h1>
   <form action="/discussion" method="POST" class="new-post-form">
@@ -26,6 +26,7 @@
     </label>
     </div>
     {{!-- <div class="form-group"></div> --}}
+    <p class = "error">{{error}}</p>
     <button type="submit">Submit Post</button>
     <button type="reset">Clear Form</button>
   </form>
