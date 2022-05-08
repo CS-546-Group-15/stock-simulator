@@ -282,7 +282,7 @@ async function getAllAccVals() {
 
     for(user of users) { // loop through all users
         let accVal = await getAccVal(user._id.toString()); // calculate user account value
-        accVals.push({ username: user.username, acc_value: accVal }); // append to list
+        accVals.push({ username: user.username, acc_value: accVal, stocks: user.stocks }); // append to list
     }
 
     return accVals.sort((x,y) => (x.acc_value > y.acc_value) ? -1 : ((y.acc_value > x.acc_value) ? 1 : 0)); // return list sorted in decending order of account values

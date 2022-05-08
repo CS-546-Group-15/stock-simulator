@@ -15,8 +15,26 @@
       <tr>
         <th scope="row">#{{counter @index}}</th>
         <td>
-          <div class="example-popover">
-            <a tabindex="0" class="btn btn-secondary" role="button" data-bs-toggle="popover" data-bs-trigger="focus" title="{{this.username}}'s stocks" data-bs-content="Stocks here">{{this.username}}</a>
+          <div class="popover-test">
+            <a tabindex="0" class="btn btn-secondary" role="button" data-bs-toggle="popover" data-content-id="popover-content-{{counter @index}}" data-bs-trigger="focus" title="{{this.username}}'s Stocks">{{this.username}}</a>
+          </div>
+          <div id="popover-content-{{counter @index}}" hidden>
+            <table class="table table-hover table-striped table-bordered">
+              <thead class="thead-dark table-secondary">
+                <tr>
+                  <th scope="col">Symbol</th>
+                  <th scope="col">Shares</th>
+                </tr>
+              </thead>
+              <tbody>
+                {{#each this.stocks}}
+                  <tr>
+                    <th scope="row">{{this.symbol}}</th>
+                    <td>{{this.num_shares}}</td>
+                  </tr>
+                {{/each}}
+              </tbody>
+            </table>
           </div>
         </td>
         <td>{{this.acc_value}}</td>

@@ -11,7 +11,6 @@
     "author": "Andrew Narvaez 10463134",
     "license": "MIT",
     "dependencies": {
-        "ajax": "^0.0.4",
         "axios": "^0.21.4",
         "bcrypt": "^5.0.0",
         "bcryptjs": "^2.4.3",
