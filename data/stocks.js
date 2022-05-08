@@ -287,8 +287,8 @@ async function getAllAccVals() {
 
     return accVals.sort(function (x,y) {
         // comparison function for sorting in descending order by acc_value
-        let fst = parseInt(x.acc_value);
-        let snd = parseInt(y.acc_value);
+        let fst = Number(x.acc_value);
+        let snd = Number(y.acc_value);
         return (fst > snd) ? -1 : ((fst < snd) ? 1 : 0);
     }); // return list sorted in decending order of account values
 }
