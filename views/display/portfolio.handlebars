@@ -7,7 +7,7 @@
   <p>Account Value: ${{userVal}}</p>
   <p>Cash Available to Trade: ${{user.cash}}</p>
   <h2>Position Overview</h2>
-  <table class="table table-hover table-striped table-bordered">
+  <table class="table table-hover table-striped table-bordered" id="stocks">
     <thead class="thead-dark table-secondary">
       <tr>
         <th>Symbol</th>
@@ -23,7 +23,7 @@
     </thead>
     {{#each stockList}}
       <tr>
-        <td>{{this.symbol}}</td>
+        <td id="symbolLink"><a href="#" data-bs-toggle="modal" data-bs-target="#quoteModal">{{this.symbol}}</a></td>
         <td>${{this.last_price}}</td>
         <td>${{this.gain_loss_$}}</td>
         <td>${{this.total_gain_loss_$}}</td>
@@ -34,6 +34,22 @@
       </tr>
     {{/each}}
   </table>
+
+  <div class="modal" id="quoteModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h4 class="bodal-title" id="stock-symbol"></h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <div class="modal-body" id="stock-info">
+          
+        </div>
+      </div>
+    </div>
+  </div>
 
   <h5>Buy/Sell Stocks</h5>
   <div class="row">

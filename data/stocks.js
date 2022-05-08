@@ -103,8 +103,9 @@ async function buyStock(userId, symbol, shares) { // TODO: STILL NEED TO DEAL WI
     // stockData = stockApiData[0];
     stockData = stockApiData;
 
+    // NOT CHECKING IF MARKET OPEN FOR DEMO PURPOSES
     // check if market is closed
-    if(!stockData.isUSMarketOpen) throw 'Cannot purchase stock: the US Market is currently closed.'
+    // if(!stockData.isUSMarketOpen) throw 'Cannot purchase stock: the US Market is currently closed.'
 
     // set price purchased to last sale price
     // let price_purchased = stockData.lastSalePrice;
@@ -189,8 +190,9 @@ async function sellStock(userId, symbol, shares) { // TODO: STILL NEED TO DEAL W
     // if(stockApiData.length < 1) throw `Could not find stock with symbol ${symbol}`;
     if(!stockApiData) throw `Could not find stock with symbol ${symbol}`;
 
+    // NOT CHECKING IF MARKET OPEN FOR DEMO PURPOSES
     // check if market is closed
-    if(!stockData.isUSMarketOpen) throw 'Cannot purchase stock: the US Market is currently closed.'
+    // if(!stockData.isUSMarketOpen) throw 'Cannot purchase stock: the US Market is currently closed.'
 
     // api call returns an array, to get desired stock, get first element of that array
     stockData = stockApiData;
