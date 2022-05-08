@@ -5,7 +5,8 @@ const data = require('../data');
 const { getUserById, getUser } = require('../data/users');
 const { getAllPosts } = require('../data/posts');
 const postData = data.posts;
-
+const methodOverride = require('method-override');
+router.use(methodOverride('_method'));
 //show discussion page
 router.get('/', async (req, res) => {
   if(req.session.user) {

@@ -25,10 +25,11 @@
       <div class = "card mb-3">
         <h4 class = "card-header">Posted By: {{this.username}}</h4>
         {{#ifCond ../authUser.username this.username}}  
-          <form action="/discussion/comment" method="PUT" class="new-post-form">
+          {{!-- <p>_{{this._id}} id{{this.id}} postId{{this.postId}} ID{{this.postID}}</p> --}}
+          <form action="/discussion/comment/{{this._id}}?_method=PUT" method="POST" class="new-post-form">
             <button type="submit">Edit Post</button>
           </form>
-          <form action="/discussion/comment" method="DELETE" class="new-post-form">
+          <form action="/discussion/comment/{{this._id}}?_method=DELETE" method="POST" class="new-post-form">
             <button type="submit">Delete Post</button>
           </form>
         {{/ifCond}}
