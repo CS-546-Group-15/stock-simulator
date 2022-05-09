@@ -48,6 +48,7 @@ router.get('/:id', async (req, res) => {
 
 //  Get a blogs that contain tags given
 router.get('/tag/:tag', async (req, res) => {
+  if(!req.params.tag) throw 'No tag given to search.'
   const postList = await postData.getPostsByTag(req.params.tag);
   authenticatedQ = (req.session.user) ? true : false
   res.render('posts/posts', {posts: postList, authenticated: authenticatedQ, tag: true});
