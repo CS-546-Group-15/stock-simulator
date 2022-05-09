@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const validation = require('../validation');
 const data = require('../data');
-const { getUserById, getUser } = require('../data/users');
+// const { userData.getUserById, getUser } = require('../data/users');
 const { getAllPosts } = require('../data/posts');
 const postData = data.posts;
+const userData = data.users;
 const methodOverride = require('method-override');
 router.use(methodOverride('_method'));
 //show discussion page
@@ -34,10 +35,21 @@ router.get('/:id', async (req, res) => {
   let authenticatedQ = (req.session.user) ? true : false
   let authUser = "";
   if(authenticatedQ)
-    authUser = await getUserById(req.session.user.userId);
+    authUser = await userData.getUserById(req.session.user.userId);
   try {
       const post = await postData.getPostById(req.params.id);
-      res.render('posts/single', {post: post, title: post.title, name: post.username, body: post.info, tags: post.tags, postId: req.params.id, authenticated: authenticatedQ, authUser: authUser});
+      let comUser;
+      // console.log(post.comments);
+        post.comments.map(async function(x) {
+          // console.log(x.userID);
+          x.userID = await userData.getUserById(x.userID)
+          return x;
+          // console.log(comUser);
+        });
+      console.log(post.comments[0].userID);
+      
+      // let usernameCom = await userData.getUserById(post.comments.userID);
+      res.render('posts/single', {post: post, postId: req.params.id, authenticated: authenticatedQ, authUser: authUser});
     } catch (e) {
       res.status(500).json({error: e});
     }
@@ -67,7 +79,7 @@ router.post('/', async (req, res) => {
       
       try {
           const newPost = await postData.createPost(userId, title, info, tags || []);
-          const name = await getUserById(userId);
+          const name = await userData.getUserById(userId);
           // tagArr = newPost.tags.split(",");
 
           res.render(`posts/single`, {post: newPost, title: title, name: name.username, body: info, tags: newPost.tags, postId: newPost._id, authenticated: true, authUser: name});
@@ -84,7 +96,7 @@ router.post('/', async (req, res) => {
 router.post('/comment', async (req, res) => {
   if(req.session.user) {
     userId = req.session.user.userId;
-    authUser = await getUserById(userId);
+    authUser = await userData.getUserById(userId);
     let { comment, postId } = req.body;
     try{
       validation.checkCreateComment(postId, userId, comment);
@@ -95,9 +107,11 @@ router.post('/comment', async (req, res) => {
     try {
       const newComment = await postData.createComment(postId, userId, comment);
       const post = await postData.getPostById(postId);
-
-      res.render(`posts/single`, {post: post, title: post.title, name: post.username, body: post.info, tags: post.tags, postId: postId, authenticated: true, authUser: authUser});
+      let usernameCom = await userData.getUserById(newComment.userID);
+      // console.log(usernameCom.username);
+      res.render(`posts/single`, {post: post, title: post.title, name: post.username, body: post.info, tags: post.tags, postId: postId, authenticated: true, authUser: authUser, username: usernameCom.username});
   } catch (e) {
+      // let usernameCom = await userData.getUserById(newComment.userID);
       const post = await postData.getPostById(postId);
       res.status(500).render('posts/single', {errorComment: e, post: post, title: post.title, name: post.username, body: post.info, tags: post.tags, postId: postId, authenticated: true});
   }
@@ -133,7 +147,7 @@ router.delete('/comment/:id', async(req, res) => {
     try{
       let userId = req.session.user.userId;
       
-      let authUser = await getUserById(userId);
+      let authUser = await userData.getUserById(userId);
       let commentUser = await postData.getCommentById(req.params.id);
       if(req.session.user.username != commentUser.username)
         throw "User isn't authenticated to delete this post";

@@ -89,9 +89,9 @@ function checkGetComment(commentId){
     //ERROR CHECKING PLS
 }
 
-function checkUpdateComment(commentId, comment){
-    if(!commentId) throw "Must provide a comment ID";
-    if(!comment) throw "Must provide a comment";
+function checkUpdateComment(commentId, username){
+    if(!commentId) throw "Must provide a username";
+    if(!username) throw "Must provide a username";
 }
 
 function checkSymbol(symbol) {
