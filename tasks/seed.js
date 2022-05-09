@@ -32,23 +32,30 @@ async function main() {
         // elon's holdings
         await stockOperations.buyStock(userList[0]._id.toString(), 'TWTR', 75);
         await stockOperations.buyStock(userList[0]._id.toString(), 'TSLA', 3);
+        await posts.createPost(userList[0]._id, "Twitter is all mine!", "I have bought Twitter, I have no regrets...", "shark,twitter,elonmusk");
 
         // jeff's holdings
         await stockOperations.buyStock(userList[1]._id.toString(), 'AMZN', 3);
         await stockOperations.buyStock(userList[1]._id.toString(), 'UBER', 30);
+        await posts.createPost(userList[1]._id, "Elon Musk, more like Elon Tusk!", "Elon may have Twitter now but he's got nothing on me.", "#better,amazon,cmonjeffrey,youcandoit");
+
+        // get all posts as of now
+        let postList = await posts.getAllPosts();
 
         // bill's holdings
         await stockOperations.buyStock(userList[2]._id.toString(), 'MSFT', 25); // notice how he doesn't own any tesla
+        await posts.createComment(postList[0]._id, userList[2]._id, "Uh oh, time to never use Twitter again! Selling all my shares.");
 
-        // ben's holdings
+        // enreek's holdings
         await stockOperations.buyStock(userList[3]._id.toString(), 'TQQQ', 100);
         await stockOperations.buyStock(userList[3]._id.toString(), 'UPRO', 75);
         await stockOperations.buyStock(userList[3]._id.toString(), 'SPXL', 5);
+        await posts.createComment(postList[0]._id, userList[3]._id, "Time to invest, I'm in!");
 
-        // hugh's holdings
+        // oatmilk's holdings
         await stockOperations.buyStock(userList[4]._id.toString(), 'GM', 150);
 
-        // ohprah's holdings
+        // oprah's holdings
         await stockOperations.buyStock(userList[5]._id.toString(), 'STAG', 100);
 
         // youheardem's holdings
