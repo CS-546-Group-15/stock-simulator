@@ -49,7 +49,13 @@
     stockTable.on('click', 'a', function (event) {
         event.preventDefault();
         var currentSymbol = event.target.innerText; // get the symbol of the stock
-        checkSymbol(currentSymbol);
+        try {
+            checkSymbol(currentSymbol);
+        } catch(e) {
+            modalSymbol.append('Error');
+            modalBody.append(`${e}`);
+            return;
+        }
         // empty the modal
         modalSymbol.empty();
         modalBody.empty();
@@ -71,6 +77,11 @@
             modalBody.append(`<p>Volume: ${responseMessage.volume}</p>`);
             modalBody.append(`<p>52-Week High: \$${responseMessage.week52High}</p>`);
             modalBody.append(`<p>52-Week Low: \$${responseMessage.week52Low}</p>`);
+        },
+        function (error) { // function to handle errors in the api call
+            modalSymbol.append('Error');
+            modalBody.append(`Sorry, no stock was found with symbol ${currentSymbol}.`);
+            return;
         });
     });
 
@@ -81,12 +92,10 @@
         modalSymbol.empty();
         modalBody.empty();
         var errorDiv = $('#quote_error');
-        errorDiv.hide();
         // check the quote symbol
         try {
             checkSymbol(quoteSymbol.val());
         } catch(e) {
-            console.log('there was an error');
             modalSymbol.append('Error');
             modalBody.append(`${e}`);
             return;
@@ -110,6 +119,11 @@
             modalBody.append(`<p>Volume: ${responseMessage.volume}</p>`);
             modalBody.append(`<p>52-Week High: \$${responseMessage.week52High}</p>`);
             modalBody.append(`<p>52-Week Low: \$${responseMessage.week52Low}</p>`);
+        },
+        function (error) { // function to handle errors in the api call
+            modalSymbol.append('Error');
+            modalBody.append(`Sorry, no stock was found with symbol ${currentSymbol}.`);
+            return;
         });
     })
 })(window.jQuery);
