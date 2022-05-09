@@ -4,7 +4,6 @@ const users = mongoCollections.users;
 const validation = require("../validation.js");
 const { ObjectId } = require("mongodb");
 const res = require("express/lib/response");
-const userData = require('./users.js');
 
 
 //  Display all posts so far in discussion (might limit to certain amount)
@@ -137,7 +136,7 @@ async function createComment(postID, userID, comment) {
     let theID = new ObjectId();
     const userComment = {
         _id: ObjectId(theID),
-        userID: userID,
+        username: user.username,
         comment: comment,
         utc_date: date_time,
     };
@@ -150,7 +149,7 @@ async function createComment(postID, userID, comment) {
             $addToSet: {
                 comments: {
                     _id: ObjectId(theID),
-                    userID: userID,
+                    username: user.username,
                     comment: comment,
                     utc_date: date_time,
                 },
@@ -193,13 +192,13 @@ async function getCommentById(commentId){
     return comment.comments[0];
 }
 
-async function updateComment(commentId, username){
+async function updateComment(commentId, comment){
     //error check inputs
-    validation.checkUpdateComment(commentId, username);
-    // let date_time = new Date().toUTCString();
+    validation.checkUpdateComment(commentId, comment);
+    let date_time = new Date().toUTCString();
 
     const postCollection = await posts();
-    // const postComment = await getCommentById(commentId);
+    const postComment = await getCommentById(commentId);
 
     const parent = await postCollection.findOne(
         { "comments._id": ObjectId(commentId) }
@@ -207,7 +206,7 @@ async function updateComment(commentId, username){
     const post = await postCollection.findOne({ _id: ObjectId(parent._id) });
 
     const updateInfo = await postCollection.updateOne({_id: post._id, "comments._id": commentId},
-        {"$set": {"comments.$.username": username}}    
+        {"$set": {"comments.$.comment": comment, "comments.$.utc_date": date_time}}    
     );
 
     

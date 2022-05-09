@@ -3,18 +3,18 @@
     <div class = "card-body">
   <div class = "card-title row">
 
-  <h1 class="col">{{ post.title }}</h1>
+  <h1 class="col">{{ title }}</h1>
   {{#ifCond name authUser.username}}
-    <form action="/discussion/{{post.postId}}?_method=DELETE" method="POST" class="new-post-form col button_link">
+    <form action="/discussion/{{postId}}?_method=DELETE" method="POST" class="new-post-form col button_link">
         <button type = "submit">Delete Post</button>
     </form>
   {{/ifCond}}
   </div>
-  <address class = "card-subtitle text-muted">Posted by {{{ post.username }}}</address>
-  <p>{{ post.body }}</p>
+  <address class = "card-subtitle text-muted">Posted by {{{ name }}}</address>
+  <p>{{ body }}</p>
   
   <div class = "card-subtitle text-muted">
-  {{#if post.tags.length }}
+  {{#if tags.length }}
     <h5>Tags</h5>
     <ul>
       {{#each tags}}
@@ -32,9 +32,9 @@
         <div class = "card mb-3">
           
           <div class = "row row_card">
-          <h5 class = "card-text col">Posted By: {{this.userID}}</h5>
+          <h5 class = "card-text col">Posted By: {{this.username}}</h5>
 
-          {{#ifCond ../authUser.username this.userID}}  
+          {{#ifCond ../authUser.username this.username}}  
           <div class= "btn-group col row_card d-flex">
             <form action="/discussion/comment/{{this._id}}?_method=DELETE" method="POST" class="new-post-form right_aln">
               <button type="submit" class="button_link"> delete</button>
@@ -67,7 +67,7 @@
           Comment:
           <textarea class="form-control" id="comment" name = "comment" rows="3"></textarea>
         </label>
-        <input type = "hidden" name = "postId" id="postId" value = {{post.postId}}>
+        <input type = "hidden" name = "postId" id="postId" value = {{postId}}>
       </div>
       <p class = "error">{{errorComment}}</p>
       <button type="submit">Submit Comment</button>
