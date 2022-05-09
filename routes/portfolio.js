@@ -47,7 +47,6 @@ router.post("/buy", async (req, res) => {
     validation.checkSymbol(symbol);
     validation.checkShares(num_shares);
     
-
     num_shares = Number(num_shares);
 
     await stocks.buyStock(userId, symbol, num_shares);
