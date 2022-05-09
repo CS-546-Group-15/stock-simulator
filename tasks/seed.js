@@ -14,7 +14,7 @@ async function main() {
         console.log("Starting to Seed Database!");
 
         await users.createUser('elonmusk', 'twitterceo');
-        await users.createUser('jeffbezos', 'penislol');
+        await users.createUser('jeffbezos', 'blueorigin');
         await users.createUser('billgates', 'nottesla');
         await users.createUser('enreeK', 'password');
         await users.createUser('oatmilk', 'password');

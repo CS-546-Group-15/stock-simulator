@@ -5,6 +5,9 @@ const saltRounds = 12;
 const validation = require("../validation.js");
 const { ObjectId } = require("mongodb");
 
+/*
+    Gets user by id
+*/
 async function getUserById(id) {
     // validate inputs
     validation.checkId(id);
@@ -20,6 +23,10 @@ async function getUserById(id) {
     return user;
 } 
 
+
+/*
+    Creates a user
+*/
 async function createUser(username, password) {
     //Ensures no errors in email/username/password entry. 
     validation.checkUsername(username);
@@ -54,6 +61,10 @@ async function createUser(username, password) {
     return { userCreated: true }; // return an insert confirmation
 }
 
+
+/*
+    Gets user by username
+*/
 async function getUser(username) {
     // validate inputs
     validation.checkUsername(username);
@@ -70,6 +81,10 @@ async function getUser(username) {
     return user;
 }
 
+
+/*
+    Authenticates a user given username and password
+*/
 async function checkUser(username, password) {
     // validate inputs
     validation.checkUsername(username);
@@ -90,6 +105,10 @@ async function checkUser(username, password) {
     return { authenticated: true }; // authenticate
 }
 
+
+/*
+    Gets all users currently in the database
+*/
 async function getAllUsers() {
     // get users collection
     const userCollection = await users();
@@ -101,6 +120,10 @@ async function getAllUsers() {
     // return userList.sort((x,y) => (x.cash > y.cash) ? -1 : ((y.cash > x.cash) ? 1 : 0)); // return user list sorted in decending order by cash
 }
 
+
+/*
+    Updates a user's password
+*/
 async function updateUser(username, newPassword) {
     //validate inputs
     validation.checkUsername(username);

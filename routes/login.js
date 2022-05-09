@@ -5,6 +5,7 @@ const userData = data.users;
 const validation = require('../validation');
 const xss = require('xss');
 
+//get login page
 router.get('/', async (req, res) => {
     if(req.session.user) {
         res.redirect('/');
@@ -13,6 +14,7 @@ router.get('/', async (req, res) => {
     }
 });
 
+//attempt a login
 router.post('/', async (req, res) => {
     // get req.body username and password
     let { username, password } = req.body;

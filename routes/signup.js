@@ -5,6 +5,7 @@ const userData = data.users;
 const validation = require('../validation');
 const xss = require('xss');
 
+//show signup page
 router.get('/', async (req, res) => {
     if(req.session.user) {
         res.redirect('/');
@@ -13,7 +14,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-
+//attempt sign up
 router.post('/', async (req, res) => {
     // get req.body username and password
     let { username, password } = req.body;

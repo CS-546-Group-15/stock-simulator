@@ -6,20 +6,28 @@ const { ObjectId } = require("mongodb");
 const res = require("express/lib/response");
 
 
-//  get every post in the database
+/*
+    get every post in the database
+*/
 async function getAllPosts() {
     const postCollection = await posts();
     return await postCollection.find({}).toArray();
 }
 
-//  get posts that are associated with the given tag
+
+/*
+    Get a post by a specific tag, look for specific keywords/stocks
+*/
 async function getPostsByTag(tag) {
     if (!tag) throw 'No tag provided';
     const postCollection = await posts();
     return await postCollection.find({tags: tag}).toArray();
 }
 
-//  gets a singular post based off of its id
+
+/*
+    Gets a post by ID, used for getting a specific post
+*/
 async function getPostById(id) {
     if (!id) throw 'No ID provided';
     const postCollection = await posts();
@@ -29,7 +37,10 @@ async function getPostById(id) {
     return post;
 }
 
-//  gets a specific comment by a given id
+
+/*
+    Gets a post by commentID
+*/
 async function getPostByCommentId(commentId){
     validation.checkGetComment(commentId);
 
@@ -41,7 +52,10 @@ async function getPostByCommentId(commentId){
     return post;
 }
 
-//  creates a post to be displayed on the discussion page
+
+/*
+    A post is the main discussion, comments will be added to it.
+*/
 async function createPost(userID, title, info, tags) {
     //error check inputs
     validation.checkCreatePost(userID, title, info, tags);
@@ -71,7 +85,10 @@ async function createPost(userID, title, info, tags) {
     return newPost;
 }
 
-//  allows for posts to be edited
+
+/*
+    Updates the contents of a post
+*/
 async function updatePost(postID, userID, title, info, tags) {
     //error check inputs
     validation.checkUpdatePost(postID, userID, title, info, tags);
@@ -106,7 +123,10 @@ async function updatePost(postID, userID, title, info, tags) {
     return updateInfo;
 }
 
-//  gives a user the ability to remove their post
+
+/*
+    Removes a post by ID
+*/
 async function removePost(id) {
     const postCollection = await posts();
     let post = null;
@@ -122,7 +142,10 @@ async function removePost(id) {
     return true;
 }
 
-//  allows users to leave comments on a post
+
+/*
+    Creates a comment
+*/
 async function createComment(postID, userID, comment) {
     //error check inputs
     validation.checkCreateComment(postID, userID, comment);
@@ -167,7 +190,10 @@ async function createComment(postID, userID, comment) {
     return userComment;
 }
 
-//  lets users remove their comment if they are the owner of it
+
+/*
+    Removes a comment by ID
+*/
 async function removeComment(commentID) {
     //error check inputs
     validation.checkRemoveComment(commentID);
@@ -197,7 +223,10 @@ async function getCommentById(commentId){
     return comment.comments[0];
 }
 
-//  allows for users who own a comment to alter it
+
+/*
+    Updates a comment by ID
+*/
 async function updateComment(commentId, comment){
     //error check inputs
     validation.checkUpdateComment(commentId, comment);
@@ -214,8 +243,6 @@ async function updateComment(commentId, comment){
     const updateInfo = await postCollection.updateOne({_id: post._id, "comments._id": commentId},
         {"$set": {"comments.$.comment": comment, "comments.$.utc_date": date_time}}    
     );
-
-    
 }
 
 module.exports = {

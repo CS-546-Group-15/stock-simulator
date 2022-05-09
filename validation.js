@@ -34,19 +34,6 @@ function checkPassword(password) {
     }
 }
 
-// MIGHT NOT NEED THIS
-function checkEmail(email) {
-    if (!email) throw "Must provide an email address";
-    
-
-    //using regex to make sure emails are valid
-    var validEmail = /^((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    
-    if(!(emailDomain.match(validEmail))){
-        throw `Error: Not a valid email`
-    }
-}
-
 //
 //  POSTS
 //
@@ -56,7 +43,14 @@ function checkCreatePost(userID, title, info, tags) {
     if (!info) throw "Must provide info";
     if (!tags) throw "Must provide tags";
 
-    //need to further define these to check them
+    if (!ObjectId.isValid(userID)) throw "user ID is not valid object id";
+
+    if (typeof title !== 'string') throw "title must be of type string";
+    if (typeof info !== 'string') throw "info must be of type string";
+    //PLEASE CHECK TYPE OF TAGS, I DONT KNOW
+
+    if (title.trim().length < 1) throw "title must be nonempty";
+    if (info.trim().length < 1) throw "info must be nonempty";
 }
 
 function checkUpdatePost(postID, userID, title, info, tags) {
@@ -66,7 +60,16 @@ function checkUpdatePost(postID, userID, title, info, tags) {
     if (!info) throw "Must provide info";
     if (!tags) throw "Must provide tags";
 
-    //need to further define these to check them
+    if (!ObjectId.isValid(postID)) throw "post ID is not valid object id";
+    if (!ObjectId.isValid(userID)) throw "user ID is not valid object id";
+
+    if (typeof title !== 'string') throw "title must be of type string";
+    if (typeof info !== 'string') throw "info must be of type string";
+    //PLEASE CHECK TYPE OF TAGS, I DONT KNOW
+
+    if (title.trim().length < 1) throw "title must be nonempty";
+    if (info.trim().length < 1) throw "info must be nonempty";
+    
 }
 
 function checkCreateComment(postID, userID, comment) {
@@ -74,24 +77,33 @@ function checkCreateComment(postID, userID, comment) {
     if (!userID) throw "Must provide a user ID";
     if (!comment) throw "Must provide a comment";
 
-    //need to further define these to check them
+    if (!ObjectId.isValid(postID)) throw "post ID is not valid object id";
+    if (!ObjectId.isValid(userID)) throw "user ID is not valid object id";
+
+    if (typeof comment !== 'string') throw "comment must be of type string";
+    if (comment.trim().length < 1) throw "comment must be nonempty";
 }
 
 function checkRemoveComment(commentID) {
     if (!commentID) throw "Must provide a comment ID";
-
-    //probably just need to check if valid object ID.
+    if(!ObjectId.isValid(commentID)) throw 'comment ID must be a valid ObjectId';
 }
 
 function checkGetComment(commentId){
     if(!commentId) throw "Must provide a comment ID";
 
-    //ERROR CHECKING PLS
+    if (!ObjectId.isValid(commentId)) throw "comment ID is not valid object id";
 }
 
 function checkUpdateComment(commentId, comment){
     if(!commentId) throw "Must provide a comment ID";
     if(!comment) throw "Must provide a comment";
+
+    if (!ObjectId.isValid(commentId)) throw "comment ID is not valid object id";
+    
+    if (typeof comment !== 'string') throw "comment must be of type string";
+    if (comment.trim().length < 1) throw "comment must be nonempty"
+
 }
 
 function checkSymbol(symbol) {
@@ -129,7 +141,6 @@ function checkShares(shares) {
 module.exports = {
     checkUsername,
     checkPassword,
-    checkEmail,
     checkCreatePost,
     checkUpdatePost,
     checkCreateComment,
