@@ -31,7 +31,8 @@ const constructorMethod = (app) => {
 
  //redirected to not found page
   app.use("*", (req, res) => {
-    res.status(404).render('error/notfound', {error: "Not found"});
+    let authenticatedQ = (req.session.user) ? true : false;
+    res.status(404).render('error/notfound', {error: "Not found", authenticated: authenticatedQ});
   });
 };
 
