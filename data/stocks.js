@@ -203,7 +203,7 @@ async function sellStock(userId, symbol, shares) { // TODO: STILL NEED TO DEAL W
     // check if user owns the stock being purchased
     owned = user.stocks.filter(stock => stock.symbol === symbol);
     if(owned.length < 1) { // case: user does not own the stock being sold, cannot sell stock
-        throw 'user does not own this stock';
+        throw 'You do not own this stock';
     } else { // user owns the stock being purchased
         stock = owned[0]; // get owned stock info
 
