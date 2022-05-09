@@ -86,7 +86,7 @@ function checkCreateComment(postID, userID, comment) {
 
 function checkRemoveComment(commentID) {
     if (!commentID) throw "Must provide a comment ID";
-    if (!ObjectId.isValid(commentID)) throw "comment ID is not valid object id";
+    if(!ObjectId.isValid(commentID)) throw 'comment ID must be a valid ObjectId';
 }
 
 function checkGetComment(commentId){
