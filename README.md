@@ -8,3 +8,8 @@ Run `npm run seed`
 
 ## To Run Server
 Make sure mongoDB process is running and run `npm start` to start server. The server will start on http://localhost:3000
+
+## Your Credentials
+Running the seed will general a user for you.
+Username: patrickhill
+Password: password
