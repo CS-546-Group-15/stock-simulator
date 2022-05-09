@@ -6,29 +6,30 @@ const { ObjectId } = require("mongodb");
 const res = require("express/lib/response");
 
 
-//  Display all posts so far in discussion (might limit to certain amount)
+//  get every post in the database
 async function getAllPosts() {
     const postCollection = await posts();
     return await postCollection.find({}).toArray();
 }
 
-//  Get a post by a specific tag, look for specific keywords/stocks
+//  get posts that are associated with the given tag
 async function getPostsByTag(tag) {
     if (!tag) throw 'No tag provided';
     const postCollection = await posts();
     return await postCollection.find({tags: tag}).toArray();
 }
 
-//  Gets a post by ID, used for getting a specific post
+//  gets a singular post based off of its id
 async function getPostById(id) {
+    if (!id) throw 'No ID provided';
     const postCollection = await posts();
     id = ObjectId(id);
     const post = await postCollection.findOne({_id: id});
-
     if (!post) throw 'Post not found';
     return post;
 }
 
+//  gets a specific comment by a given id
 async function getPostByCommentId(commentId){
     validation.checkGetComment(commentId);
 
@@ -40,7 +41,7 @@ async function getPostByCommentId(commentId){
     return post;
 }
 
-//a post is the main discussion, comments will be added to it.
+//  creates a post to be displayed on the discussion page
 async function createPost(userID, title, info, tags) {
     //error check inputs
     validation.checkCreatePost(userID, title, info, tags);
@@ -70,6 +71,7 @@ async function createPost(userID, title, info, tags) {
     return newPost;
 }
 
+//  allows for posts to be edited
 async function updatePost(postID, userID, title, info, tags) {
     //error check inputs
     validation.checkUpdatePost(postID, userID, title, info, tags);
@@ -104,6 +106,7 @@ async function updatePost(postID, userID, title, info, tags) {
     return updateInfo;
 }
 
+//  gives a user the ability to remove their post
 async function removePost(id) {
     const postCollection = await posts();
     let post = null;
@@ -119,6 +122,7 @@ async function removePost(id) {
     return true;
 }
 
+//  allows users to leave comments on a post
 async function createComment(postID, userID, comment) {
     //error check inputs
     validation.checkCreateComment(postID, userID, comment);
@@ -163,7 +167,7 @@ async function createComment(postID, userID, comment) {
     return userComment;
 }
 
-
+//  lets users remove their comment if they are the owner of it
 async function removeComment(commentID) {
     //error check inputs
     validation.checkRemoveComment(commentID);
@@ -178,6 +182,7 @@ async function removeComment(commentID) {
     if(updateInfo === 0) `Could not delete comment.`
 }
 
+//  gets a specific comment by its respective ID
 async function getCommentById(commentId){
     validation.checkGetComment(commentId);
     const postCollection = await posts();
@@ -192,6 +197,7 @@ async function getCommentById(commentId){
     return comment.comments[0];
 }
 
+//  allows for users who own a comment to alter it
 async function updateComment(commentId, comment){
     //error check inputs
     validation.checkUpdateComment(commentId, comment);

@@ -23,11 +23,9 @@ async function getStockBySymbol(symbol) {
         const { data } = await axios.get(url);
         return data;
   } catch (e) {
-        console.log(e);
         return;
   }
   
-
   /*
   EXAMPLE OF WHAT THE DATA RETURNED WILL BE GIVEN symbol = 'aapl'
       [
@@ -374,7 +372,6 @@ async function getEfficiency(accVal, userId) {
     */
     let efficiency = null;
     let stocksArr = await getUserStocks(userId);
-    // console.log(stocksArr);
     if(stocksArr.length == 0) return efficiency;
     //  get the current date, and find the oldest purchased date for a stock
     let today = new Date();
