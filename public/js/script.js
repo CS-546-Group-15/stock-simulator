@@ -76,16 +76,22 @@
 
     // ajax form for getting any stock quote
     quoteForm.submit(function (event) {
-        console.log('submitting');
         event.preventDefault();
-        // need to error check this
-        var currentSymbol = quoteSymbol.val().trim();
-        checkSymbol(currentSymbol);
-
-        checkSymbol(currentSymbol);
-        // empty the modal
+        // empty modal
         modalSymbol.empty();
         modalBody.empty();
+        var errorDiv = $('#quote_error');
+        errorDiv.hide();
+        // check the quote symbol
+        try {
+            checkSymbol(quoteSymbol.val());
+        } catch(e) {
+            console.log('there was an error');
+            modalSymbol.append('Error');
+            modalBody.append(`${e}`);
+            return;
+        }
+        var currentSymbol = quoteSymbol.val().trim().toUpperCase();
 
         // setup api call with current symbol
         requestConfig = {
