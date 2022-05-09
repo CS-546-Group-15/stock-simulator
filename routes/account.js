@@ -3,6 +3,7 @@ const router = express.Router();
 const validation = require('../validation');
 const data = require('../data');
 const userData = data.users;
+const xss = require('xss');
 
 //show profile page
 router.get('/', async (req, res) => {
@@ -32,6 +33,11 @@ router.post('/update', async (req, res) => {
     
     //get params
     let { current, newpass, confirmpass } = req.body;
+
+    //clean
+    current = xss(current);
+    newpass = xss(newpass);
+    confirmpass = xss(confirmpass);
 
     //validate each password, displaying errors specific to each (could possibly be abstracted)
     try {

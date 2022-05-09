@@ -7,6 +7,9 @@ const { getAllPosts } = require('../data/posts');
 const postData = data.posts;
 const methodOverride = require('method-override');
 router.use(methodOverride('_method'));
+const xss = require('xss');
+
+
 //show discussion page
 router.get('/', async (req, res) => {
   if(req.session.user) {
@@ -58,6 +61,12 @@ router.post('/', async (req, res) => {
       // let blogPostData = req.body;
       userId = req.session.user.userId;
       let { title, tags, info } = req.body;
+
+      //clean
+      title = xss(title);
+      tags = xss(tags);
+      info = xss(info);
+
       try {
           validation.checkCreatePost(userId, title, info, tags);
       } catch(e) {
@@ -86,6 +95,11 @@ router.post('/comment', async (req, res) => {
     userId = req.session.user.userId;
     authUser = await getUserById(userId);
     let { comment, postId } = req.body;
+
+    //clean
+    comment = xss(comment);
+    postId = xss(postId);
+
     try{
       validation.checkCreateComment(postId, userId, comment);
     } catch(e){
