@@ -16,8 +16,8 @@ async function main() {
         await users.createUser('elonmusk', 'twitterceo');
         await users.createUser('jeffbezos', 'penislol');
         await users.createUser('billgates', 'nottesla');
-        await users.createUser('bendover', 'password');
-        await users.createUser('hughjanus', 'password');
+        await users.createUser('enreeK', 'password');
+        await users.createUser('oatmilk', 'password');
         await users.createUser('oprah', 'password');
         await users.createUser('youheardem', 'password');
         await users.createUser('nancypelosi', 'unbeatable');
