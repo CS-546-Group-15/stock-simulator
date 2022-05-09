@@ -128,6 +128,7 @@ async function updatePost(postID, userID, title, info, tags) {
     Removes a post by ID
 */
 async function removePost(id) {
+    if(!id) throw "Remove Post: No ID given."
     const postCollection = await posts();
     let post = null;
     try {

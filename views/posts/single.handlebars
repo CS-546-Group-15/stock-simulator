@@ -15,7 +15,7 @@
   
   <div class = "card-subtitle text-muted">
   {{#if tags.length }}
-    <h5>Tags</h5>
+    <h2>Tags</h2>
     <ul>
       {{#each tags}}
         <li><a href="/discussion/tag/{{this}}">{{this}}</a></li>
@@ -32,7 +32,7 @@
         <div class = "card mb-3">
           
           <div class = "row row_card">
-          <h5 class = "card-text col">Posted By: {{this.username}}</h5>
+          <h3 class = "card-text col">Posted By: {{this.username}}</h3>
 
           {{#ifCond ../authUser.username this.username}}  
           <div class= "btn-group col row_card d-flex">

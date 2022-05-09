@@ -67,6 +67,13 @@ async function main() {
         // owner's holdings
         await stockOperations.buyStock(userList[8]._id.toString(), 'FNGU', 300);
         
+        // and our very own, Prof. Patrick Hill :)
+        await stockOperations.buyStock(userList[9]._id.toString(), 'GME', 20);
+        await stockOperations.buyStock(userList[9]._id.toString(), 'AMC', 10);
+        await stockOperations.buyStock(userList[9]._id.toString(), 'BB', 5);
+        await stockOperations.buyStock(userList[9]._id.toString(), 'TWTR', 30);
+        await posts.createPost(userList[9]._id, "What would theoretically happen if I invested 50k on Twitter?", "Please give me advice, NO JOKES!", "risky,inside,trading??");
+
         console.log("Done Seeding!");
        
     } catch(e){
