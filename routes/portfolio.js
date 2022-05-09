@@ -4,6 +4,7 @@ const data = require("../data/");
 const users = data.users;
 const stocks = data.stocks;
 const validation = require('../validation');
+const xss = require('xss');
 
 //show portfolio page
 router.get("/", async (req, res) => {
@@ -38,6 +39,10 @@ router.post("/buy", async (req, res) => {
   try {
     let { symbol, num_shares } = req.body;
     let userId = req.session.user.userId;
+
+    //clean
+    symbol = xss(symbol);
+    num_shares = xss(num_shares);
 
     validation.checkShares(num_shares);
     validation.checkSymbol(symbol);
@@ -76,6 +81,11 @@ router.post("/sell", async (req, res) => {
     try {
       let { symbol, num_shares } = req.body;
       let userId = req.session.user.userId;
+
+      //clean
+      symbol = xss(symbol);
+      num_shares = xss(num_shares);
+
       num_shares = parseInt(num_shares);
   
       validation.checkShares(num_shares);

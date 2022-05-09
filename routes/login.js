@@ -4,6 +4,7 @@ const data = require('../data');
 const { getUser } = require('../data/users');
 const userData = data.users;
 const validation = require('../validation');
+const xss = require('xss');
 
 router.get('/', async (req, res) => {
     if(req.session.user) {
@@ -16,6 +17,10 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
     // get req.body username and password
     let { username, password } = req.body;
+
+    //clean
+    username = xss(username);
+    password = xss(password);
     
     //error check username and password
     try {
