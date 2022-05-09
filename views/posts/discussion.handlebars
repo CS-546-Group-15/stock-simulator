@@ -1,21 +1,25 @@
 {{!-- This page will show all the posts in the entire discussion database --}}
-<h1 class="mb-3">Discussion Page</h1>
-<p>{{error}}</p>
-<section>
-  <h2>Posts</h2>
-  {{#each posts}}  
-    <article class="post">
-      {{#if flag}}
-      <h2><a href="/../discussion/{{_id}}">{{title}}</a></h2>
-      {{else}}
-      <h2><a href="../discussion/{{_id}}">{{title}}</a></h2>
-      {{/if}}
-      <p>{{body}}</p>
-    </article>
-  {{/each}}
-</section>
-{{#if flag}}
-<a class="new-post" href="/../discussion/newPost">Make a new post here!</a>
-{{else}}
-<a class="new-post" href="/../discussion/newPost">Make a new post here!</a>
-{{/if}}
+<div class="container mt-5 card shadow">
+  <div class="mx-3 my-3">
+    <h1 class="mb-3">Discussion Page</h1>
+    <p>{{error}}</p>
+    <section>
+      <h2>Posts</h2>
+      {{#each posts}}  
+        <article class="post">
+          {{#if flag}}
+          <h2><a href="/../discussion/{{_id}}">{{title}}</a></h2>
+          {{else}}
+          <h2><a href="../discussion/{{_id}}">{{title}}</a></h2>
+          {{/if}}
+          <p>{{body}}</p>
+        </article>
+      {{/each}}
+    </section>
+    {{#if flag}}
+    <a class="new-post" href="/../discussion/newPost">Make a new post here!</a>
+    {{else}}
+    <a class="new-post" href="/../discussion/newPost">Make a new post here!</a>
+    {{/if}}
+  </div>
+</div>
