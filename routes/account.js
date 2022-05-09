@@ -25,6 +25,7 @@ router.get('/update', async (req, res) => {
     return;
 });
 
+//update a user
 router.post('/update', async (req, res) => {
     //prevents non-authenticated users from attempting to make POST request
     if (!req.session.user) {

@@ -6,7 +6,9 @@ const mongoCollections = require('../config/mongoCollections');
 const users = mongoCollections.users;
 const userData = require('./users.js');
 
-
+/*
+    Returns stock data given a symbol
+*/
 async function getStockBySymbol(symbol) {
   //error check
   validation.checkSymbol(symbol);
@@ -47,6 +49,10 @@ async function getStockBySymbol(symbol) {
   */
 }
 
+
+/*
+    Gets a quote on a stock given the symbol
+*/
 async function getQuote(symbol) {
     // validate inputs
     validation.checkSymbol(symbol);
@@ -69,7 +75,9 @@ async function getQuote(symbol) {
 }
 
 
-// called when a user wants to buy a stock
+/*
+    Buys a stock for a user
+*/
 async function buyStock(userId, symbol, shares) { // TODO: STILL NEED TO DEAL WITH BOUNDS i.e. user doesn't have enough money
     // validate inputs
     validation.checkId(userId);
@@ -159,7 +167,11 @@ async function buyStock(userId, symbol, shares) { // TODO: STILL NEED TO DEAL WI
     // might change this return type later, for now it's just a confirmation
     return { purchased: true };
 }
-// called when a user wants to sell a stock
+
+
+/*
+    Sells a stock for a user
+*/
 async function sellStock(userId, symbol, shares) { // TODO: STILL NEED TO DEAL WITH BOUNDS i.e. user doesn't have enough shares to sell
     // validate inputs
     validation.checkId(userId);
@@ -250,6 +262,10 @@ async function sellStock(userId, symbol, shares) { // TODO: STILL NEED TO DEAL W
     return { sold: true };
 }
 
+
+/*
+    Gets the value of a user's account
+*/
 async function getAccVal(userId) {
     // validate inputs
     validation.checkId(userId);
@@ -274,6 +290,10 @@ async function getAccVal(userId) {
     return accVal.toFixed(2); // return total account value
 }
 
+
+/*
+    Gets the account values for all users
+*/
 async function getAllAccVals() {
     const users = await userData.getAllUsers(); // get all users returned as a list
     let accVals = []; // accumulator list
@@ -291,6 +311,10 @@ async function getAllAccVals() {
     }); // return list sorted in decending order of account values
 }
 
+
+/*
+    Gets all stocks that a user owns
+*/
 async function getUserStocks(userId) {
     // validate inputs
     validation.checkId(userId);
@@ -305,6 +329,10 @@ async function getUserStocks(userId) {
     return user.stocks;
 }
 
+
+/*
+    Used for the construction of a user's portfolio table
+*/
 async function buildPortfolioTable(userId) {
     // validate inputs
     validation.checkId(userId);
@@ -341,7 +369,10 @@ async function buildPortfolioTable(userId) {
     // return data needed to build portfolio page
     return portfolio;
 }
-//  this function will get the date of the first purhcased stock to calculate efficiency
+
+/*
+    Gets the date of the first purhcased stock to calculate efficiency
+*/
 function getFirstDate(stocksArr) {
     //  have variable for todays date
     let today = new Date();
@@ -362,7 +393,10 @@ function getFirstDate(stocksArr) {
     return oldest;
 }
 
-//  this function will calculate the user's efficiency for their trading portfolio
+
+/*
+    Calculates the user's efficiency for their trading portfolio
+*/
 async function getEfficiency(accVal, userId) {
     /*  
         get the array of stocks for the user
