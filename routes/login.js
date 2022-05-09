@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const data = require('../data');
-const { getUser } = require('../data/users');
 const userData = data.users;
 const validation = require('../validation');
 const xss = require('xss');

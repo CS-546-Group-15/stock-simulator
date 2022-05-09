@@ -1,6 +1,5 @@
 const signupRoutes = require('./signup');
 const loginRoutes = require('./login');
-const privateRoutes = require('./private');
 const logoutRoutes = require('./logout');
 const accountRoutes = require('./account');
 const discussionRoutes = require('./discussion');
@@ -13,7 +12,6 @@ const constructorMethod = (app) => {
   //  use all routes
   app.use('/signup',      signupRoutes    );
   app.use('/login',       loginRoutes     );
-  app.use('/private',     privateRoutes   );
   app.use('/logout',      logoutRoutes    );
   app.use('/account',     accountRoutes   );
   app.use('/discussion',  discussionRoutes);
