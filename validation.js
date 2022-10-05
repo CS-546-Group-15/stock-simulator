@@ -1,5 +1,5 @@
 //for checking ObjectId
-const { ObjectId } = require("mongodb"); // MIGHT NOT NEED THIS
+const { ObjectId } = require("mongodb"); 
 
 function checkUsername(username) {
     if (!username) throw "Must provide a username";
@@ -32,6 +32,11 @@ function checkPassword(password) {
             throw "Password must not contain spaces.";
         }
     }
+}
+
+function checkName(name) {
+    if (!name) throw "Must provide a name";
+    if (typeof name !== 'string') throw "Name must of type string";
 }
 
 //
